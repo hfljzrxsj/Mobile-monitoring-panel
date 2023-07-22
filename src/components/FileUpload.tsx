@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 'use strict';
 import * as React from 'react';
 import Button from '@mui/material/Button';

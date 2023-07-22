@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 'use strict';
 import * as React from 'react';
 import styleModule from '../style/Body.module.scss';
@@ -137,7 +136,6 @@ export default function Body(): JSX.Element {
         </div>))
 
       );
-      console.log('ReceivedResult', ReceivedResult);
     });
   }, [ReceivedResult, imgOpen, downloadFetch]);
 
