@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html xmlns="">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>医学影像识别</title>
+  <style>
+    h1 {
+      background-color: rgb(21, 74, 182);
+      color: #fff;
+      line-height: 3em;
+      letter-spacing: 1ch;
+      font-size: 200%;
+      border-radius: 1em;
+      margin: 1vmax 1vmax 0;
+      box-shadow: rgb(227 232 238) 0px -1px 0px inset;
+      font-family: kaiTi;
+      text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+    }
+
+    * {
+      font-size: 110%;
+      box-sizing: border-box;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      transition: .2s;
+      border-radius: 1ch;
+      /* box-shadow: 9q 9q 9q 9q currentColor; */
+    }
+
+    b {
+      padding: .5rem;
+      background: rgba(0, 0, 0, 0.5);
+      color: #fff;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 1em;
+    }
+
+    #circleParent {
+      display: none;
+    }
+
+    #circle {
+      border-radius: 50%;
+      border: solid;
+      border-bottom: none;
+      border-right: none;
+      animation: circle 2s forwards linear infinite;
+      width: 1em;
+      height: 1em;
+      text-align: center;
+      display: inline-block;
+    }
+
+    @keyframes circle {
+      form {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* .frame {
+      width: 49.3%;
+      display: inline-block;
+    } */
+
+    /* #previewImage {
+      border-style: solid;
+      display: none;
+      margin: 1em 0;
+      max-width: 49.5%;
+      max-height: 49.5%;
+    } */
+
+    input[type="file"] {
+      max-width: 11em;
+      border: dotted 1q rgba(0, 0, 0, 0.5);
+      padding: 1mm;
+      cursor: pointer;
+      /* margin: 1em 0; */
+    }
+
+    #fileButton {
+      padding: 1em 0;
+    }
+
+    #fileButton>button {
+      padding: 1ch 1em;
+      margin: 1ch 0;
+    }
+
+    #fileButton>button:not([disabled]) {
+      cursor: pointer;
+    }
+
+    #fileButton>button[disabled] {
+      cursor: not-allowed;
+    }
+
+    #fileButton>label {
+      color: rgba(255, 0, 0, .8);
+      font-size: 1ch;
+      /* margin-top: 1px; */
+      transform: translateY(-1mm);
+    }
+
+    #main {
+      /* display: flex; */
+      border: dashed 1px rgb(0, 82, 204);
+      border-radius: 1em;
+      margin: 1ch 1ch 0;
+      background-color: rgb(241, 243, 245);
+      box-shadow: inset 2px 2px 30px rgba(0, 82, 204, .1), inset -2px -2px 30px rgba(0, 82, 204, .1);
+      min-height: 70vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    #side {
+      position: fixed;
+      top: 0;
+      left: 0;
+      transition: 1s;
+      /* display: none; */
+      width: 0px;
+      background-color: rgb(232, 237, 251);
+      color: rgb(0, 82, 204);
+      min-height: 100%;
+      /* for the title */
+      overflow-x: hidden;
+      box-shadow: 0 0 10px rgba(0, 82, 204, .5);
+      border-radius: 0 1cm 1cm 0;
+    }
+
+    #side>h2 {
+      margin-top: 50px;
+      font-family: 'Microsoft YaHei';
+    }
+
+    #side>ul {
+      margin-top: 1em;
+
+    }
+
+    #side>ul>li {
+      transition: .3s;
+      padding: 1ch;
+      cursor: pointer;
+      list-style: none
+    }
+
+    #side>ul>li:hover {
+      /* font-weight: bold; */
+      color: rgb(0, 20, 255);
+      background-color: rgb(200, 237, 251);
+    }
+
+    #sideButton {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      font-size: 1cm;
+      /* border: solid blue 1q; */
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 30%;
+      cursor: pointer;
+    }
+
+    #side>ul>li:first-child {
+      display: none;
+    }
+
+    /* #result>table>tbody:nth-child(1)>tr:nth-child(1)>td>img:nth-child(1) {
+      cursor: pointer;
+    } */
+
+    .result {
+      margin: 1vmax 0;
+    }
+
+    /* .result>span {
+      color: darkred;
+    } */
+
+    #result {
+      display: none;
+    }
+
+    /* #result>table {
+      margin: 0 auto;
+    } */
+
+    /* #result>table>tbody:nth-child(1)>tr:nth-child(2)>td {
+      font-size: 1ch;
+      padding: 0 9q;
+    } */
+
+    #flex-container>div>button {
+      padding: 5q 9q;
+      cursor: pointer;
+      margin: 9q 0;
+      padding: 0 9q;
+    }
+
+    #flex-container>div>hr {
+      width: 80%;
+      margin: 0 auto;
+      color: blue;
+      border: 1q dashed rgba(0, 0, 255, .5);
+    }
+
+    .imgBigShow {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vmin;
+      width: 100vmax;
+      /* background-color: aliceblue; */
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      overflow: hidden;
+      background-size: 90vmin !important;
+    }
+
+    .imgNotShow {
+      display: none;
+    }
+
+    #imgShow {
+      transition: .3s;
+      z-index: 3;
+    }
+
+    @keyframes show {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes hidden {
+      from {
+        opacity: 1;
+      }
+
+      to {
+        opacity: 0;
+      }
+    }
+
+    .grid-container {
+      /* display: grid; */
+      grid-template-columns: auto;
+      justify-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      gap: 4mm;
+      margin-bottom: 4mm;
+
+    }
+
+    .grid-container>div:last-child:nth-last-child(1) {
+      grid-column-start: 1;
+      grid-column-end: 3;
+    }
+
+    .grid-container>div {
+      max-width: 16em;
+      /* max-height: 16em; */
+      border-width: 1q;
+      border-style: dotted;
+      border-color: rgba(0, 20, 255, .5);
+      box-sizing: content-box;
+      border-radius: 2em;
+      display: flex;
+      margin: 9q auto;
+      justify-content: center;
+      padding: 9q;
+      align-items: center;
+    }
+
+    #flex-container>div>p {
+      font-size: 1em;
+      padding-bottom: 9q;
+      min-width: 16em;
+      font-family: kaiti;
+      font-weight: bolder;
+    }
+
+    button {
+      border-radius: 1ch;
+    }
+
+    .grid-container>div>img {
+      border-radius: 1em;
+      cursor: pointer;
+      width: 256px;
+    }
+
+    #flex-container {
+      display: flex;
+    }
+
+    #flex-container>div {
+      width: 50%;
+    }
+
+    input[type='checkbox'] {
+      transform: scale(6);
+      width: 1in;
+      cursor: pointer;
+    }
+
+    #flex-container>div>div>div>button {
+      margin-left: 9q;
+      border-radius: 1ch;
+      height: 1in;
+      padding: 0 9q;
+      cursor: pointer;
+    }
+
+    #result>button:nth-child(3) {
+      border-radius: 1ch;
+      height: 2cm;
+      padding: 0 9q;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>医学影像识别</h1>
+  <div id="main">
+    <div id="fileButton"><input type="file" id="fileUpload" multiple>
+      <br>
+      <label for="fileUpload" id="tip">
+        请上传zip压缩文件
+      </label>
+      <br>
+      <button disabled><span id="upload">上传</span>
+        <div id="circleParent">
+          <div id='circle'></div>
+        </div>
+      </button>
+      <div id="result">
+        <hr>
+        <p class="result">识别结果</p>
+        <button>批量下载</button>
+        <div id="flex-container">
+          <div>
+            <p>有伪影</p>
+            <hr>
+            <div class="grid-container">
+            </div>
+          </div>
+          <div>
+            <p>无伪影</p>
+            <hr>
+            <div class="grid-container">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <span id="sideButton">
+    ☰
+  </span>
+  <div id="side" style="width: 0px;">
+    <h2>
+      欢迎你,<br><span></span>
+    </h2>
+    <ul>
+      <li>管理账户</li>
+      <li style="display: none;">历史记录</li>
+      <li>退出登录</li>
+    </ul>
+
+  </div>
+  <div class="imgNotShow" id="imgShow"></div>
+</body>
+<script>
+  // onload = function () {
+  if (localStorage.permission == 0)
+    document.querySelector('#side>ul>li:first-child').style.display = 'block'
+  document.querySelector("#side > h2 > span").innerText = localStorage.username;
+  const toggle = params => {
+    let p = document.createElement("b")
+    p.innerHTML = params
+    document.body.appendChild(p)
+    setTimeout(() => {
+      p.remove()
+    }, 2e3)
+    p.onclick = () => p.remove()
+  }
+  const tip = document.getElementById("tip")
+  const button = document.querySelector('button')
+  const circle = document.getElementById('circle')
+  const circleParent = document.getElementById('circleParent')
+  const previewImage = document.getElementById('previewImage');
+  const fileInput = document.querySelector('input[type="file"]')
+  const upload = document.getElementById('upload');
+  const sideLi = document.querySelectorAll('#side>ul>li')
+  const result = document.getElementById('result')
+  const resultFlex = result.querySelector('#flex-container')
+  const gridContainers = resultFlex.querySelectorAll('.grid-container')
+  // const resultTableTrs = resultTable.getElementsByTagName('tr');
+  const downloadButton = result.querySelector('button')
+  const imgShow = document.getElementById('imgShow')
+  const ReceivedResult = [];
+  downloadButton.onclick = () => {
+    const checkboxs = resultFlex.querySelectorAll('input[type="checkbox"]')
+    const downloadArray = []
+    for (let i of checkboxs) {
+      if (i.checked)
+        downloadArray.push(i.name)
+    }
+    if (downloadArray.length == 0) {
+      toggle('请先选择要下载的图片')
+      return
+    }
+    downloadFetch(downloadArray);
+  }
+  // const frame = document.getElementsByClassName('frame')
+  button.onclick = function () {
+    result.style.display = 'none'
+    if (!fileInput.value) {
+      toggle('请先选择文件');
+      return
+    }
+    circleParent.style.display = "inline-block";
+    upload.style.display = "none";
+    button.disabled = true;
+    // frame[1].style.minHeight = getComputedStyle(frame[0]).height
+    // circle.style.width = circle.style.height = getComputedStyle(previewImage).height
+    // const reader = new FileReader();
+    // reader.readAsDataURL(file);
+    const formData = new FormData()
+    formData.append('file', fileInput.files[0])
+    // let xhr = new XMLHttpRequest()
+    // xhr.withCredentials = true
+    // xhr.open('POST', 'http://localhost:8000')
+    // xhr.setRequestHeader('Access-Control-Allow-Origin','*')
+    // xhr.setRequestHeader('Content-Type','text/plain')
+    // xhr.send(formData)
+    // xhr.onreadystatechange = function() {
+    //   if (xhr.readyState === 4 && xhr.status === 200) {
+    //     console.log(xhr.responseText)
+    //   }
+    // }
+    function getLastSegment (t, e) { const n = e.split(t); return n[n.length - 1] }
+    function getLastSubstring (t, n) { const i = n.split(t); return i.slice(0, i.length - 1).join(t) }
+    fetch('api/file', {
+      method: "POST",
+      body: formData
+    }).then(e => e.json()).then(e => {
+      result.style.display = 'block';
+      ReceivedResult.length = 0;
+      // resultFlex.innerHTML = '<div><p>有伪影</p><button>下载</button><div class="grid-container"></div></div><div><p>无伪影</p><button>下载</button><div class="grid-container"></div></div>';
+      for (let i of document.getElementsByClassName('grid-container')) {
+        i.innerHTML = ''
+      }
+      // for (let i of resultTableTrs) {
+      //   i.innerHTML = ''
+      // }
+      toggle('上传成功');
+      for (let i = 0; i < e.dcm_filenames.length; i++) {
+        ReceivedResult.push({ filePath: e.dcm_filenames[i].replace('\\', '/'), Artifact: e.predictoutput[i][0] })
+      }
+      setTimeout(() => {
+        // for (let i of ReceivedResult) {
+        //   const td1 = document.createElement('td')
+        //   td1.innerHTML = '<img src="static/' + getLastSegment('/', i.filePath).split('.')[0] + '.jpg">'
+        //   resultTableTrs[0].appendChild(td1)
+        //   const td2 = document.createElement('td')
+        //   td2.innerText = i.Artifact ? '有伪影' : '无伪影'
+        //   resultTableTrs[1].appendChild(td2)
+        // }
+        for (let i of ReceivedResult) {
+          const div = document.createElement('div')
+          const src = `"static/${getLastSubstring('.', getLastSegment('/', i.filePath))}.jpg"`
+          div.innerHTML = `<input type="checkbox" name=${i.filePath}><img src=${src}><button>下载</button>`
+          // resultFlex.appendChild(div)
+          gridContainers[i.Artifact ^ 1].appendChild(div)
+          div.querySelector('button').onclick = () => {
+            downloadFetch([i.filePath])
+          }
+        }
+        for (i of resultFlex.getElementsByTagName('img')) {
+          i.onclick = function (e) {
+            const html = e.target;
+            if (imgShow.classList.contains('imgNotShow')) {
+              imgShow.style.background = `rgba(0, 0, 0,.5) url(${html.src}) no-repeat fixed center`;
+              imgShow.className = 'imgBigShow'
+              imgShow.style.animation = 'show .5s ease-in-out forwards'
+            }
+            else {
+              imgShow.className = 'imgNotShow'
+            }
+          }
+        }
+        // for (let i = 0; i < downloadButtons.length; i++) {
+        //   downloadButtons[i].style.display = ReceivedResult.every(e => e.Artifact != i ^ 1) ? 'none' : 'inline-block'
+        // }
+      })
+    })
+      .catch(e => {
+        // button.disabled = false;
+        toggle('对不起, 上传失败')
+        console.log(e);
+      })
+      .then(() => {
+        circleParent.style.display = "none";
+        upload.style.display = "inline-block";
+        button.disabled = false;
+        // fileInput.value = null;
+        tip.style.display = "inline-block";
+      })
+  }
+  imgShow.onclick = () => {
+    // imgShow.className == 'imgBigShow' && (imgShow.className = 'imgNotShow')
+    imgShow.style.animation = 'hidden .5s ease-in-out forwards'
+    setTimeout(() => imgShow.className == 'imgBigShow' && (imgShow.className = 'imgNotShow'), 500)
+  }
+  function download (index) {
+    const filterResult = ReceivedResult.filter(item => item.Artifact == index)
+    const bodyArray = []
+    for (let i of filterResult) {
+      bodyArray.push(i.filePath)
+    }
+    downloadFetch(bodyArray);
+    // fetch('api/download', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    //   body: JSON.stringify({ fileList: bodyArray })
+    // }).then(e => {
+    //   if (e.status != 200) throw new Error('下载失败')
+    //   return e.text()
+    // }).then(e => {
+    //   toggle('下载成功')
+    //   open(e.substring(2))
+    // }).catch(e => {
+    //   toggle('对不起, 下载失败')
+    //   console.log(e);
+    // })
+  }
+  function downloadFetch (params) {
+    fetch('api/download', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ fileList: params })
+    }).then(e => {
+      if (e.status != 200) throw new Error('下载失败')
+      return e.text()
+    }).then(e => {
+      toggle('下载成功')
+      open(e.substring(2))
+    }).catch(e => {
+      toggle('对不起, 下载失败')
+      console.log(e);
+    })
+  }
+
+  // downloadButtons[0].onclick = () => download(1)
+  // downloadButtons[1].onclick = () => download(0)
+  fileInput.onchange = function () {
+    const file = fileInput.files[0]
+    if (file && file.name.endsWith('.zip') && file.type === 'application/x-zip-compressed') {
+      // const reader = new FileReader();
+      // reader.readAsDataURL(file);
+      // reader.onload = () => {
+      //   previewImage.src = reader.result;
+      //   button.disabled = false;
+      //   previewImage.style.display = 'inline-block'
+      button.disabled = false;
+      tip.style.display = "none";
+      // }
+    } else {
+      toggle('对不起, 你上传的不是zip压缩文件');
+      // button.disabled = true;
+      // previewImage.style.display = 'none'
+      fileInput.value = null;
+      tip.style.display = "inline-block";
+    }
+  }
+  const side = document.getElementById('side')
+  document.getElementById('sideButton').onclick = function () {
+    // side.style.display = side.style.display === 'none' ? 'block' : 'none'
+    side.style.width = side.style.width === '0px' ? '200px' : '0px'
+  }
+  sideLi[0].onclick = function () {
+    open('manager', '_self')
+  }
+  sideLi[2].onclick = function () {
+    if (confirm("确定要退出登录吗?")) {
+      fetch('logout').then(() => {
+        localStorage.clear();
+        setTimeout(() => location.reload());
+      })
+      // nulls are optional,
+      document.cookie = "userId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      document.cookie = "pwd=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      localStorage.clear();
+      // location.reload();
+      // open('login.html', '_self')
+    }
+  }
+  sideLi[1].onclick = function () {
+    open('history.html', '_self')
+  }
+  // }
+
+</script>
+
+</html>

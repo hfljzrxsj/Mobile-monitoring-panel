@@ -1,0 +1,28 @@
+.head {
+  transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  display: flex;
+  // flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  position: fixed;
+  top: 0px;
+  left: auto;
+  right: 0px;
+  background-color: rgb(21, 74, 182);
+  color: rgb(255, 255, 255);
+  z-index: 1200;
+  box-shadow: none;
+  height: 48px;
+  line-height: 48px;
+  text-indent: 2em;
+  font-size: 24px;
+  text-align: left;
+  border-radius: 0;
+  justify-content: space-between;
+  align-items: center;
+
+  &>span:last-child {
+    margin-right: 1em;
+  }
+}

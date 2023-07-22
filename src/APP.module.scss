@@ -1,0 +1,13 @@
+.APP {
+  display: flex;
+  margin-top: 48px;
+  background-color: #f8f8f8;
+  // padding-bottom: 20vh;
+
+  &>iframe {
+    min-width: 83%;
+    min-height: 90vh;
+    margin: 9q auto;
+    border: 0;
+  }
+}

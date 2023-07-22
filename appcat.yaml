@@ -1,0 +1,13 @@
+---
+!<Application>
+id: '6a6126e4-b0ad-11ec-b909-0242ac120002'
+modelType: 'Application'
+appCode: 'ctc-simt-frontend'
+atlasId: 'APP-9762'
+name: 'CTC Special Issue Management Tool- Front-end'
+appType: 'Built'
+description: 'This is the web front end of CTC Special Issue Management Tool'
+state: 'InDevelopment'
+systemId: '4711366e-ae75-11ec-b909-0242ac120002'
+shortCode: 'ctc-simt-frntn'
+isSystem: false

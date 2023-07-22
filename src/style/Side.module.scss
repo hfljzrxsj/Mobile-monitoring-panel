@@ -1,0 +1,76 @@
+.Side {
+  width: 237px;
+
+
+
+  &>li {
+    display: list-item;
+    list-style: none;
+    margin: 5px;
+    border-radius: 4px;
+
+    padding: 8px 0;
+
+    &>p {
+      font-weight: 900;
+      font-family: KaiTi;
+      font-size: 20px;
+      display: inline;
+      padding: 4px;
+    }
+
+    &>span {
+      float: right;
+      cursor: pointer;
+      line-height: 12px;
+    }
+
+    &>ul>li {
+      cursor: pointer;
+
+    }
+
+    &:first-child {
+      background-color: rgb(232, 237, 251);
+
+      &>span:hover {
+        background: #000;
+      }
+
+      &>ul>li {
+
+        &.selected {
+          background-color: rgb(0, 82, 204);
+
+          p,
+          li {
+            color: #fff;
+          }
+        }
+
+        &:hover:not(.selected) {
+          background-color: rgb(109, 152, 238);
+        }
+      }
+
+      p,
+      li {
+        color: rgb(0, 82, 204);
+      }
+    }
+
+    &:nth-child(2) {
+      background-color: rgb(231, 246, 248);
+
+      &>ul>li:hover {
+        background-color: rgb(162, 221, 228);
+
+      }
+
+      p,
+      li {
+        color: rgb(0, 164, 183);
+      }
+    }
+  }
+}

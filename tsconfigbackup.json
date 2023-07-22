@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "target": "ES2015",
+    "lib": ["DOM", "ESNext"],
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "strict": true,
+    "module": "ESNext",
+    "declaration": true,
+    "declarationMap": true,
+    "declarationDir": "./build",
+    "jsx": "react-jsx",
+    "allowJs": true,
+    "checkJs": false, // 若 checkJs 为 true 则在编辑器全局启用静态检查
+    "resolveJsonModule": true,
+    "outDir": "./build"
+  },
+  "include": ["src"]
+}

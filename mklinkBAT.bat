@@ -1,0 +1,1 @@
+mklink /d I:\html\html\react\elevator\node_modules I:\html\html\vscode\M0S0\simt_front\node_modules

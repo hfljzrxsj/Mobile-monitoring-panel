@@ -1,0 +1,22 @@
+.Elevators {
+  background-color: transparent;
+
+  &>div {
+    position: absolute;
+    box-sizing: border-box;
+    border: solid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 5vh;
+    background-color: aliceblue;
+  }
+
+  &>:first-child {
+    left: 0;
+  }
+
+  &>:last-child {
+    right: 0;
+  }
+}

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>登录</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      text-align: center;
+      user-select: none;
+      transition: .2s;
+    }
+
+    label {
+      color: #fff;
+      margin-left: 1em;
+      cursor: pointer;
+      font-size: 2ch;
+    }
+
+    #background {
+      background: linear-gradient(#4a96cd, #7cb6dd, #4a96cd);
+      height: 100vh;
+      width: 100vw;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #background>div {
+      padding: 2cm 1cm;
+      min-width: 9in;
+      min-height: 7cm;
+      border: 2px solid #fff;
+      border-radius: 1cm;
+      background: rgba(255, 255, 255, .01);
+      box-shadow: inset 2px 2px 1cm rgba(255, 255, 255, .5), inset -2px -2px 1cm rgba(255, 255, 255, .5);
+      display: flex;
+      flex-direction: column;
+      gap: 1cm;
+      align-items: center;
+      justify-content: center;
+    }
+
+    h1 {
+      color: #fff;
+      letter-spacing: 1ch;
+      margin-bottom: 1ch;
+      font-size: 3em;
+      font-family: kaiTi;
+    }
+
+    input,
+    button {
+      max-width: 6in;
+      font-size: 1cm;
+      text-align: left;
+      padding: 1mm;
+      user-select: text;
+    }
+
+    button {
+      text-align: center;
+      padding: 1mm 1em;
+      cursor: pointer;
+      font-weight: bolder;
+      font-family: kaiTi;
+    }
+
+    .github-corner {
+      position: fixed;
+      top: 0;
+      right: 0;
+    }
+
+    b {
+      padding: .5rem;
+      background: rgba(0, 0, 0, 0.5);
+      color: #fff;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 1em;
+      font-size: 2em;
+    }
+
+    input[type='checkbox'] {
+      cursor: pointer;
+      transform: scale(1.5);
+    }
+  </style>
+</head>
+
+<body>
+  <div id="background">
+    <a href="https://github.com/hfljzrxsj" target="_blank" class="github-corner" title="Star me on GitHub"
+      aria-label="Follow me on GitHub" rel="noopener"> <svg width="80" height="80" viewBox="0 0 250 250"
+        aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z" fill="#4a96cd"></path>
+        <path
+          d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+          fill="white"> </path>
+        <path
+          d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+          fill="white"></path>
+      </svg></a>
+    <div>
+      <h1>医学影像识别</h1>
+      <input placeholder="请输入用户名">
+      <input type="password" placeholder="请输入密码">
+      <div><input type="checkbox" id="checkbox"><label for="checkbox">自动登录</label></div>
+      <button id="login">登录</button>
+    </div>
+  </div>
+</body>
+
+</html>
+<script>
+  const login = document.querySelector('#login')
+  const id = document.querySelector('input')
+  const pwd = document.querySelector('input[type="password"]')
+  const remember = document.querySelector('input[type="checkbox"]')
+  const toggle = params => {
+    let p = document.createElement("b")
+    p.innerHTML = params
+    document.body.appendChild(p)
+    setTimeout(() => {
+      p.remove()
+    }, 2e3)
+    p.onclick = () => p.remove()
+  }
+  function checkString (str, reg) {
+    var regex = /^[a-zA-Z0-9]*$/;
+    return !reg.test(str);
+  }
+  document.addEventListener("keydown", function (event) {
+    if (event.keyCode === 13) {
+      login.click();
+    }
+  });
+  login.onclick = function () {
+
+    if (!id.value) {
+      toggle('账号不能为空');
+      id.focus();
+      return;
+    }
+    // if (checkString(id.value, /^\d+$/)) {
+    //   toggle('账号只能为数字');
+    //   id.focus();
+    //   return;
+    // }
+    if (!pwd.value) {
+      toggle('密码不能为空');
+      pwd.focus();
+      return;
+    }
+    if (checkString(pwd.value, /^[!#$&(-,.0-:<-\[\]^`-~\-]+$/)) {
+      toggle('密码格式不正确');
+      pwd.focus();
+      return;
+    }
+    fetch('api/login', {
+      method: "POST"
+      , headers: {
+        'Content-Type': 'application/json'
+      }
+      , body: JSON.stringify({
+        username: id.value,
+        password: pwd.value,
+        remember: remember.checked ? 1 : 0
+      })
+    }).then(e => {
+      if (e.status !== 200) {
+        localStorage.clear()
+        toggle('账号或密码错误');
+        return Promise.reject();
+      }
+      return e.json()
+    }).then(e => {
+      if (e.code !== 200) {
+        localStorage.clear()
+        toggle('账号或密码错误');
+        return Promise.reject();
+      }
+      localStorage.username = e.username;
+      localStorage.permission = e.permission;
+      location.reload();
+      // setTimeout(() => location.href = 'index.html')
+    }).catch(err => console.log(err))
+  }
+</script>

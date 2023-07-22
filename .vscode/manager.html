@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>用户管理</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      text-align: center;
+      color: #fff;
+      font-family: 'Comic Sans MS';
+      transition: .2s;
+    }
+
+    table {
+      padding: 2vh;
+      /* min-width: 9in; */
+      /* min-height: 7cm; */
+      border: 2px solid #fff;
+      /* color: #eee; */
+      border-radius: 1cm;
+      background: rgba(255, 255, 255, .01);
+      box-shadow: inset 2px 2px 1cm rgba(255, 255, 255, .5), inset -2px -2px 1cm rgba(255, 255, 255, .5);
+      /* display: flex; */
+      /* flex-direction: column; */
+      /* gap: 1cm; */
+      /* align-items: center; */
+      /* justify-content: center; */
+    }
+
+    td {
+      color: #eee;
+    }
+
+    body {
+      background: linear-gradient(#4a96cd, #7cb6dd, #4a96cd);
+      height: 100vh;
+      width: 100vw;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    button,
+    input,
+    select,
+    textarea,
+    option {
+      /* button, input, select, textarea */
+      color: black;
+    }
+
+    b {
+      padding: .5rem;
+      background: rgba(0, 0, 0, 0.5);
+      color: #fff;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 1em;
+      font-size: 2vmax;
+    }
+
+    th,
+    td,
+    button,
+    input,
+    select,
+    textarea,
+    option,
+    body>div:nth-child(2)>span:nth-child(2) {
+      font-size: 2vmax;
+      /* padding: 0 1em; */
+    }
+
+    body>div:nth-child(2)>span:nth-child(2) {
+      margin: 0 2em;
+    }
+
+    body>div:nth-child(2)>span:nth-child(2)>strong {
+      color: gold;
+      font-size: 3vmax;
+      margin: 0 9q;
+    }
+
+    button {
+      cursor: pointer;
+      padding: 0 1ex;
+    }
+
+    select,
+    option {
+      cursor: pointer;
+    }
+
+    button:first-child:not(:only-child) {
+      margin-right: 1mm;
+    }
+
+    td:nth-child(4) {
+      padding: 1ex 1em;
+    }
+
+    h1 {
+      margin-bottom: 8px;
+      font-size: 3vmax;
+    }
+
+    button.page:first-of-type {
+      visibility: hidden;
+    }
+  </style>
+  <style>
+    #side {
+      position: fixed;
+      top: 0;
+      left: 0;
+      transition: 1s;
+      /* display: none; */
+      width: 0px;
+      background-color: rgba(32, 32, 32, .6);
+      ;
+      color: rgb(0, 82, 204);
+      min-height: 100%;
+      /* for the title */
+      overflow-x: hidden;
+      box-shadow: 0 0 10px rgba(0, 82, 204, .5);
+      border-radius: 0 1cm 1cm 0;
+    }
+
+    #side>h2 {
+      margin-top: 50px;
+      font-family: 'Microsoft YaHei';
+      font-size: 1cm;
+    }
+
+    #side>ul {
+      margin-top: 1em;
+
+    }
+
+    #side>ul>li {
+      transition: .3s;
+      padding: 1ch;
+      cursor: pointer;
+      list-style: none;
+      color: rgb(229, 229, 229);
+      font-size: 2em;
+    }
+
+    #side>ul>li:hover {
+      /* font-weight: bold; */
+      color: rgb(0, 255, 255);
+      background-color: rgba(32, 32, 32, .3);
+    }
+
+    #sideButton {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      font-size: 1cm;
+      /* border: solid blue 1q; */
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 30%;
+      cursor: pointer;
+    }
+
+    input::placeholder {
+      color: rgba(0, 0, 0, 0.5);
+    }
+
+    /* #side>ul>li:first-child {
+      display: none;
+    } */
+  </style>
+</head>
+
+<body>
+  <!-- <div id="box"> -->
+
+  <table>
+    <caption align="top">
+      <h1>用户管理</h1>
+    </caption>
+    <tr>
+      <th style="display: none;">工号</th>
+      <th>用户名</th>
+      <th>密码</th>
+      <th>权限</th>
+      <th>操作</th>
+    </tr>
+  </table>
+  <div><button class="page">上一页</button><span>第<strong></strong>页</span><button class="page">下一页</button></div>
+  <span id="sideButton">
+    ☰
+  </span>
+  <div id="side" style="width: 0px;">
+    <h2>
+      欢迎你,<br><span></span>
+    </h2>
+    <ul>
+      <li>返回主页</li>
+      <li style="display: none;">历史记录</li>
+      <li>退出登录</li>
+    </ul>
+
+  </div>
+  <!-- </div> -->
+</body>
+
+</html>
+<script>
+  document.querySelector("#side > h2 > span").innerText = localStorage.username;
+  let store = {}
+  let pageIndex = 0;
+  let maxpageIndex = 0;
+  const numInEveryPage = 5;
+  const pagesButton = document.getElementsByClassName('page');
+  pagesButton[0].onclick = () => {
+    if (--pageIndex < 0) {
+      pageIndex++;
+      return;
+    }
+    loadContent();
+  }
+  pagesButton[1].onclick = () => {
+    if (++pageIndex > maxpageIndex) {
+      pageIndex--;
+      return
+    };
+    loadContent();
+  }
+  function loadContent () {
+    if (pageIndex == 0) {
+      pagesButton[0].style.visibility = 'hidden';
+    }
+    else {
+      pagesButton[0].style.visibility = 'visible';
+    }
+    if (pageIndex == maxpageIndex) {
+      pagesButton[1].style.visibility = 'hidden';
+    }
+    else {
+      pagesButton[1].style.visibility = 'visible';
+    }
+    const trs = table.querySelectorAll('tr')
+    for (let i = 1; i < trs.length; i++) {
+      trs[i].remove()
+    }
+    setTimeout(() => {
+      document.querySelector('body > div:nth-child(2) > span:nth-child(2) > strong:nth-child(1)').innerText = pageIndex + 1;
+      store.users.forEach((item, index) => {
+        if (index < pageIndex * numInEveryPage || index > pageIndex * numInEveryPage + numInEveryPage - 1) return;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+        <td style='display:none'>${item.id}</td>
+        <td>${item.username}</td>
+        <td>${item.password}</td>
+        <td>${item.permission == 1 ? "普通用户" : "管理员"}</td>
+        <td><button onclick="del(${item.id})">删除</button><button onclick="modify(${item.id},this)">修改</button></td>
+      `
+        table.appendChild(tr);
+      })
+      const tr = document.createElement('tr')
+      tr.innerHTML = `<td><input placeholder=姓名></td><td><input placeholder=密码></td><td>${selectStr}</td><td><button onclick="add(this)">添加</button></td>`
+      table.appendChild(tr);
+      // console.log(pageIndex, maxpageIndex);
+      if (pageIndex > maxpageIndex) {
+        pagesButton[0].click();
+      }
+    })
+  }
+  const toggle = params => {
+    let p = document.createElement("b")
+    p.innerHTML = params
+    document.body.appendChild(p)
+    setTimeout(() => {
+      p.remove()
+    }, 2e3)
+    p.onclick = () => p.remove()
+  }
+  function checkString (str, reg) {
+    return !reg.test(str);
+  }
+  // const selectStr = '<select><option value="请选择">请选择</option><option value="0">管理员</option><option value="1">普通用户</option></select>'
+  const selectStr = '普通用户'
+  const table = document.querySelector('table');
+  const tableFetch = () =>
+    fetch('api/all').then(e => e.json()).then(e => {
+      store = e;
+      if (e.length == 0) {
+        toggle('暂无数据')
+      }
+      maxpageIndex = Math.ceil(store.users.length / numInEveryPage) - 1
+      if (maxpageIndex == 0) {
+        pagesButton[1].style.visibility = 'hidden';
+      }
+      loadContent();
+    })
+  function del (id) {
+    if (!confirm('确定删除？')) return;
+    fetch('api/delete', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ id: id })
+    }).then(e => e.json()).then(e => {
+      if (e.code == 200) {
+        toggle('删除成功')
+        tableFetch();
+      }
+      else {
+        toggle('删除失败')
+      }
+    }).catch(e => {
+      toggle('删除失败')
+    })
+  }
+  function modify (id, e) {
+    e.innerText = '保存'
+    e.removeAttribute('onclick')
+    e.onclick = () => save(id, e)
+    const tds = e.parentNode.parentNode.querySelectorAll('td')
+    for (let i = 0; i < 3; i++) {
+      tds[i].innerHTML = `<input value="${tds[i].innerText}">`
+    }
+    const select = tds[3]
+    const selectData = select.innerText
+    select.innerHTML = selectStr
+    // select.querySelector('select').value = selectData == "管理员" ? "0" : "1"
+  }
+  function save (id, e) {
+    const result = inputNotNull(e, 1)
+    if (!result) {
+      return
+    }
+    const [name, password] = result
+    // const td = e.parentNode.parentNode.querySelectorAll('td')
+    fetch('api/update', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        id: id,
+        username: name,
+        password: password,
+        // permission: e.parentNode.parentNode.querySelectorAll('td')[3].querySelector('select').value
+        permission: 0
+      })
+    }).then(e => e.json()).then(e => {
+      if (e.code == 400) {
+        toggle('已存在相同用户名')
+        return;
+      }
+      toggle('修改成功')
+      tableFetch()
+    }).catch(e => {
+      toggle('修改失败')
+    })
+  }
+  function add (e) {
+    const result = inputNotNull(e, 0)
+    if (!result) {
+      return
+    }
+    const [name, password] = result
+
+    fetch('api/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        // id: id.value,
+        password: password,
+        username: name,
+        // permission: permission.value
+        permission: 1
+      })
+    }).then(e => e.json()).then(e => {
+      if (e.code !== 200) {
+        toggle('已存在相同用户名')
+        return;
+      }
+      toggle('添加成功')
+      tableFetch()
+    }).catch(e => {
+      toggle('添加失败')
+    })
+  };
+  const sideLi = document.querySelectorAll('#side>ul>li')
+  function inputNotNull (e, startIndex) {
+    const td = e.parentNode.parentNode.querySelectorAll('td')
+    // const id = td[0].querySelector('input')
+    const name = td[startIndex].querySelector('input')
+    const password = td[startIndex + 1].querySelector('input')
+    // const permission = td[startIndex+2].querySelector('select')
+    if (name.value === '') {
+      toggle('姓名不能为空')
+      name.focus()
+      return false
+    }
+    if (password.value === '') {
+      toggle('密码不能为空')
+      password.focus()
+      return false
+    }
+    if (checkString(password.value, /^[!#$&(-,.0-:<-\[\]^`-~\-]+$/)) {
+      toggle('密码格式不正确');
+      password.focus();
+      return false
+    }
+    return [
+      // id.value,
+      name.value,
+      password.value,
+      // permission.value
+    ]
+  }
+  const side = document.getElementById('side')
+  document.getElementById('sideButton').onclick = function () {
+    // side.style.display = side.style.display === 'none' ? 'block' : 'none'
+    side.style.width = side.style.width === '0px' ? '200px' : '0px'
+  }
+  sideLi[0].onclick = function () {
+    open('/', '_self')
+  }
+  sideLi[2].onclick = function () {
+    if (confirm("确定要退出登录吗?")) {
+      fetch('logout').then(() => {
+        localStorage.clear();
+        setTimeout(() => location.href = '/');
+      })
+      // nulls are optional,
+      document.cookie = "userId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      document.cookie = "pwd=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      localStorage.clear();
+      // location.reload();
+      // open('login.html', '_self')
+    }
+  }
+  sideLi[1].onclick = function () {
+    open('history.html', '_self')
+  }
+  setTimeout(() => {
+    tableFetch()
+  });
+</script>
