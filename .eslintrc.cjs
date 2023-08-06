@@ -3,6 +3,8 @@ module.exports = {
     browser: true,
     es2021: true,
     node: true,
+    es6: true,
+    jest: true,
   },
   extends: [
     'eslint:recommended',
@@ -10,7 +12,11 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
     'prettier', // 使用 Prettier 插件
-    // 'plugin:prettier/recommended',
+    // 'airbnb',
+    // 'prettier/react',
+    'plugin:prettier/recommended',
+    'plugin:jest/recommended',
+    'plugin:unicorn/recommended'
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -21,10 +27,26 @@ module.exports = {
     parser: 'babel-eslint',
     ecmaVersion: 'latest',
   },
-  plugins: ['react', 'react-hooks', '@typescript-eslint'],
+  plugins: ['react', 'react-hooks', '@typescript-eslint',"prettier", "jest", "unicorn"],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  },
+  "overrides": [
+    {
+      "files": ["**/*.ts", "**/*.tsx"],
+      "parser": "typescript-eslint-parser",
+      "rules": {
+        "no-undef": "error"
+      }
+    }
+  ],
   rules: {
     indent: ['off', 2], // 强制使用两个空格缩进
-    // 'linebreak-style': ['error', 'unix'], // 强制使用 UNIX 换行符
+    'linebreak-style': ['off', 'unix'], // 强制使用 UNIX 换行符
     quotes: ['error', 'single'], // 强制使用单引号
     semi: ['error', 'always'], // 强制使用分号
     camelcase: 'error',
@@ -56,7 +78,10 @@ module.exports = {
     ], // 禁止空函数，但允许箭头函数为空
     '@typescript-eslint/explicit-module-boundary-types': 'error', // 强制在导出函数和类的公共 API 中显式声明类型
     '@typescript-eslint/no-explicit-any': 'error',
-    '@typescript-eslint/no-unused-vars': 'error', // 强制在 TypeScript 中检查未使用的变量
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      { vars: 'all', args: 'after-used', ignoreRestSiblings: false },
+    ], // 强制在 TypeScript 中检查未使用的变量
     '@typescript-eslint/no-use-before-define': ['error', { functions: false, classes: true }], // 强制在 TypeScript 中检查使用前定义
     '@typescript-eslint/no-var-requires': 'error',
     '@typescript-eslint/prefer-namespace-keyword': 'error',
@@ -168,5 +193,6 @@ module.exports = {
     'react/no-unknown-property': 'error', // 防止使用未知的 DOM 属性
     'react/prefer-es6-class': 'error', // 为 React 组件强制执行 ES5 或 ES6 类
     minimumDescriptionLength: 0, // 设置最小描述长度为 0
+    '@typescript-eslint/explicit-function-return-type': 'error', // 考虑对对象字面量和函数返回类型使用显式注释，即使它们可以被推断出来。
   },
 };
