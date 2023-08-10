@@ -4,11 +4,13 @@ import Alert from './Alert';
 interface SnackbarAlertType {
   ToastOpen: boolean;
   setToastOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  severity: 'success' | 'info' | 'warning' | 'error';
+  severity: 'error' | 'info' | 'success' | 'warning';
   alertText: string;
 }
-const SnackbarAlert = (props: SnackbarAlertType): JSX.Element => {
-  const { ToastOpen, setToastOpen, severity, alertText } = props;
+export default function SnackbarAlert (props: SnackbarAlertType): React.ReactElement {
+
+  const { ToastOpen, setToastOpen, severity, alertText } = props,
+    waitTime = 6000;
   // const handleClose = (reason?: string) => {
   //   if (reason === 'clickaway') {
   //     return;
@@ -16,27 +18,44 @@ const SnackbarAlert = (props: SnackbarAlertType): JSX.Element => {
   //   setToastOpen(false);
   // };
   React.useEffect(() => {
+
     if (ToastOpen) {
+
       setTimeout(() => {
+
         setToastOpen(false);
-      }, 6000);
+
+      }, waitTime);
+
     }
-  }, [ToastOpen, setToastOpen]);
+
+  }, [
+    ToastOpen,
+    setToastOpen
+  ]);
   return (
     <React.StrictMode>
       <Snackbar
-        open={ToastOpen}
         autoHideDuration={6000}
-        onClose={() => setToastOpen(false)}
+        onClose={(): void => {
+
+          setToastOpen(false);
+
+        }}
+        open={ToastOpen}
       >
         <Alert
-          onClose={() => setToastOpen(false)}
+          onClose={(): void => {
+
+            setToastOpen(false);
+
+          }}
           severity={severity}
-          sx={{ width: '100%' }}
+          sx={{ 'width': '100%' }}
         >
           {alertText}
         </Alert>
       </Snackbar>
     </React.StrictMode>);
-};
-export default SnackbarAlert;
+
+}

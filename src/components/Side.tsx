@@ -1,4 +1,9 @@
-'use strict';
+/* eslint-disable react/forbid-component-props */
+/* eslint-disable react/jsx-max-depth */
+/* eslint-disable @typescript-eslint/no-magic-numbers */
+/* eslint-disable no-magic-numbers */
+/* eslint-disable sort-keys */
+
 import * as React from 'react';
 import { useState } from 'react';
 import styleModule from '../style/Side.module.scss';
@@ -12,22 +17,57 @@ interface propsType {
   setIsIframeShow: (isIframeShow: boolean) => void;
   setIframeSrc: (src: string) => void;
 }
-export default function Side(props: propsType): JSX.Element {
-  const { setIsIframeShow, setIframeSrc } = props;
-  const funcList = [
-    { title: '影像识别', handlerURL: '/' },
-    // { title: '历史记录', handlerURL: '/history' },
-    ...(localStorage['permission'] === '0' ? [{ title: '用户管理', handlerURL: '/manager' }] : [])
-  ];
-  const [selectedDiv, setSelectedDiv] = useState(0);
-  const [DialogOpen, setDialogOpen] = useState(false);
+export default function Side (props: propsType): React.ReactElement {
+
+  const { setIsIframeShow, setIframeSrc } = props,
+    funcList = [
+      {
+        'title': '影像识别',
+        'handlerURL': '/'
+      },
+      // { title: '历史记录', handlerURL: '/history' },
+      ...localStorage['permission'] === '0'
+        ? [
+          {
+            'title': '用户管理',
+            'handlerURL': '/manager'
+          }
+        ]
+        : []
+    ],
+    [
+      selectedDiv,
+      setSelectedDiv
+    ] = useState(0),
+    [
+      dialogOpen,
+      setDialogOpen
+    ] = useState(false),
+    logout = async (): Promise<void> => {
+
+      setDialogOpen(false);
+      await fetch('logout').then(() => {
+
+        localStorage.clear();
+        setTimeout(() => {
+
+          location.reload();
+
+        });
+
+      });
+
+    };
   return (
     <React.StrictMode>
       <ul
         className={styleModule['Side']}
       >
         <ListItem>
-          <p>{'功能列表'}</p>
+          <p>
+            功能列表
+          </p>
+
           {/* <span>{'∧'}</span> */}
           <List>
             {/* <SideItem
@@ -42,65 +82,102 @@ export default function Side(props: propsType): JSX.Element {
               title={'用户管理'}
               handlerURL={'/manage'}
             /> */}
-            {funcList.map((item, index) => {
-              return (
-                <ListItem
-                  key={index}
-                  title={item.title}
-                  onClick={() => {
-                    if (index !== selectedDiv) {
-                      if (index === 0) {
-                        setIsIframeShow(false);
-                      } else {
-                        setIframeSrc(item.handlerURL);
-                        setIsIframeShow(true);
-                      }
-                      // setIsIframeShow(index === 0 ? false : true);
-                      setSelectedDiv(index);
+            {funcList.map((item, index) =>
+              <ListItem
+                className={selectedDiv === index
+                  ? styleModule['selected'] ?? ''
+                  : ''}
+                key={item.title}
+                onClick={(): void => {
+
+                  if (index !== selectedDiv) {
+
+                    if (index === 0) {
+
+                      setIsIframeShow(false);
+
+                    } else {
+
+                      setIframeSrc(item.handlerURL);
+                      setIsIframeShow(true);
+
                     }
-                  }}
-                  className={selectedDiv === index ? styleModule['selected'] as string : ''}
-                >
-                  <p>{item.title}</p>
-                </ListItem>
-              );
-            })}
+                    // setIsIframeShow(index === 0 ? false : true);
+                    setSelectedDiv(index);
+
+                  }
+
+                }}
+                title={item.title}
+              >
+                <p>
+                  {item.title}
+                </p>
+              </ListItem>
+            )}
           </List>
         </ListItem>
+
         <ListItem>
-          <p>{'用户操作'}</p>
+          <p>
+            用户操作
+          </p>
+
           <List>
             <ListItem
               onClick={
-                () => setDialogOpen(true)
+                (): void => {
+
+                  setDialogOpen(true);
+
+                }
               }
-            >{'退出登录'}</ListItem>
+            >
+              退出登录
+            </ListItem>
           </List>
         </ListItem>
       </ul>
+
       <Dialog
-        open={DialogOpen}
-        onClose={() => setDialogOpen(false)}
-        aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
+        aria-labelledby="alert-dialog-title"
+        onClose={(): void => {
+
+          setDialogOpen(false);
+
+        }}
+        open={dialogOpen}
       >
         <DialogTitle id="alert-dialog-title">
           {'确认要退出吗 ? '}
         </DialogTitle>
+
         <DialogActions>
-          <Button onClick={() => setDialogOpen(false)}>{'取消'}</Button>
+          <Button onClick={(): void => {
+
+            setDialogOpen(false);
+
+          }}>
+            取消
+          </Button>
+
           <Button
-            onClick={() =>
-            (setDialogOpen(false), fetch('logout').then(() => {
-              localStorage.clear();
-              setTimeout(() => location.reload());
-            }))
-            }
             autoFocus
+            onClick={(): void => {
+
+              logout().catch(() => {
+
+                throw new Error('下载失败');
+
+              });
+
+            }}
           >
-            {'确认'}
+            确认
           </Button>
         </DialogActions>
       </Dialog>
     </React.StrictMode>);
+
 }

@@ -1,34 +1,50 @@
-'use strict';
+
 import * as React from 'react';
 import { useState } from 'react';
 
-import Head from './components/Head';
-import Side from './components/Side';
+import Head from '@/components/Head';
+import Side from '@/components/Side';
 import styleModule from './APP.module.scss';
-import Body from './components/Body';
+import Body from '@/components/Body';
 
-// import Manager from './components/Manager';
-// import Login from './components/Login';
-export default function APP(): JSX.Element {
-  const [isIframeShow, setIsIframeShow] = useState(false);
-  const [iframeSrc, setIframeSrc] = useState('');
+/*
+ * Import Manager from '@/components/Manager';
+ * import Login from './components/Login';
+ */
+export default function APP (): React.ReactElement {
+
+  const [
+    isIframeShow,
+    setIsIframeShow
+  ] = useState(false),
+    [
+      iframeSrc,
+      setIframeSrc
+    ] = useState('');
 
   return (
     <React.StrictMode>
       <Head />
+
       {/* <Login /> */}
       <div
         className={styleModule['APP']}
       >
         <Side
-          setIsIframeShow={setIsIframeShow}
           setIframeSrc={setIframeSrc}
+          setIsIframeShow={setIsIframeShow}
         />
-        {isIframeShow ? <iframe
-          src={iframeSrc} /> : <Body />}
+
+        {isIframeShow
+          ? <iframe
+            sandbox="allow-popups"
+            src={iframeSrc}
+          />
+          : <Body />}
 
         {/* <Manager /> */}
       </div>
 
     </React.StrictMode>);
+
 }

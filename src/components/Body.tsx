@@ -1,153 +1,308 @@
-'use strict';
-import * as React from 'react';
-import styleModule from '../style/Body.module.scss';
+// /* eslint-disable one-var */
+/* eslint-disable sort-vars */
+/* eslint-disable react/forbid-component-props */
+/* eslint-disable react/jsx-max-depth */
+/* eslint-disable id-length */
+/* eslint-disable no-magic-numbers */
+/* eslint-disable @typescript-eslint/no-magic-numbers */
+/* eslint-disable max-statements */
 import {
-  // useRef,
-  useState, useEffect, useCallback
+  // UseRef,
+  useCallback,
+  useEffect,
+  useState,
+  type ReactElement,
+  type ReactNode
 } from 'react';
 import {
-  Checkbox, Button, Dialog, DialogContent, DialogTitle, Divider,
+  Checkbox, Button, Dialog, DialogContent, DialogTitle, Divider
   // Select
 } from '@mui/material';
 // import LoadingButton from '@mui/lab/LoadingButton';
+import styleModule from '../style/Body.module.scss';
 import SnackbarAlert from './SnackbarAlert';
 import FormControlLabel from '@mui/material/FormControlLabel';
 // import InputLabel from '@mui/material/InputLabel';
 // import MenuItem from '@mui/material/MenuItem';
 // import FormControl from '@mui/material/FormControl';
 // import type { SelectChangeEvent } from '@mui/material/Select';
-import FileUpload from './FileUpload';
+import FileUpload from '@/components/FileUpload';
 import CustomizedTables from './CustomizedTables';
-type severityType = 'success' | 'info' | 'warning' | 'error';
+import * as React from 'react';
+type SeverityType = 'error' | 'info' | 'success' | 'warning';
+interface ToastType {
+  readonly severity: SeverityType;
+  readonly alertText: string;
+}
 interface ReceivedResultType {
   filePath: string;
-  Artifact: number;
+  artifact: number;
   checked: boolean;
 }
+interface BodyType {
+  readonly styleModuleClassName?: Readonly<Record<string, string>>;
+}
+export default function Body (props: BodyType): ReactElement {
 
-export default function Body(): JSX.Element {
-  const numberOfGridContainers = 2;
-  // const fileRef = useRef<HTMLInputElement>(null);
-  // const [isButtonDisabled, setButtonIsDisabled] = useState(true);
-  const [isHidden, setIsHidden] = useState(true);
-  // const [iscircleParentHidden, setIscircleParentHidden] = useState(false);
-  const [FlexContainers, setFlexContainers] = useState<Array<React.ReactNode>>([]);
-  const [imgOpen, setImgOpen] = useState(false);
-  const [altTextCurrent, setAltTextCurrent] = useState('');
-  const [ToastOpen, setToastOpen] = useState(false);
-  const [ToastText, setToastText] = useState<{ severity: severityType; alertText: string; }>({ severity: 'error', alertText: '对不起, 你上传的不是zip压缩文件' });
-  const [modelDialogOpen, setModelDialogOpen] = useState(false);
-  const handleToastOpen = (obj: { severity: severityType; alertText: string; }) => {
-    setToastText(obj);
-    setToastOpen(true);
-  };
-  // const [model, setModel] = React.useState(1);
-  const [FileUploadOpen, setFileUploadOpen] = React.useState(false);
+  const { styleModuleClassName = styleModule } = props,
+    zero = 0,
+    numberOfGridContainers = 2,
+    // const fileRef = useRef<HTMLInputElement>(null);
+    // const [isButtonDisabled, setButtonIsDisabled] = useState(true);
+    [
+      isHidden,
+      setIsHidden
+    ] = useState(true),
+    // const [iscircleParentHidden, setIscircleParentHidden] = useState(false);
+    [
+      flexContainers,
+      setFlexContainers
+    ] = useState<ReactNode[]>([]),
+    [
+      imgOpen,
+      setImgOpen
+    ] = useState(false),
+    [
+      altTextCurrent,
+      setAltTextCurrent
+    ] = useState(''),
+    [
+      toastOpen,
+      setToastOpen
+    ] = useState(false),
+    [
+      toastText,
+      setToastText
+    ] = useState<{ severity: SeverityType; alertText: string; }>({
+      'alertText': '对不起, 你上传的不是zip压缩文件',
+      'severity': 'error'
+    }),
+    [
+      modelDialogOpen,
+      setModelDialogOpen
+    ] = useState(false),
+    handleToastOpen: (obj: ToastType) => void = (obj: ToastType) => {
 
-  const downloadFetch = useCallback((params: string[]) => {
-    if (params.length === 0) {
-      handleToastOpen({ severity: 'error', alertText: '请先选择要下载的文件' });
-      return;
-    }
-    fetch('api/download', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ fileList: params }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('下载失败');
+      setToastText(obj);
+      setToastOpen(true);
+
+    },
+    // const [model, setModel] = React.useState(1);
+    [
+      fileUploadOpen,
+      setFileUploadOpen
+    ] = useState(false),
+    downloadFetch = useCallback(async (params: (readonly string[])) => {
+
+      if (params.length === zero) {
+
+        handleToastOpen({
+          'alertText': '请先选择要下载的文件',
+          'severity': 'error'
+        });
+        return;
+
+      }
+      try {
+
+        const response = await fetch('api/download', {
+          'body': JSON.stringify({ 'fileList': params }),
+          'headers': {
+            'Content-Type': 'application/json'
+          },
+          'method': 'POST'
+        }).then((res) => {
+
+          if (!res.ok) {
+
+            throw new Error('下载失败');
+
+          }
+          return res;
+
         }
-        return response.text();
-      })
-      .then((data) => {
-        open(data.substring(2));
-        handleToastOpen({ severity: 'success', alertText: '下载成功' });
-      })
-      .catch(() => {
-        handleToastOpen({ severity: 'error', alertText: '下载失败' });
-        // console.log(error);
-      });
-  }, []);
+        ),
+          two = 2,
+          data = await response.text();
+        open(data.substring(two));
+        handleToastOpen({
+          'alertText': '下载成功',
+          'severity': 'success'
+        });
 
-  const [ReceivedResult, setReceivedResult] = useState<ReceivedResultType[]>([]);
-  // const fileInput = () => {
-  //   if (!fileRef?.current?.files) return;
-  //   const file = fileRef.current.files[0];
-  //   if (file && file.name.endsWith('.zip') && file.type === 'application/x-zip-compressed') {
-  //     setButtonIsDisabled(false);
-  //   } else {
-  //     // toggle('对不起, 你上传的不是zip压缩文件');
-  //     handleToastOpen({ severity: 'error', alertText: '对不起, 你上传的不是zip压缩文件' });
-  //     fileRef.current.value = '';
-  //   }
-  // };
-  const getLastSegment = (t: string, e: string): string => { const n = e.split(t); return n[n.length - 1] as string; };
-  const getLastSubstring = (t: string, n: string) => { const i = n.split(t); return i.slice(0, i.length - 1).join(t); };
+      } catch (error: unknown) {
+
+        handleToastOpen({
+          'alertText': '下载失败',
+          'severity': 'error'
+        });
+
+      }
+      // .then(async (response) => {
+      //   if (!response.ok) {
+      //     throw new Error('下载失败');
+      //   }
+      //   return response.text();
+      // }).then((data) => {
+      //   const two = 2;
+      //   open(data.substring(two));
+      //   handleToastOpen({
+      //     'alertText': '下载成功',
+      //     'severity': 'success'
+      //   });
+      // }).catch(() => {
+      //   handleToastOpen({
+      //     severity: 'error',
+      //     alertText: '下载失败'
+      //   });
+      //   // console.log(error);
+      // });
+
+    }, []),
+    [
+      receivedResult,
+      setReceivedResult
+    ] = useState<ReceivedResultType[]>([]),
+    // const fileInput = () => {
+    //   if (!fileRef?.current?.files) return;
+    //   const file = fileRef.current.files[0];
+    //   if (file && file.name.endsWith('.zip') && file.type === 'application/x-zip-compressed') {
+    //     setButtonIsDisabled(false);
+    //   } else {
+    //     // toggle('对不起, 你上传的不是zip压缩文件');
+    //     handleToastOpen({ severity: 'error', alertText: '对不起, 你上传的不是zip压缩文件' });
+    //     fileRef.current.value = '';
+    //   }
+    // };
+    getLastSegment = (kid: string, parent: string): string => {
+
+      const res = parent.split(kid);
+      if (res.length > 1) {
+
+        const result = res[res.length - 1];
+        if (typeof result === 'string') {
+
+          return result;
+
+        }
+
+      }
+      return '';
+
+    },
+    getLastSubstring: (t: string, n: string) => string = (t: string, n: string) => {
+
+      const i = n.split(t);
+      return i.slice(0, i.length - 1).join(t);
+
+    };
   useEffect(() => {
 
-    const ArtifactText = ['有', '无'];
+    const ArtifactText = [
+      '有',
+      '无'
+    ];
     setTimeout(() => {
-      const FlexContainers: Array<Array<React.ReactNode>> = [];
-      for (let i = 0; i < numberOfGridContainers; i++) {
-        FlexContainers.push([]);
-      }
-      ReceivedResult.forEach((i, index) => {
 
-        const altText = getLastSegment('/', i.filePath);
-        const src = `static/${getLastSubstring('.', altText)}.jpg`;
-        FlexContainers[i.Artifact ^ 1]?.push(
-          <div>
-            <Checkbox
-              checked={i.checked}
-              onChange={() => {
-                setReceivedResult(ReceivedResult.map((e, c) => (index === c && (e.checked = !e.checked), e)));
-              }}
-              sx={{ '& .MuiSvgIcon-root': { fontSize: 58 } }}
-            />
-            <img
-              src={src}
-              onClick={() => (setAltTextCurrent(altText), setImgOpen(true))}
-            />
-            <Button
-              onClick={() => downloadFetch([i.filePath])}
-              variant="contained"
-              size="large"
-            >
-              {'下载'}
-            </Button>
-          </div>
-        );
+      const FlexContainers: ReactNode[][] = [];
+      for (let i = 0; i < numberOfGridContainers; i += 1) {
+
+        FlexContainers.push([]);
+
+      }
+      receivedResult.forEach((i, index) => {
+
+        const altText = getLastSegment('/', i.filePath),
+          src = `static/${getLastSubstring('.', altText)}.jpg`;
+        FlexContainers[i.artifact ^ 1]?.push(
+          <React.StrictMode>
+            <div>
+              <Checkbox
+                checked={i.checked}
+                onChange={(): void => {
+
+                  setReceivedResult(receivedResult.map((e, c) => {
+
+                    if (index === c) {
+
+                      e.checked = !e.checked;
+
+                    }
+                    return e;
+
+                  }));
+
+                }}
+                sx={{ '& .MuiSvgIcon-root': { 'fontSize': 58 } }}
+              />
+
+              <img
+                onClick={(): void => {
+
+                  setAltTextCurrent(altText);
+                  setImgOpen(true);
+
+                }}
+                src={src}
+              />
+
+              <Button
+                onClick={(): void => {
+
+                  downloadFetch([i.filePath]).catch(() => {
+
+                    throw new Error('下载失败');
+
+                  });
+
+                }}
+                size="large"
+                variant="contained"
+              >
+                下载
+              </Button>
+            </div>
+          </React.StrictMode>);
+
       });
       setFlexContainers(
-        FlexContainers.map((i: Array<React.ReactNode>, index: number) =>
-        (<div
-          key={index}
-        >
-          <p>{`${ArtifactText[index]}伪影`}</p>
-          <hr />
+        FlexContainers.map((i: React.ReactNode[], index: number) =>
           <div
-            className={styleModule['grid-container']}
+            // eslint-disable-next-line react/no-array-index-key
+            key={index}
           >
-            {i}
+            <p>
+              {`${ArtifactText[index] ?? ''}伪影`}
+            </p>
+
+            <hr />
+
+            <div
+              className={styleModuleClassName['grid-container']}
+            >
+              {i}
+            </div>
           </div>
-        </div>))
-
+        )
       );
-    });
-  }, [ReceivedResult, imgOpen, downloadFetch]);
 
+    });
+
+  }, [
+    receivedResult,
+    imgOpen,
+    downloadFetch,
+    styleModuleClassName
+  ]
+  );
   return (
     <React.StrictMode>
       <div
-        className={styleModule['Body']}
+        className={styleModuleClassName['Body']}
       >
         <div
-          className={styleModule['fileButton']}
+          className={styleModuleClassName['fileButton']}
         >
-
           {/* <input
             type='file'
             accept='.zip'
@@ -157,18 +312,29 @@ export default function Body(): JSX.Element {
             ref={fileRef}
           /> */}
           <Button
-            onClick={() => setFileUploadOpen(true)}
-            variant="contained"
+            onClick={(): void => {
+
+              setFileUploadOpen(true);
+
+            }}
             size="large"
-          >{'上传文件'}
+            variant="contained"
+          >
+            上传文件
           </Button>
+
           <FileUpload
-            FileUploadOpen={FileUploadOpen}
-            handleClose={() => setFileUploadOpen(false)}
-            setReceivedResult={setReceivedResult}
+            FileUploadOpen={fileUploadOpen}
+            handleClose={(): void => {
+
+              setFileUploadOpen(false);
+
+            }}
             handleToastOpen={handleToastOpen}
             setIsHidden={setIsHidden}
+            setReceivedResult={setReceivedResult}
           />
+
           {/* <br />
           <label
             htmlFor='fileUpload'
@@ -177,6 +343,7 @@ export default function Body(): JSX.Element {
             {'请上传zip压缩文件'}
           </label> */}
           <br />
+
           {/* <FormControl sx={{ m: 1, minWidth: 80 }}>
             <InputLabel id="demo-simple-select-autowidth-label">{'选择模型'}</InputLabel>
             <Select
@@ -200,84 +367,169 @@ export default function Body(): JSX.Element {
           >
             {'提交'}
           </LoadingButton> */}
-
           <div
-            className={styleModule['result']}
-            style={{ display: isHidden ? 'none' : 'block' }}
+            className={styleModuleClassName['result']}
+            style={{
+              'display': isHidden
+                ? 'none'
+                : 'block'
+            }}
           >
             <Divider />
+
             <p
-              className={styleModule['resultTitle']}
-            >{'识别结果'}
+              className={styleModuleClassName['resultTitle']}
+            >
+              识别结果
             </p>
 
             <Button
-              onClick={() => downloadFetch(ReceivedResult.filter(e => e.checked).map(e => e.filePath))}
-              variant="contained"
+              onClick={(): void => {
+
+                downloadFetch(receivedResult.filter((e) => e.checked).map((e) => e.filePath)).catch(() => {
+
+                  throw new Error('下载失败');
+
+                });
+
+              }}
               size="large"
-            >{'批量下载'}
+              variant="contained"
+            >
+              批量下载
             </Button>
+
             <div>
               <FormControlLabel
-                label={ReceivedResult.every(e => e.checked) ? '全不选' : '全选'}
+                className={styleModuleClassName['checkbox'] ?? ''}
                 control={
                   <Checkbox
-                    indeterminate={ReceivedResult.some((e) => e.checked) && !ReceivedResult.every((e) => e.checked)}
-                    onChange={() => ReceivedResult.every(e => e.checked) ? setReceivedResult(ReceivedResult.map(e => (e.checked = !1, e))) : setReceivedResult(ReceivedResult.map(e => (e.checked = !0, e)))}
-                    checked={ReceivedResult.every((e) => e.checked)}
-                    sx={{ '& .MuiSvgIcon-root': { fontSize: 58 } }}
-                  />}
-                className={styleModule['checkbox'] as string}
-              /><FormControlLabel
-                label="反选"
+                    checked={receivedResult.every((e: ReceivedResultType) => e.checked)}
+                    indeterminate={receivedResult.some((e) => e.checked) && !receivedResult.every((e) => e.checked)}
+                    onChange={(): void => {
+
+                      receivedResult.every((e) => e.checked);
+                      if (receivedResult.every((e) => e.checked)) {
+
+                        setReceivedResult(receivedResult.map((e) => {
+
+                          e.checked = false;
+                          return e;
+
+                        }));
+
+                      } else {
+
+                        setReceivedResult(receivedResult.map((e) => {
+
+                          e.checked = true;
+                          return e;
+
+                        }));
+
+                      }
+
+                    }}
+                    sx={{ '& .MuiSvgIcon-root': { 'fontSize': 58 } }}
+                  />
+                }
+                label={receivedResult.every((e) => e.checked)
+                  ? '全不选'
+                  : '全选'}
+              />
+
+              <FormControlLabel
+                className={styleModuleClassName['checkbox'] ?? ''}
                 control={<Checkbox
-                  indeterminate={ReceivedResult.some((e) => e.checked) && !ReceivedResult.every((e) => e.checked)}
-                  onChange={() => setReceivedResult(ReceivedResult.map((e) => (e.checked = !e.checked, e)))}
-                  checked={ReceivedResult.every((e) => e.checked)}
-                  sx={{ '& .MuiSvgIcon-root': { fontSize: 58 } }}
+                  checked={receivedResult.every((e) => e.checked)}
+                  indeterminate={receivedResult.some((e) => e.checked) && !receivedResult.every((e) => e.checked)}
+                  onChange={(): void => {
+
+                    setReceivedResult(receivedResult.map((e) => {
+
+                      e.checked = !e.checked;
+                      return e;
+
+                    }));
+
+                  }}
+                  sx={{ '& .MuiSvgIcon-root': { 'fontSize': 58 } }}
                 />}
-                className={styleModule['checkbox'] as string}
+                label="反选"
               />
             </div>
+
             <div
-              className={styleModule['flex-container']}
+              className={styleModuleClassName['flex-container']}
             >
-              {FlexContainers}
+              {flexContainers}
             </div>
+
             <Button
-              onClick={() => setModelDialogOpen(true)}
-            >{'点我查看模型准确率'}</Button>
-            <Dialog
-              open={modelDialogOpen}
-              onClose={() => setModelDialogOpen(false)}
+              onClick={(): void => {
+
+                setModelDialogOpen(true);
+
+              }}
             >
-              <DialogTitle>{'模型准确率'}</DialogTitle>
+              点我查看模型准确率
+            </Button>
+
+            <Dialog
+              onClose={(): void => {
+
+                setModelDialogOpen(false);
+
+              }}
+              open={modelDialogOpen}
+            >
+              <DialogTitle>
+                模型准确率
+              </DialogTitle>
+
               <DialogContent>
                 <CustomizedTables />
               </DialogContent>
-
             </Dialog>
           </div>
         </div>
       </div>
-      {imgOpen && <Dialog
-        open={imgOpen}
-        onClose={() => setImgOpen(false)}
-      >
-        <DialogTitle>{altTextCurrent}</DialogTitle>
-        <DialogContent>
-          <img
-            src={`static/${getLastSubstring('.', altTextCurrent)}.jpg`}
-            alt={altTextCurrent}
-            style={{ maxWidth: '100%', minWidth: '560px' }}
-          />
-        </DialogContent>
-      </Dialog>}
+
+      {imgOpen
+        ? <Dialog
+          onClose={(): void => {
+
+            setImgOpen(false);
+
+          }}
+          open={imgOpen}
+        >
+          <DialogTitle>
+            {altTextCurrent}
+          </DialogTitle>
+
+          <DialogContent>
+            <img
+              alt={altTextCurrent}
+              src={`static/${getLastSubstring('.', altTextCurrent)}.jpg`}
+              style={{
+                'maxWidth': '100%',
+                'minWidth': '560px'
+              }}
+            />
+          </DialogContent>
+        </Dialog>
+        : null}
+
       <SnackbarAlert
-        ToastOpen={ToastOpen}
+        ToastOpen={toastOpen}
+        alertText={toastText.alertText}
         setToastOpen={setToastOpen}
-        severity={ToastText.severity}
-        alertText={ToastText.alertText}
+        severity={toastText.severity}
       />
     </React.StrictMode>);
+
 }
+Body.defaultProps = {
+  'styleModuleClassName': styleModule
+};

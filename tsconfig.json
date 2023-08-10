@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     // "watch": true,
-    "baseUrl": "./src",
+    "baseUrl": "./",
     "paths": {
       "@/*": [
         "src/*"
@@ -110,7 +110,7 @@
     "disableSourceOfProjectReferenceRedirect": true,
     "disableSolutionSearching": true,
     "disableReferencedProjectLoad": true,
-    "types": [],
+    "types": [ ],
     "allowUmdGlobalAccess": false,
     "sourceMap": false,
     "removeComments": true,
