@@ -130,7 +130,8 @@
     // "outFile": "./dist",
   },
   "include": [
-    "src"
+    "src",
+    ".eslintrc.cjs",
   ],
   "exclude": [
     "node_modules"
