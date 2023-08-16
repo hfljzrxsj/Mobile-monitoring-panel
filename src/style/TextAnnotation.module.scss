@@ -1,0 +1,36 @@
+.text-annotation {
+  display: flex;
+
+  .text-annotation-left {
+    text-align: left;
+    width: 70vw;
+    margin-left: 1vw;
+
+    & > div * {
+      text-align: left;
+      box-sizing: border-box;
+      border-style: none !important;
+    }
+
+
+    &__text {
+      padding: 16.5px 14px;
+    }
+  }
+
+  .text-annotation-right {
+    text-align: left;
+    width: 20vw;
+    margin-left: 1vw;
+
+    & > div * {
+      text-align: left;
+      box-sizing: border-box;
+      border-style: none !important;
+    }
+
+    &__text {
+      padding: 16.5px 14px;
+    }
+  }
+}

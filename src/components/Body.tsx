@@ -1,3 +1,4 @@
+/* eslint-disable sort-imports */
 // /* eslint-disable one-var */
 /* eslint-disable sort-vars */
 /* eslint-disable react/forbid-component-props */
@@ -30,13 +31,14 @@ import FileUpload from '@/components/FileUpload';
 import CustomizedTables from './CustomizedTables';
 import * as React from 'react';
 type SeverityType = 'error' | 'info' | 'success' | 'warning';
+type ReadonlyReactNode = Readonly<ReactNode>;
 interface ToastType {
   readonly severity: SeverityType;
   readonly alertText: string;
 }
 interface ReceivedResultType {
-  filePath: string;
-  artifact: number;
+  readonly filePath: string;
+  readonly artifact: number;
   checked: boolean;
 }
 interface BodyType {
@@ -111,7 +113,8 @@ export default function Body (props: BodyType): ReactElement {
             'Content-Type': 'application/json'
           },
           'method': 'POST'
-        }).then((res) => {
+          // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+        }).then((res: Readonly<Response>) => {
 
           if (!res.ok) {
 
@@ -204,13 +207,13 @@ export default function Body (props: BodyType): ReactElement {
     ];
     setTimeout(() => {
 
-      const FlexContainers: ReactNode[][] = [];
+      const FlexContainers: Readonly<ReactNode>[][] = [];
       for (let i = 0; i < numberOfGridContainers; i += 1) {
 
         FlexContainers.push([]);
 
       }
-      receivedResult.forEach((i, index) => {
+      receivedResult.forEach((i: Readonly<ReceivedResultType>, index) => {
 
         const altText = getLastSegment('/', i.filePath),
           src = `static/${getLastSubstring('.', altText)}.jpg`;
@@ -221,6 +224,7 @@ export default function Body (props: BodyType): ReactElement {
                 checked={i.checked}
                 onChange={(): void => {
 
+                  // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
                   setReceivedResult(receivedResult.map((e, c) => {
 
                     if (index === c) {
@@ -266,7 +270,8 @@ export default function Body (props: BodyType): ReactElement {
 
       });
       setFlexContainers(
-        FlexContainers.map((i: React.ReactNode[], index: number) =>
+        // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+        FlexContainers.map((i: ReadonlyReactNode[], index: number) =>
           <div
             // eslint-disable-next-line react/no-array-index-key
             key={index}
@@ -386,7 +391,7 @@ export default function Body (props: BodyType): ReactElement {
             <Button
               onClick={(): void => {
 
-                downloadFetch(receivedResult.filter((e) => e.checked).map((e) => e.filePath)).catch(() => {
+                downloadFetch(receivedResult.filter((e: Readonly<ReceivedResultType>) => e.checked).map((e: Readonly<ReceivedResultType>) => e.filePath)).catch(() => {
 
                   throw new Error('下载失败');
 
@@ -404,13 +409,14 @@ export default function Body (props: BodyType): ReactElement {
                 className={styleModuleClassName['checkbox'] ?? ''}
                 control={
                   <Checkbox
-                    checked={receivedResult.every((e: ReceivedResultType) => e.checked)}
-                    indeterminate={receivedResult.some((e) => e.checked) && !receivedResult.every((e) => e.checked)}
+                    checked={receivedResult.every((e: Readonly<ReceivedResultType>) => e.checked)}
+                    indeterminate={receivedResult.some((e: Readonly<ReceivedResultType>) => e.checked) && !receivedResult.every((e: Readonly<ReceivedResultType>) => e.checked)}
                     onChange={(): void => {
 
-                      receivedResult.every((e) => e.checked);
-                      if (receivedResult.every((e) => e.checked)) {
+                      receivedResult.every((e: Readonly<ReceivedResultType>) => e.checked);
+                      if (receivedResult.every((e: Readonly<ReceivedResultType>) => e.checked)) {
 
+                        // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
                         setReceivedResult(receivedResult.map((e) => {
 
                           e.checked = false;
@@ -420,6 +426,7 @@ export default function Body (props: BodyType): ReactElement {
 
                       } else {
 
+                        // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
                         setReceivedResult(receivedResult.map((e) => {
 
                           e.checked = true;
@@ -433,7 +440,7 @@ export default function Body (props: BodyType): ReactElement {
                     sx={{ '& .MuiSvgIcon-root': { 'fontSize': 58 } }}
                   />
                 }
-                label={receivedResult.every((e) => e.checked)
+                label={receivedResult.every((e: Readonly<ReceivedResultType>) => e.checked)
                   ? '全不选'
                   : '全选'}
               />
@@ -441,10 +448,11 @@ export default function Body (props: BodyType): ReactElement {
               <FormControlLabel
                 className={styleModuleClassName['checkbox'] ?? ''}
                 control={<Checkbox
-                  checked={receivedResult.every((e) => e.checked)}
-                  indeterminate={receivedResult.some((e) => e.checked) && !receivedResult.every((e) => e.checked)}
+                  checked={receivedResult.every((e: Readonly<ReceivedResultType>) => e.checked)}
+                  indeterminate={receivedResult.some((e: Readonly<ReceivedResultType>) => e.checked) && !receivedResult.every((e: Readonly<ReceivedResultType>) => e.checked)}
                   onChange={(): void => {
 
+                    // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
                     setReceivedResult(receivedResult.map((e) => {
 
                       e.checked = !e.checked;

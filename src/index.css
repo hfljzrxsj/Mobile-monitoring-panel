@@ -18,7 +18,7 @@ code {
   padding: 0;
   box-sizing: border-box;
   text-align: center;
-  user-select: none;
+  /* user-select: none; */
   transition: .2s;
   border-radius: 9q;
   font-family: 'Comic Sans MS', 'Helvetica Neue', Helvetica, Arial, sans;

@@ -98,14 +98,14 @@ module.exports = {
     // '@typescript-eslint/explicit-module-boundary-types': 'error',
     // 强制在导出函数和类的公共 API 中显式声明类型
     // '@typescript-eslint/no-explicit-any': 'error',
-    // '@typescript-eslint/no-unused-vars': [
-    //   'error',
-    //   {
-    //     'vars': 'all',
-    //     'args': 'after-used',
-    //     'ignoreRestSiblings': false
-    //   }
-    // ],
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      {
+        'vars': 'all',
+        'args': 'after-used',
+        'ignoreRestSiblings': false
+      }
+    ],
     // 强制在 TypeScript 中检查未使用的变量
     // '@typescript-eslint/no-use-before-define': [
     //   'error',
@@ -355,7 +355,7 @@ module.exports = {
     // 禁止将变量初始化为 undefined
     'no-undefined': 'error',
     // 禁止将 undefined 作为标识符
-    'no-unused-vars': 'error',
+    'no-unused-vars': 'error', // TODO
     // 禁止出现未使用过的变量
     'no-use-before-define': 'error',
     // 禁止在变量定义之前使用它们
@@ -453,7 +453,7 @@ module.exports = {
     // 强制一行的最大长度
     'max-lines': 'off',
     // 强制最大行数
-    'max-lines-per-function': 'off',
+    'max-lines-per-function': 'off', // TODO
     // 强制函数最大代码行数
     'max-nested-callbacks': 'error',
     // 强制回调函数最大嵌套深度
@@ -630,7 +630,7 @@ module.exports = {
     // 要求 generator 函数内有 yield
     'rest-spread-spacing': 'error',
     // 强制剩余和扩展运算符及其表达式之间有空格
-    'sort-imports': 'off',
+    'sort-imports': 'error',
     // 强制模块内的 import 排序
     'symbol-description': 'error',
     // 要求 symbol 描述
@@ -1397,7 +1397,7 @@ module.exports = {
     // 强制使用简洁的可选链式表达，而不是链式逻辑和
     '@typescript-eslint/prefer-readonly': 'error',
     // 如果私有成员在构造函数之外从未被修改，则要求将其标记为只读
-    '@typescript-eslint/prefer-readonly-parameter-types': 'off', // TODO
+    '@typescript-eslint/prefer-readonly-parameter-types': 'error', // TODO
     // 要求函数参数被打成只读，以防止输入的意外变异
     '@typescript-eslint/prefer-reduce-type-parameter': 'error',
     // 在调用Array#reduce时强制使用类型参数，而不是铸造
@@ -1485,7 +1485,14 @@ module.exports = {
     // 不允许将字词作为异常抛出
     '@typescript-eslint/no-unused-expressions': 'error',
     // 不允许未使用的表达式
-    '@typescript-eslint/no-unused-vars': 'error',
+    // '@typescript-eslint/no-unused-vars': [
+    //   'error',
+    //   {
+    //     'vars': 'all',
+    //     'args': 'after-used',
+    //     'ignoreRestSiblings': false
+    //   }
+    // ],
     // 不允许未使用的变量
     '@typescript-eslint/no-use-before-define': 'error',
     // 在变量被定义之前，不允许使用这些变量

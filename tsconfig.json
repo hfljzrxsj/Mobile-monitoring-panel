@@ -110,7 +110,7 @@
     "disableSourceOfProjectReferenceRedirect": true,
     "disableSolutionSearching": true,
     "disableReferencedProjectLoad": true,
-    "types": [ ],
+    "types": [ "vite/client" ],
     "allowUmdGlobalAccess": false,
     "sourceMap": false,
     "removeComments": true,
@@ -132,6 +132,7 @@
   "include": [
     "src",
     ".eslintrc.cjs",
+    "vite.config.ts"
   ],
   "exclude": [
     "node_modules"

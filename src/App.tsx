@@ -2,10 +2,11 @@
 import * as React from 'react';
 import { useState } from 'react';
 
-import Head from '@/components/Head';
-import Side from '@/components/Side';
-import styleModule from './APP.module.scss';
-import Body from '@/components/Body';
+// import Head from '@/components/Head';
+// import Side from '@/components/Side';
+// import styleModule from './APP.module.scss';
+// import Body from '@/components/Body';
+import TextAnnotation from '@/components/TextAnnotation';
 
 /*
  * Import Manager from '@/components/Manager';
@@ -24,10 +25,10 @@ export default function APP (): React.ReactElement {
 
   return (
     <React.StrictMode>
-      <Head />
+      {/* <Head /> */}
 
       {/* <Login /> */}
-      <div
+      {/* <div
         className={styleModule['APP']}
       >
         <Side
@@ -40,11 +41,11 @@ export default function APP (): React.ReactElement {
             sandbox="allow-popups"
             src={iframeSrc}
           />
-          : <Body />}
+          : <Body />} */}
 
-        {/* <Manager /> */}
-      </div>
-
+      {/* <Manager /> */}
+      {/* </div> */}
+      <TextAnnotation />
     </React.StrictMode>);
 
 }
