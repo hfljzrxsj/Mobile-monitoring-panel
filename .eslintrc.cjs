@@ -15,13 +15,11 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
 
-    /*
-     * 'prettier',
-     * // 使用 Prettier 插件
-     * 'airbnb',
-     * 'prettier/react',
-     * 'plugin:prettier/recommended',
-     */
+    // 'prettier',
+    // // 使用 Prettier 插件
+    // 'airbnb',
+    // 'prettier/react',
+    // 'plugin:prettier/recommended',
     'plugin:jest/recommended'
     // 'plugin:unicorn/recommended'
   ],
@@ -424,12 +422,9 @@ module.exports = {
     'id-match': 'error',
     // 要求标识符匹配一个指定的正则表达式
     'implicit-arrow-linebreak': 'off',
-
-    /*
-     * 强制隐式返回的箭头函数体的位置
-     * "indent": "error",
-     * 强制使用一致的缩进
-     */
+    // 强制隐式返回的箭头函数体的位置
+    // 'indent': 'error',
+    // 强制使用一致的缩进
     'jsx-quotes': 'error',
     // 强制在 JSX 属性中一致地使用双引号或单引号
     'key-spacing': 'error',
@@ -437,12 +432,9 @@ module.exports = {
     'keyword-spacing': 'error',
     // 强制在关键字前后使用一致的空格
     'line-comment-position': 'error',
-
-    /*
-     * 强制行注释的位置
-     * "linebreak-style": "error",
-     * 强制使用一致的换行风格
-     */
+    // 强制行注释的位置
+    // 'linebreak-style': 'off',
+    // 强制使用一致的换行风格
     'lines-around-comment': 'error',
     // 要求在注释周围有空行
     'lines-between-class-members': 'error',
@@ -565,9 +557,9 @@ module.exports = {
     'spaced-comment': 'error',
 
     /*
-     * 强制在注释中
-     * 或 /* 使用一致的空格
-     */
+    * 强制在注释中
+    * 或 /* 使用一致的空格
+    */
     'switch-colon-spacing': 'error',
     // 强制在 switch 的冒号左右有空格
     'template-tag-spacing': 'error',
