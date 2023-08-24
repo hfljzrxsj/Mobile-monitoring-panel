@@ -1,11 +1,13 @@
 import * as React from 'react';
 import {
   type ReactElement,
-  StrictMode
+  StrictMode,
+  useState
 } from 'react';
-import TextAnnotationLeft from './TextAnnotationLeft';
-import TextAnnotationRight from './TextAnnotationRight';
+import TextAnnotationDetail from './TextAnnotationDetail';
+
 import styleModule from '../style/TextAnnotation.module.scss';
+
 
 /**
 + * Renders a text annotation component.
@@ -14,14 +16,20 @@ import styleModule from '../style/TextAnnotation.module.scss';
 + */
 export default function TextAnnotation (): ReactElement {
 
+
   return (
     <StrictMode>
       <div
         className={styleModule['text-annotation']}
       >
-        <TextAnnotationLeft />
 
-        <TextAnnotationRight />
+        <TextAnnotationDetail
+          classNameString="text-annotation-left"
+        />
+
+        <TextAnnotationDetail
+          classNameString="text-annotation-right"
+        />
       </div>
     </StrictMode>
 

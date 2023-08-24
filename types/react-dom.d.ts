@@ -1,10 +1,10 @@
-import { ReactElement } from 'react';
+import type { ReactElement } from 'react';
 
 declare module 'react-dom' {
   interface ReactDOM {
-    createRoot(container: Element | DocumentFragment | null): {
-      render(element: ReactElement): void;
-      unmount(): void;
+    createRoot (container: DocumentFragment | Element | null): {
+      render (element: ReactElement): void;
+      unmount (): void;
     };
   }
 

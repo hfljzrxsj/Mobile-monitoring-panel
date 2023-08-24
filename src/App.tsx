@@ -1,6 +1,6 @@
 
 import * as React from 'react';
-import { useState } from 'react';
+// import { useState } from 'react';
 
 // import Head from '@/components/Head';
 // import Side from '@/components/Side';
@@ -14,14 +14,14 @@ import TextAnnotation from '@/components/TextAnnotation';
  */
 export default function APP (): React.ReactElement {
 
-  const [
-    isIframeShow,
-    setIsIframeShow
-  ] = useState(false),
-    [
-      iframeSrc,
-      setIframeSrc
-    ] = useState('');
+  // const [
+  //   isIframeShow,
+  //   setIsIframeShow
+  // ] = useState(false),
+  //   [
+  //     iframeSrc,
+  //     setIframeSrc
+  //   ] = useState('');
 
   return (
     <React.StrictMode>

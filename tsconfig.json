@@ -131,8 +131,9 @@
   },
   "include": [
     "src",
-    ".eslintrc.cjs",
-    "*.ts"
+    ".eslintrc.cts",
+    "*.ts",
+    "*.json"
   ],
   "exclude": [
     "node_modules"

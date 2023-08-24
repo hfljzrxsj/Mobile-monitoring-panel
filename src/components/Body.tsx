@@ -41,12 +41,15 @@ interface ReceivedResultType {
   readonly artifact: number;
   checked: boolean;
 }
+type CSSModuleClasses = Readonly<Record<string, string>>;
 interface BodyType {
-  readonly styleModuleClassName?: Readonly<Record<string, string>>;
+  readonly styleModuleClassName?: CSSModuleClasses;
 }
 export default function Body (props: BodyType): ReactElement {
 
-  const { styleModuleClassName = styleModule } = props,
+  const {
+    styleModuleClassName = styleModule as CSSModuleClasses
+  } = props,
     zero = 0,
     numberOfGridContainers = 2,
     // const fileRef = useRef<HTMLInputElement>(null);
@@ -114,7 +117,7 @@ export default function Body (props: BodyType): ReactElement {
           },
           'method': 'POST'
           // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
-        }).then((res: Readonly<Response>) => {
+        }).then((res) => {
 
           if (!res.ok) {
 
@@ -539,5 +542,5 @@ export default function Body (props: BodyType): ReactElement {
 
 }
 Body.defaultProps = {
-  'styleModuleClassName': styleModule
+  'styleModuleClassName': styleModule as CSSModuleClasses
 };
