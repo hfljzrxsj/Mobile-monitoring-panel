@@ -6,14 +6,19 @@ import {
   type ReactElement,
   useEffect,
   useRef,
-  useState
+  useState,
+  // lazy, Suspense
 } from 'react';
-import CheckBox from '@mui/material/Checkbox';
+import { Checkbox } from '@mui/material';
+// import * as JSX from 'react/jsx-runtime';
 import TextAnnotationLine from './TextAnnotationLine';
 import styleModule from '../style/TextAnnotation.module.scss';
+import { unstable_batchedUpdates } from 'react-dom';
+import axios from 'axios';
 interface TextAnnotationDetailProps {
   readonly classNameString?: string;
 }
+// const { Checkbox } = MaterialUI;
 export default function TextAnnotationDetail (props: TextAnnotationDetailProps): ReactElement {
 
   const zero = 0,
@@ -53,36 +58,56 @@ export default function TextAnnotationDetail (props: TextAnnotationDetailProps):
       isEditing,
       setIsEditing
     ] = useState(false);
-  // useEffect(
-  //   () => {
+  useEffect(
+    () => {
 
-  //     (async (): Promise<void> => (await
-  //       fetch('/api/api.json')).json().then((data) => {
+      // (async (): Promise<void> => (await
+      //   fetch('/public/a.json')).json().then((data) => {
 
-  //         // eslint-disable-next-line no-console
-  //         console.log(data);
+      //     // eslint-disable-next-line no-console
+      //     console.log(data);
 
-  //       })
-  //     )().catch(() => {
+      //   })
+      // )().catch(() => {
 
-  //       throw new Error();
+      //   throw new Error();
 
-  //     });
+      // });
+      axios.get('/public/a.json').then((data) => {
 
-  //   }
-  //   , []);
+        // eslint-disable-next-line no-console
+        console.info(data.data);
+        alert(data.data.a);
+
+      }).catch(() => {
+
+        throw new Error();
+
+      });
+
+    }
+    , []);
 
   return (
     <div
       className={styleModule[className]}
     >
-      <CheckBox
+      <Checkbox
         checked={isEditing}
         // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
-        onChange={(event): void => {
+        onChange={(): void => {
+          unstable_batchedUpdates(() => {
+            setIsEditing(!isEditing);
+            setLineNum(getLineNum());
+          });
+          const { current } = divRef;
+          if (current) {
 
-          setIsEditing(event.target.checked);
-          setLineNum(getLineNum());
+            current.innerHTML = current.innerHTML.replace(/<br>/ug, '\n');
+            current.innerHTML = current.textContent ?? current.innerText;
+            // current.innerHTML = current.innerText;
+
+          }
 
         }}
       />

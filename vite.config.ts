@@ -7,6 +7,9 @@ import {
   defineConfig
   // loadEnv
 } from 'vite';
+// import externalGlobals from 'rollup-plugin-external-globals';
+import { Plugin as importToCDN } from 'vite-plugin-cdn-import';
+import _default from 'vite-plugin-cdn';
 // import react from '@vitejs/plugin-react';
 import react from '@vitejs/plugin-react-swc';
 // import { type UserConfig } from 'vite/dist/node';
@@ -14,13 +17,109 @@ import {
   // join,
   resolve
 } from 'path';
-// https://vitejs.dev/config/
-
+// //vitejs.dev/config/
 // eslint-disable-next-line @typescript-eslint/no-unsafe-call
 export default defineConfig({
   'root': resolve('./src'), //  入口index.html，注意入口js应该与index.html 同一目录下（只能写到目录，不能写到具体文件）
   'base': '/', // 'base': './'
-  'plugins': [react()],
+  'plugins': [
+    react(),
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    importToCDN({
+      'modules': [
+        {
+          'name': 'react',
+          'var': 'React',
+          'path': '//cdn.bootcdn.net/ajax/libs/react/18.2.0/umd/react.production.min.js'
+        },
+        {
+          'name': 'react-dom',
+          'var': 'ReactDOM',
+          'path': '//cdn.bootcdn.net/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js'
+        },
+        {
+          'name': 'axios',
+          'var': 'axios',
+          'path': '//cdn.bootcdn.net/ajax/libs/axios/1.3.6/axios.min.js'
+        },
+        {
+          'name': 'prop-types',
+          'var': 'PropTypes',
+          'path': '//cdn.bootcdn.net/ajax/libs/prop-types/15.8.1/prop-types.min.js'
+        },
+        {
+          'name': 'react-transition-group',
+          'var': 'ReactTransitionGroup',
+          'path': '//cdn.bootcdn.net/ajax/libs/react-transition-group/4.4.5/react-transition-group.min.js'
+        },
+        {
+          'name': '@mui/material',
+          'var': 'MaterialUI',
+          'path': '//cdn.bootcdn.net/ajax/libs/material-ui/4.12.4/umd/material-ui.production.min.js'
+          // 'path': '//unpkg.com/@material-ui/core/umd/material-ui.production.min.js'
+        },
+        // {
+        //   'name': 'react/react-jsx-runtime',
+        //   'var': 'ReactJsxRuntime',
+        //   'path': '//cdn.bootcdn.net/ajax/libs/react/18.2.0/cjs/react-jsx-runtime.production.min.js'
+        // },
+        // {
+        //   'name': 'object-assign',
+        //   'var': 'ObjectAssign',
+        //   'path': '//unpkg.com/object-assign@4.1.1/index.js'
+        // },
+        // {
+        //   'name': 'react-is',
+        //   'var': 'react-is',
+        //   'path': '//cdn.bootcdn.net/ajax/libs/react-is/18.2.0/umd/react-is.production.min.js'
+        // },
+        // {
+        //   'name': '@popperjs',
+        //   'var': 'Popper',
+        //   'path': '//cdn.bootcdn.net/ajax/libs/popper.js/2.11.7/umd/popper.js'
+        // },
+        // {
+        //   'name': '@emotion',
+        //   'var': 'emotion',
+        //   'path': '//cdn.bootcdn.net/ajax/libs/babel-standalone/7.21.4/babel.min.js'
+        // },
+        // {
+        //   'name': '@babel',
+        //   'var': 'babel',
+        //   'path': '//cdn.bootcdn.net/ajax/libs/babel-standalone/7.21.4/babel.min.js'
+        // },
+      ]
+    }),
+    // _default({
+    //   esm: true,
+    //   'modules': [
+    //     {
+    //       'name': 'react',
+    //       'url': '//cdn.bootcdn.net/ajax/libs/react/18.2.0/umd/react.production.min.js'
+    //     },
+    //     {
+    //       'name': 'react-dom',
+    //       'url': '//cdn.bootcdn.net/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js'
+    //     },
+    //     {
+    //       'name': 'axios',
+    //       'url': '//cdn.bootcdn.net/ajax/libs/axios/1.3.6/axios.min.js'
+    //     },
+    //     {
+    //       'name': 'prop-types',
+    //       'url': '//cdn.bootcdn.net/ajax/libs/prop-types/15.8.1/prop-types.min.js'
+    //     },
+    //     {
+    //       'name': 'react-transition-group',
+    //       'url': '//cdn.bootcdn.net/ajax/libs/react-transition-group/4.4.5/react-transition-group.min.js'
+    //     },
+    //     {
+    //       'name': '@mui/material',
+    //       'url': '//cdn.bootcdn.net/ajax/libs/material-ui/4.12.4/umd/material-ui.production.min.js'
+    //       // 'url': '//unpkg.com/@material-ui/core/umd/material-ui.production.min.js'
+    //     },]
+    // }),
+  ],
   'resolve': {
     'alias': {
       // '@': resolve(__dirname, 'src'),
@@ -53,7 +152,6 @@ export default defineConfig({
     ]
   },
   'build': {
-
     'rollupOptions': {
       'input': {
         'main': resolve(__dirname, 'src/index.html')
@@ -63,12 +161,16 @@ export default defineConfig({
         'entryFileNames': 'js/[name]-[hash].js',
         'assetFileNames': '[ext]/[name]-[hash].[ext]',
         manualChunks (id) {
-
+          // if (id.includes('emotion'))
+          // console.log('id :', id);
           // eslint-disable-next-line no-magic-numbers, @typescript-eslint/no-magic-numbers
           return id.toString().split('node_modules/')[1]?.split('/')[0]?.toString() ?? null;
+          //   if (id.includes('node_modules')) {
+          //     return 'id_node_modules';
+          //   }
+          // }
 
         }
-
       }
     },
     'target': 'modules', // 设置最终构建的浏览器兼容目标  //es2015(编译成es5) | modules
@@ -110,7 +212,22 @@ export default defineConfig({
     // }
     'write': true, // 启用将构建后的文件写入磁盘
     'emptyOutDir': true, // 构建时清空该目录
-    'watch': null // 设置为 {} 则会启用 rollup 的监听器
+    'watch': null, // 设置为 {} 则会启用 rollup 的监听器
+    // 'external': [
+    //   '@emotion',
+    //   '@babel'
+    // ],
+    // 'plugins': [
+    //   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    //   externalGlobals({
+    //     '@emotion': 'emotion',
+    //     '@babel': 'babel',
+    //     // '@mui/material': 'Button',
+    //     // '@mui/material': {
+    //     //   Button: '@mui/material'
+    //     // }
+    //   })
+    // ]
   },
   'server': {
     'host': true,
@@ -228,7 +345,8 @@ export default defineConfig({
     'cors': true,
     'https': false,
     'hmr': true
-  }
+  },
+  'publicDir': resolve('./public')
   // 'logLevel': 'error' // 调整控制台输出的级别 'info' | 'warn' | 'error' | 'silent'
   // 'envDir': '/', // 用于加载 .env 文件的目录
   // 'envPrefix': [], // 以 envPrefix 开头的环境变量会通过 import.meta.env 暴露在你的客户端源码中
