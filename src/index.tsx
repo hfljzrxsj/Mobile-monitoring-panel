@@ -1,16 +1,17 @@
 import './index.css';
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import App from './App';
+import { render } from 'react-dom';
+// import { createRoot } from 'react-dom/client';
 // import reportWebVitals from './reportWebVitals';
-
+const container = document.getElementById('root');
+// root = createRoot(container);
 // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-ReactDOM.render(
+render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  document.getElementById('root')!);
+  container);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

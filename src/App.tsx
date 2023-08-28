@@ -6,12 +6,15 @@ import * as React from 'react';
 // import Side from '@/components/Side';
 // import styleModule from './APP.module.scss';
 // import Body from '@/components/Body';
+import Counter from './Counter';
+import { Provider } from 'react-redux';
 import TextAnnotation from '@/components/TextAnnotation';
+import store from './Counter/store';
 
-/*
- * Import Manager from '@/components/Manager';
- * import Login from './components/Login';
- */
+
+// import Manager from '@/components/Manager';
+// import Login from './components/Login';
+
 export default function APP (): React.ReactElement {
 
   // const [
@@ -46,6 +49,10 @@ export default function APP (): React.ReactElement {
       {/* <Manager /> */}
       {/* </div> */}
       <TextAnnotation />
+
+      <Provider store={store}>
+        <Counter />
+      </Provider>
     </React.StrictMode>);
 
 }

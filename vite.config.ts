@@ -9,7 +9,7 @@ import {
 } from 'vite';
 // import externalGlobals from 'rollup-plugin-external-globals';
 import { Plugin as importToCDN } from 'vite-plugin-cdn-import';
-import _default from 'vite-plugin-cdn';
+// import _default from 'vite-plugin-cdn';
 // import react from '@vitejs/plugin-react';
 import react from '@vitejs/plugin-react-swc';
 // import { type UserConfig } from 'vite/dist/node';
@@ -58,6 +58,16 @@ export default defineConfig({
           'path': '//cdn.bootcdn.net/ajax/libs/material-ui/4.12.4/umd/material-ui.production.min.js'
           // 'path': '//unpkg.com/@material-ui/core/umd/material-ui.production.min.js'
         },
+        {
+          'name': 'react-redux',
+          'var': 'ReactRedux',
+          'path': '//cdn.bootcdn.net/ajax/libs/react-redux/8.0.5/react-redux.min.js'
+        },
+        {
+          'name': 'redux',
+          'var': 'Redux',
+          'path': '//cdn.bootcdn.net/ajax/libs/redux/4.2.1/redux.min.js'
+        }
         // {
         //   'name': 'react/react-jsx-runtime',
         //   'var': 'ReactJsxRuntime',
@@ -89,7 +99,7 @@ export default defineConfig({
         //   'path': '//cdn.bootcdn.net/ajax/libs/babel-standalone/7.21.4/babel.min.js'
         // },
       ]
-    }),
+    })
     // _default({
     //   esm: true,
     //   'modules': [
@@ -161,6 +171,7 @@ export default defineConfig({
         'entryFileNames': 'js/[name]-[hash].js',
         'assetFileNames': '[ext]/[name]-[hash].[ext]',
         manualChunks (id) {
+
           // if (id.includes('emotion'))
           // console.log('id :', id);
           // eslint-disable-next-line no-magic-numbers, @typescript-eslint/no-magic-numbers
@@ -212,7 +223,7 @@ export default defineConfig({
     // }
     'write': true, // 启用将构建后的文件写入磁盘
     'emptyOutDir': true, // 构建时清空该目录
-    'watch': null, // 设置为 {} 则会启用 rollup 的监听器
+    'watch': null // 设置为 {} 则会启用 rollup 的监听器
     // 'external': [
     //   '@emotion',
     //   '@babel'
