@@ -1056,7 +1056,7 @@ module.exports = {
     // 执行所有defaultProps的定义，并且在propTypes中没有required'
     'react/destructuring-assignment': 'warn',
     // 强制执行道具、状态和上下文的解构分配的一致用法'
-    'react/display-name': 'warn',
+    'react/display-name': 'off',
     // 防止React组件定义中丢失displayName'
     'react/forbid-component-props': 'warn',
     // 禁止组件上的某些道具'

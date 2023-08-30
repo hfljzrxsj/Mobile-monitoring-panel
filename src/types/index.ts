@@ -8,4 +8,11 @@ type RRN_Component = new () => RRN_<Component>;
 type RRN_ReactElementGenericity<T> = RRN_<ReactElement<T, RRN_Component>>;
 type anyReactElementGenericity = RRN_ReactElementGenericity<RRN_Object>;
 // eslint-disable-next-line camelcase
-export type { RRN_Boolean as RRNboolean, RRN_String as RRNstring, RRN_Number as RRNnumber, RRN_ReactElementGenericity as RRNReactElementGenericity, anyReactElementGenericity };
+export type {
+  RRN_,
+  RRN_Boolean as RRNboolean,
+  RRN_String as RRNstring,
+  RRN_Number as RRNnumber,
+  RRN_ReactElementGenericity as RRNReactElementGenericity,
+  anyReactElementGenericity
+};

@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 import * as React from 'react';
 import {
   type CSSProperties,
-  type ReactElement,
+  // type ReactElement,
   forwardRef,
   useEffect,
   useImperativeHandle,
@@ -11,6 +11,14 @@ import {
   useState
   // lazy, Suspense
 } from 'react';
+import type {
+  RRNReactElementGenericity,
+  RRN_,
+  // RRNboolean,
+  RRNnumber,
+  RRNstring
+  // anyReactElementGenericity
+} from '@/types';
 import { Checkbox } from '@mui/material';
 // import * as JSX from 'react/jsx-runtime';
 import TextAnnotationLine from './TextAnnotationLine';
@@ -21,22 +29,25 @@ import {
   useTypedSelector
 } from '@/store';
 interface TextAnnotationDetailProps {
-  readonly classNameString?: string;
-  readonly text: string;
+  readonly classNameString: RRNstring;
+  readonly text: RRNstring;
 }
+type RRN_TextAnnotationDetailProps = RRN_<TextAnnotationDetailProps>;
 // const { Checkbox } = MaterialUI;
-// eslint-disable-next-line react/display-name
-const TextAnnotationDetail = forwardRef((props: TextAnnotationDetailProps, ref): ReactElement => {
+// eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+const TextAnnotationDetail = forwardRef((props: RRN_TextAnnotationDetailProps, ref): RRNReactElementGenericity<RRN_TextAnnotationDetailProps> => {
 
+  type RRN_HTMLDivElement = Required<NonNullable<HTMLDivElement>>;
+  // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
   const { FONTSIZE, MODE } = useTypedSelector((state) => state),
     isDEV = MODE === 'dev',
     zero = 0,
     // eslint-disable-next-line sort-vars, no-magic-numbers, @typescript-eslint/no-magic-numbers, @typescript-eslint/prefer-readonly-parameter-types
-    computedStyle = (current: HTMLDivElement, str: 'fontSize' | 'height'): number => ~~getComputedStyle(current)[str].slice(zero, -2),
+    computedStyle = (current: RRN_HTMLDivElement, str: 'fontSize' | 'height'): RRNnumber => ~~getComputedStyle(current)[str].slice(zero, -2),
     // eslint-disable-next-line sort-vars
-    divRef = useRef<HTMLDivElement>(null),
+    divRef = useRef<RRN_HTMLDivElement>(null),
     // eslint-disable-next-line sort-vars
-    getLineNum = (): number => {
+    getLineNum = (): RRNnumber => {
 
       const { current } = divRef;
       if (!current) {
@@ -61,8 +72,7 @@ const TextAnnotationDetail = forwardRef((props: TextAnnotationDetailProps, ref):
       zero
     ),
     {
-      classNameString = '',
-      text = ''
+      classNameString = '', text = ''
     } = props,
     [
       isEditing,
@@ -83,81 +93,82 @@ const TextAnnotationDetail = forwardRef((props: TextAnnotationDetailProps, ref):
     isEditing
   }), [isEditing]);
   return (
-    <div
-      className={styleModule[classNameString]}
-    >
-      {isDEV
-        ? <>
-          <Checkbox
-            checked={isEditing}
-            onChange={(): void => {
-
-              unstable_batchedUpdates(() => {
-
-                setIsEditing(!isEditing);
-                setLineNum(getLineNum());
-
-              });
-              const { current } = divRef;
-              if (current && !isEditing) {
-
-                // ?.replace(/	/ug, '&nbsp;&nbsp;')
-                // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
-                const res = [...current.childNodes].map((item) => `<p>${item.textContent === ''
-                  ? '&nbsp;'
-                  : item.textContent ?? '&nbsp;'}</p>`).join('');
-                // current.innerHTML = '';
-                // setText(res || []);
-                current.innerHTML = res;
-
-              }
-
-            }}
-          />
-          当前状态：
-
-          {isEditing
-            ? '编辑'
-            : '只读'}
-        </>
-        : null}
-
+    <React.StrictMode>
       <div
-        style={{
-          '--fontSize': FONTSIZE,
-          '--isDEV': isDEV
-            ? 'solid'
-            : 'none'
-        } as CSSProperties}
+        className={styleModule[classNameString]}
       >
         {isDEV
-          ? <TextAnnotationLine
-            classNameString="textAnnotationSide-left"
-            lineNum={lineNum}
-          />
+          ? <>
+            <Checkbox
+              checked={isEditing}
+              onChange={(): void => {
+
+                unstable_batchedUpdates(() => {
+
+                  setIsEditing(!isEditing);
+                  setLineNum(getLineNum());
+
+                });
+                const { current } = divRef;
+                if (current && !isEditing) {
+
+                  // ?.replace(/tab/ug, '&nbsp;&nbsp;')
+                  // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+                  const res = [...current.childNodes].map((item) => `<p>${item.textContent === ''
+                    ? '&nbsp;'
+                    : item.textContent ?? '&nbsp;'}</p>`).join('');
+                  // current.innerHTML = '';
+                  // setText(res || []);
+                  current.innerHTML = res;
+
+                }
+
+              }} />
+            当前状态：
+
+            {isEditing
+              ? '编辑'
+              : '只读'}
+          </>
           : null}
 
         <div
-          className={styleModule['text-annotation-text']}
-          contentEditable={isEditing}
-          ref={divRef}
-        />
+          style={{
+            '--fontSize': FONTSIZE,
+            '--isDEV': isDEV
+              ? 'solid'
+              : 'none'
+          } as CSSProperties}
+        >
+          {isDEV
+            ? <TextAnnotationLine
+              classNameString="textAnnotationSide-left"
+              lineNum={lineNum} />
+            : null}
 
-        {isDEV
-          ? <TextAnnotationLine
-            classNameString="textAnnotationSide-right"
-            lineNum={lineNum}
-          />
-          : null}
+          <div
+            className={styleModule['text-annotation-text']}
+            contentEditable={isEditing}
+            ref={divRef} />
+
+          {isDEV
+            ? <TextAnnotationLine
+              classNameString="textAnnotationSide-right"
+              lineNum={lineNum} />
+            : null}
+        </div>
       </div>
-    </div >
+    </React.StrictMode>
   );
 
 });
-TextAnnotationDetail.defaultProps = {
-  'classNameString': ''
-};
+
 TextAnnotationDetail.prototype = {
-  'classNameString': PropTypes.string
+  'classNameString': PropTypes.string,
+  'text': PropTypes.string
+};
+TextAnnotationDetail.defaultProps = {
+  'classNameString': '',
+  'text': ''
 };
 export default TextAnnotationDetail;

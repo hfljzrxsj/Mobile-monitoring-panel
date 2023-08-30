@@ -1,5 +1,6 @@
 // store.ts
 import type {
+  RRN_,
   // RRNReactElementGenericity,
   RRNboolean,
   // RRNnumber,
@@ -22,34 +23,36 @@ export enum enumActionName {
   OPENFALSE = 'OPENFALSE',
   PORT = 'PORT'
 }
+// eslint-disable-next-line no-shadow
 export enum enumSnackbarAlert {
   alertText = 'alertText',
   open = 'open',
   severity = 'severity'
 }
+// eslint-disable-next-line no-shadow
 export enum enumSeverity {
   error = 'error',
   info = 'info',
   success = 'success',
   warning = 'warning'
 }
-export interface State {
-  [enumActionName.MODE]: RRNstring;
-  [enumActionName.FONTSIZE]: RRNstring;
+interface State {
+  readonly [enumActionName.MODE]: RRNstring;
+  readonly [enumActionName.FONTSIZE]: RRNstring;
   // [enumActionType.OPEN]: RRNboolean;
-  [enumActionName.LEFT]: RRNstring;
-  [enumActionName.RIGHT]: RRNstring;
-  [enumActionName.SnackbarAlert]: {
-    [enumSnackbarAlert.alertText]: RRNstring;
-    [enumSnackbarAlert.open]: RRNboolean;
-    [enumSnackbarAlert.severity]: enumSeverity;
+  readonly [enumActionName.LEFT]: RRNstring;
+  readonly [enumActionName.RIGHT]: RRNstring;
+  readonly [enumActionName.SnackbarAlert]: {
+    readonly [enumSnackbarAlert.alertText]: RRNstring;
+    readonly [enumSnackbarAlert.open]: RRNboolean;
+    readonly [enumSnackbarAlert.severity]: RRN_<enumSeverity>;
   };
-  [enumActionName.PORT]: RRNstring;
+  readonly [enumActionName.PORT]: RRNstring;
 }
 interface actionInterface extends State {
-  type: enumActionName;
+  readonly type: RRN_<enumActionName>;
 }
-
+export type RRNState = RRN_<State>;
 const initialState: State = {
   [enumActionName.FONTSIZE]: '16px',
   [enumActionName.MODE]: 'production',
@@ -63,10 +66,11 @@ const initialState: State = {
   },
   [enumActionName.PORT]: '1392'
 },
-  // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types, @typescript-eslint/default-param-last
-  reducer = (state = initialState, action: actionInterface): State => {
 
-    const snackbarAlertReturn = (bool: RRNboolean): State => ({
+  // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types, @typescript-eslint/default-param-last
+  reducer = (state = initialState, action: RRN_<actionInterface>): RRNState => {
+
+    const snackbarAlertReturn = (bool: RRNboolean): RRNState => ({
       ...state,
       [enumActionName.SnackbarAlert]: {
         ...state.SnackbarAlert,
@@ -113,4 +117,4 @@ const initialState: State = {
   };
 export default createStore(reducer);
 // eslint-disable-next-line one-var
-export const useTypedSelector: TypedUseSelectorHook<State> = useSelector;
+export const useTypedSelector: TypedUseSelectorHook<RRNState> = useSelector;

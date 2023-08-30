@@ -1,24 +1,30 @@
 import * as PropTypes from 'prop-types';
 import * as React from 'react';
-
+import type {
+  RRNReactElementGenericity,
+  RRN_,
+  // RRNboolean,
+  RRNnumber,
+  RRNstring
+  // anyReactElementGenericity
+} from '@/types';
 import {
-  StrictMode,
-  type ReactElement,
   type ReactNode
 } from 'react';
 import styleModule from '../style/TextAnnotation.module.scss';
 interface TextAnnotationSideProps {
-  readonly lineNum: number;
-  readonly classNameString: string;
+  readonly lineNum: RRNnumber;
+  readonly classNameString: RRNstring;
 }
-export default function TextAnnotationSide (props: TextAnnotationSideProps): ReactElement {
+type RRN_TextAnnotationSideProps = RRN_<TextAnnotationSideProps>;
+export default function TextAnnotationSide (props: RRN_TextAnnotationSideProps): RRNReactElementGenericity<RRN_TextAnnotationSideProps> {
 
   const one = 1,
     { lineNum,
       classNameString = '' } = props;
 
   return (
-    <StrictMode>
+    <React.StrictMode>
       <div
         className={styleModule[classNameString]}
       >
@@ -41,7 +47,15 @@ export default function TextAnnotationSide (props: TextAnnotationSideProps): Rea
         })()}
       </div>
 
-    </StrictMode>
+    </React.StrictMode>
   );
 
 }
+TextAnnotationSide.propTypes = {
+  'classNameString': PropTypes.string,
+  'lineNum': PropTypes.number
+};
+TextAnnotationSide.defaultProps = {
+  'classNameString': '',
+  'lineNum': 1
+};

@@ -60,3 +60,26 @@
     flex: 4;
   }
 }
+
+.loading {
+  min-height: 21px;
+  min-width: 21px;
+
+  border: {
+    top: solid white;
+    right: solid white;
+  }
+
+  border-radius:50%;
+  animation:loading 1s linear infinite;
+
+  @keyframes loading {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}

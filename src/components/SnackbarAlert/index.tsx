@@ -1,8 +1,5 @@
 import * as React from 'react';
-import {
-  // Alert,
-  Snackbar
-} from '@mui/material';
+
 // import Alert from '@mui/material/Alert';
 // import Snackbar from '@mui/material/snackbar';
 // import MuiAlert from '@mui/material/Alert';
@@ -13,10 +10,21 @@ import {
   enumSeverity,
   useTypedSelector
 } from '@/store';
-import { useDispatch } from 'react-redux';
-import { StrictMode } from 'react';
 
-export default function SnackbarAlert (): React.ReactElement {
+import {
+  // Alert,
+  Snackbar
+} from '@mui/material';
+import type {
+  // RRN_,
+  // RRNReactElementGenericity,
+  // RRNboolean,
+  // RRNnumber,
+  // RRNstring,
+  anyReactElementGenericity
+} from '@/types';
+import { useDispatch } from 'react-redux';
+export default function SnackbarAlert (): anyReactElementGenericity {
 
   const dispatch = useDispatch(),
     // const { ToastOpen, setToastOpen, severity, alertText } = props,
@@ -26,19 +34,15 @@ export default function SnackbarAlert (): React.ReactElement {
     waitTime = 6000,
     { 'open': ToastOpen = false,
       severity = enumSeverity.success,
-      alertText = '' } = useTypedSelector((state) => state[enumActionName.SnackbarAlert])
-    // ,
-    // handleClose = (reason?: string) => {
-
-    //   if (reason === 'clickaway') {
-
-    //     return;
-
-    //   }
-    //   setToastOpenFalse();
-
-    // }
-    ;
+      // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+      alertText = '' } = useTypedSelector((state) => state[enumActionName.SnackbarAlert]);
+  // ,
+  // handleClose = (reason?: string) => {
+  //   if (reason === 'clickaway') {
+  //     return;
+  //   }
+  //   setToastOpenFalse();
+  // }
   useEffect(() => {
 
     if (ToastOpen) {
@@ -64,11 +68,11 @@ export default function SnackbarAlert (): React.ReactElement {
   //     {...props} />);
   // Alert.displayName = 'Alert';
   return (
-    <StrictMode>
+    <React.StrictMode>
       <Snackbar
         anchorOrigin={{
-          'vertical': 'bottom',
-          'horizontal': 'left'
+          'horizontal': 'left',
+          'vertical': 'bottom'
         }}
         autoHideDuration={6000}
         onClose={(): void => {
@@ -79,28 +83,26 @@ export default function SnackbarAlert (): React.ReactElement {
         open={ToastOpen}
       >
         <div
-          elevation={6}
-          onClose={(): void => {
-
-            setToastOpenFalse();
-            // handleClose();
-
-          }}
-          severity={severity}
           style={{
             'backgroundColor': severity === enumSeverity.success
               ? '#43a047'
               : '#d32f2f',
             'color': '#fff',
-            'padding': '10px 20px',
-            'letterSpacing': '1px'
+            'letterSpacing': '1px',
+            'padding': '10px 20px'
           }}
-          sx={{ 'width': '100%' }}
-          variant="filled"
+        // onClose={(): void => {
+        //   setToastOpenFalse();
+        //   // handleClose();
+        // }}
+        // severity={severity}
+        // elevation={6}
+        // sx={{ 'width': '100%' }}
+        // variant="filled"
         >
           {alertText}
         </div>
       </Snackbar>
-    </StrictMode>);
+    </React.StrictMode>);
 
 }

@@ -1,11 +1,20 @@
+import type {
+  RRN_,
+  // RRNReactElementGenericity,
+  // RRNboolean,
+  // RRNnumber,
+  RRNstring
+  // anyReactElementGenericity
+} from '@/types';
 import {
   enumActionName,
   type enumSeverity,
   enumSnackbarAlert
 } from '@/store';
+
 import { useDispatch } from 'react-redux';
 
-export default function useSnackbarAlertOpen (alertText: string, severity: enumSeverity): void {
+export default function useSnackbarAlertOpen (alertText: RRNstring, severity: RRN_<enumSeverity>): void {
 
   const dispatch = useDispatch();
   dispatch({
