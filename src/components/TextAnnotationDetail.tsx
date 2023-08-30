@@ -4,26 +4,35 @@ import * as React from 'react';
 import {
   type CSSProperties,
   type ReactElement,
+  forwardRef,
   useEffect,
+  useImperativeHandle,
   useRef,
-  useState,
+  useState
   // lazy, Suspense
 } from 'react';
 import { Checkbox } from '@mui/material';
 // import * as JSX from 'react/jsx-runtime';
 import TextAnnotationLine from './TextAnnotationLine';
 import styleModule from '../style/TextAnnotation.module.scss';
+// eslint-disable-next-line camelcase
 import { unstable_batchedUpdates } from 'react-dom';
-import axios from 'axios';
+import {
+  useTypedSelector
+} from '@/store';
 interface TextAnnotationDetailProps {
   readonly classNameString?: string;
+  readonly text: string;
 }
 // const { Checkbox } = MaterialUI;
-export default function TextAnnotationDetail (props: TextAnnotationDetailProps): ReactElement {
+// eslint-disable-next-line react/display-name
+const TextAnnotationDetail = forwardRef((props: TextAnnotationDetailProps, ref): ReactElement => {
 
-  const zero = 0,
+  const { FONTSIZE, MODE } = useTypedSelector((state) => state),
+    isDEV = MODE === 'dev',
+    zero = 0,
     // eslint-disable-next-line sort-vars, no-magic-numbers, @typescript-eslint/no-magic-numbers, @typescript-eslint/prefer-readonly-parameter-types
-    computedStyle = (current: Readonly<HTMLDivElement>, str: 'fontSize' | 'height'): number => ~~getComputedStyle(current)[str].slice(zero, -2),
+    computedStyle = (current: HTMLDivElement, str: 'fontSize' | 'height'): number => ~~getComputedStyle(current)[str].slice(zero, -2),
     // eslint-disable-next-line sort-vars
     divRef = useRef<HTMLDivElement>(null),
     // eslint-disable-next-line sort-vars
@@ -52,72 +61,81 @@ export default function TextAnnotationDetail (props: TextAnnotationDetailProps):
       zero
     ),
     {
-      'classNameString': className = ''
+      classNameString = '',
+      text = ''
     } = props,
     [
       isEditing,
       setIsEditing
     ] = useState(false);
-  useEffect(
-    () => {
+  useEffect(() => {
 
-      // (async (): Promise<void> => (await
-      //   fetch('/public/a.json')).json().then((data) => {
+    const { current } = divRef;
+    if (current) {
 
-      //     // eslint-disable-next-line no-console
-      //     console.log(data);
-
-      //   })
-      // )().catch(() => {
-
-      //   throw new Error();
-
-      // });
-      axios.get('/public/a.json').then((data) => {
-
-        // eslint-disable-next-line no-console
-        console.info(data.data);
-        alert(data.data.a);
-
-      }).catch(() => {
-
-        throw new Error();
-
-      });
+      current.innerHTML = text;
 
     }
-    , []);
 
+  }, [text]);
+  useImperativeHandle(ref, () => ({
+    'innerHTML': divRef.current?.innerHTML,
+    isEditing
+  }), [isEditing]);
   return (
     <div
-      className={styleModule[className]}
+      className={styleModule[classNameString]}
     >
-      <Checkbox
-        checked={isEditing}
-        // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
-        onChange={(): void => {
-          unstable_batchedUpdates(() => {
-            setIsEditing(!isEditing);
-            setLineNum(getLineNum());
-          });
-          const { current } = divRef;
-          if (current) {
+      {isDEV
+        ? <>
+          <Checkbox
+            checked={isEditing}
+            onChange={(): void => {
 
-            current.innerHTML = current.innerHTML.replace(/<br>/ug, '\n');
-            current.innerHTML = current.textContent ?? current.innerText;
-            // current.innerHTML = current.innerText;
+              unstable_batchedUpdates(() => {
 
-          }
+                setIsEditing(!isEditing);
+                setLineNum(getLineNum());
 
-        }}
-      />
+              });
+              const { current } = divRef;
+              if (current && !isEditing) {
+
+                // ?.replace(/	/ug, '&nbsp;&nbsp;')
+                // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+                const res = [...current.childNodes].map((item) => `<p>${item.textContent === ''
+                  ? '&nbsp;'
+                  : item.textContent ?? '&nbsp;'}</p>`).join('');
+                // current.innerHTML = '';
+                // setText(res || []);
+                current.innerHTML = res;
+
+              }
+
+            }}
+          />
+          当前状态：
+
+          {isEditing
+            ? '编辑'
+            : '只读'}
+        </>
+        : null}
 
       <div
-        style={{ '--fontSize': sessionStorage.getItem('fontSize') ?? '16px' } as CSSProperties}
+        style={{
+          '--fontSize': FONTSIZE,
+          '--isDEV': isDEV
+            ? 'solid'
+            : 'none'
+        } as CSSProperties}
       >
-        <TextAnnotationLine
-          lineNum={lineNum}
-        />
+        {isDEV
+          ? <TextAnnotationLine
+            classNameString="textAnnotationSide-left"
+            lineNum={lineNum}
+          />
+          : null}
 
         <div
           className={styleModule['text-annotation-text']}
@@ -125,17 +143,21 @@ export default function TextAnnotationDetail (props: TextAnnotationDetailProps):
           ref={divRef}
         />
 
-        <TextAnnotationLine
-          lineNum={lineNum}
-        />
+        {isDEV
+          ? <TextAnnotationLine
+            classNameString="textAnnotationSide-right"
+            lineNum={lineNum}
+          />
+          : null}
       </div>
-    </div>
+    </div >
   );
 
-}
+});
 TextAnnotationDetail.defaultProps = {
   'classNameString': ''
 };
 TextAnnotationDetail.prototype = {
   'classNameString': PropTypes.string
 };
+export default TextAnnotationDetail;

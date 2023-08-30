@@ -65,6 +65,7 @@
     "declarationMap": false,
     "declarationDir": "./build",
     "jsx": "preserve",
+    "jsxImportSource": "react",
     "allowJs": true,
     "checkJs": true,
     "resolveJsonModule": true,

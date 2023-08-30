@@ -3,22 +3,21 @@
 
   %common {
     padding: 20px 0;
-
+    border-radius: 0;
 
     & > div {
       position: relative;
-      border-top-style: solid;
-      border-bottom-style: solid;
+      border-top-style: var(--isDEV, 'solid');
+      border-bottom-style: var(--isDEV, 'solid');
       border-radius: 0;
-      $fontSize: var(--fontSize);
+      $fontSize: var(--fontSize, 16px);
 
       & > .text-annotation-text {
         // white-space: pre-line;
         word-break: break-all;
         min-height: 41.6px;
-
         padding: 0 20px;
-        white-space: pre-line;
+        // white-space: pre-line;
 
         &,
         * {
@@ -27,13 +26,26 @@
         }
       }
 
-      & > .textAnnotationSide {
+      $textAnnotationSide: 'textAnnotationSide';
+
+      & > %#{$textAnnotationSide} {
         position: absolute;
         top: 0;
-        left: 0;
-        border-right: dashed 1q;
+        border-left: dashed 1q rgba(0, 0, 0, .5);
+        border-right: dashed 1q rgba(0, 0, 0, .5);
         font-size: $fontSize;
       }
+
+      .#{$textAnnotationSide}-left {
+        @extend %textAnnotationSide;
+        left: 0;
+      }
+
+      .#{$textAnnotationSide}-right {
+        @extend %textAnnotationSide;
+        right: 0;
+      }
+
     }
   }
 

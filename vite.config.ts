@@ -31,12 +31,34 @@ export default defineConfig({
           'name': 'react',
           'var': 'React',
           'path': '//cdn.bootcdn.net/ajax/libs/react/18.2.0/umd/react.production.min.js'
+          // 'path': 'https://cdn.bootcdn.net/ajax/libs/react/18.2.0/umd/react.development.js'
         },
         {
           'name': 'react-dom',
           'var': 'ReactDOM',
           'path': '//cdn.bootcdn.net/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js'
+          // 'path': 'https://cdn.bootcdn.net/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js'
+          // 'path': 'https://cdn.bootcdn.net/ajax/libs/react-dom/18.2.0/umd/react-dom.development.js'
+          // 'path': 'https://cdn.bootcdn.net/ajax/libs/react-dom/18.2.0/umd/react-dom.development.min.js'
         },
+        {
+          'name': '@mui/material',
+          'var': 'MaterialUI',
+          'path': '//cdn.bootcdn.net/ajax/libs/material-ui/4.12.4/umd/material-ui.production.min.js'
+          // 'path': 'https://cdn.bootcdn.net/ajax/libs/material-ui/4.12.4/umd/material-ui.development.js'
+          // 'path': '//unpkg.com/@material-ui/core/umd/material-ui.production.min.js'
+        },
+        {
+          'name': 'redux',
+          'var': 'Redux',
+          'path': '//cdn.bootcdn.net/ajax/libs/redux/4.2.1/redux.min.js'
+        },
+        {
+          'name': 'react-redux',
+          'var': 'ReactRedux',
+          'path': '//cdn.bootcdn.net/ajax/libs/react-redux/8.0.5/react-redux.min.js'
+        },
+
         {
           'name': 'axios',
           'var': 'axios',
@@ -51,23 +73,9 @@ export default defineConfig({
           'name': 'react-transition-group',
           'var': 'ReactTransitionGroup',
           'path': '//cdn.bootcdn.net/ajax/libs/react-transition-group/4.4.5/react-transition-group.min.js'
-        },
-        {
-          'name': '@mui/material',
-          'var': 'MaterialUI',
-          'path': '//cdn.bootcdn.net/ajax/libs/material-ui/4.12.4/umd/material-ui.production.min.js'
-          // 'path': '//unpkg.com/@material-ui/core/umd/material-ui.production.min.js'
-        },
-        {
-          'name': 'react-redux',
-          'var': 'ReactRedux',
-          'path': '//cdn.bootcdn.net/ajax/libs/react-redux/8.0.5/react-redux.min.js'
-        },
-        {
-          'name': 'redux',
-          'var': 'Redux',
-          'path': '//cdn.bootcdn.net/ajax/libs/redux/4.2.1/redux.min.js'
         }
+
+
         // {
         //   'name': 'react/react-jsx-runtime',
         //   'var': 'ReactJsxRuntime',
@@ -183,6 +191,7 @@ export default defineConfig({
 
         }
       }
+      // 'external': ['react/jsx-runtime']
     },
     'target': 'modules', // 设置最终构建的浏览器兼容目标  //es2015(编译成es5) | modules
     // 'outDir': 'dist', // 构建得包名  默认：dist
@@ -224,6 +233,7 @@ export default defineConfig({
     'write': true, // 启用将构建后的文件写入磁盘
     'emptyOutDir': true, // 构建时清空该目录
     'watch': null // 设置为 {} 则会启用 rollup 的监听器
+
     // 'external': [
     //   '@emotion',
     //   '@babel'

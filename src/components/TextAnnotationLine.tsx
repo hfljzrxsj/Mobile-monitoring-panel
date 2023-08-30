@@ -2,22 +2,25 @@ import * as PropTypes from 'prop-types';
 import * as React from 'react';
 
 import {
+  StrictMode,
   type ReactElement,
   type ReactNode
 } from 'react';
 import styleModule from '../style/TextAnnotation.module.scss';
 interface TextAnnotationSideProps {
   readonly lineNum: number;
+  readonly classNameString: string;
 }
 export default function TextAnnotationSide (props: TextAnnotationSideProps): ReactElement {
 
   const one = 1,
-    { lineNum } = props;
+    { lineNum,
+      classNameString = '' } = props;
 
   return (
-    <React.StrictMode>
+    <StrictMode>
       <div
-        className={styleModule['textAnnotationSide']}
+        className={styleModule[classNameString]}
       >
         {((): ReactNode => {
 
@@ -38,7 +41,7 @@ export default function TextAnnotationSide (props: TextAnnotationSideProps): Rea
         })()}
       </div>
 
-    </React.StrictMode>
+    </StrictMode>
   );
 
 }

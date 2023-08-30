@@ -5815,7 +5815,7 @@ app/webroot/theme/PROJECT/Pages/empty
 
 ##---./templates\Batch.gitignore---
 # BatchFiles
-*.bat
+# *.bat
 *.btm
 
 ##---./templates\Bazaar.gitignore---
