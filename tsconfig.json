@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    // "watch": true,
     "baseUrl": "./",
     "paths": {
       "@/*": [
@@ -129,11 +128,10 @@
     "preserveConstEnums": true,
     "preserveValueImports": true,
     "skipDefaultLibCheck": false
-    // "outFile": "./dist",
   },
   "include": [
     "src",
-    "*.json", ".vscode/utils.js",
+    "*.json"
   ],
   "exclude": [ "$RECYCLE.BIN/",
     "$tf/",
@@ -4951,9 +4949,6 @@
     "~$*.doc*",
     "~$*.ppt*",
     "~$*.xls*",
-    "~aclzw.tmp",
-  ],
-
+    "~aclzw.tmp"
+  ]
 }
-// "allowArbitraryExtensions": false,
-// "allowImportingTsExtensions": false,

@@ -336,6 +336,9 @@ export default function IndexedDBtest (): ReactElement {
           };
 
           fetchDataFromIndexedDB();
+          fetch('/api/query').then(async (res) => res.json()).then((data) => {
+            console.log(data);
+          }).catch(console.error);
         }}
         variant="contained"
       >
