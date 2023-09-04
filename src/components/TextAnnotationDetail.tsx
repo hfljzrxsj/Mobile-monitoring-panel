@@ -18,7 +18,7 @@ import type {
   RRNnumber,
   RRNstring
   // anyReactElementGenericity
-} from '@/types';
+} from '@/types/index.mjs';
 import { Checkbox } from '@mui/material';
 // import * as JSX from 'react/jsx-runtime';
 import TextAnnotationLine from './TextAnnotationLine';
@@ -27,7 +27,7 @@ import styleModule from '../style/TextAnnotation.module.scss';
 import { unstable_batchedUpdates } from 'react-dom';
 import {
   useTypedSelector
-} from '@/store';
+} from '@/store/index.mjs';
 interface TextAnnotationDetailProps {
   readonly classNameString: RRNstring;
   readonly text: RRNstring;

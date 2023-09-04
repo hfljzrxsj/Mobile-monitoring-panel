@@ -97,7 +97,7 @@ appengine-generated/
 *.log.*
 *.sig
 pkg/
-src/
+# src/
 
 ##---./Autotools.gitignore---
 # http://www.gnu.org/software/automake

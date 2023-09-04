@@ -5,7 +5,7 @@ import {
   enumSeverity,
   enumSnackbarAlert,
   useTypedSelector
-} from '@/store';
+} from '@/store/index.mjs';
 import type {
   RRN_,
   // RRNReactElementGenericity,
@@ -13,7 +13,7 @@ import type {
   // RRNnumber,
   RRNstring,
   anyReactElementGenericity
-} from '@/types';
+} from '@/types/index.mjs';
 import axios, { type AxiosResponse } from 'axios';
 import {
   // type ReactElement,

@@ -395,7 +395,7 @@ module.exports = {
     // 强制或禁止对注释的第一个字母大写
     'comma-dangle': 'warn',
     // 要求或禁止末尾逗号
-    'comma-spacing': 'warn',
+    'comma-spacing': 'off',
     // 强制在逗号前后使用一致的空格
     'comma-style': 'warn',
     // 强制使用一致的逗号风格
@@ -473,7 +473,7 @@ module.exports = {
     // 禁止在代码后使用内联注释
     'no-lonely-if': 'warn',
     // 禁止 if 作为唯一的语句出现在 else 语句中
-    'no-mixed-operators': 'warn',
+    'no-mixed-operators': 'off',
     // 禁止混合使用不同的操作符
     'no-mixed-spaces-and-tabs': 'warn',
     // 禁止空格和 tab 的混合缩进
@@ -578,7 +578,7 @@ module.exports = {
     // 强制 generator 函数中 * 号周围使用一致的空格
     'no-class-assign': 'warn',
     // 禁止修改类声明的变量
-    'no-confusing-arrow': 'warn',
+    'no-confusing-arrow': 'off',
     // 禁止在可能与比较操作符相混淆的地方使用箭头函数
     'no-const-assign': 'warn',
     // 禁止修改 const 声明的变量

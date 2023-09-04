@@ -1,5 +1,7 @@
 
 import * as React from 'react';
+// import { Provider } from 'react-redux';
+import IndexedDBtest from '@/indexedDBPlay';
 import { StrictMode } from 'react';
 
 // import Head from '@/components/Head';
@@ -7,9 +9,9 @@ import { StrictMode } from 'react';
 // import styleModule from './APP.module.scss';
 // import Body from '@/components/Body';
 // import Counter from './Counter';
-import { Provider } from 'react-redux';
-import TextAnnotation from '@/components/TextAnnotation';
-import store from '@/store';
+
+// import TextAnnotation from '@/components/TextAnnotation';
+// import store from '@/store';
 
 
 // import Manager from '@/components/Manager';
@@ -28,6 +30,8 @@ export default function APP (): React.ReactElement {
 
   return (
     <StrictMode>
+      <IndexedDBtest />
+
       {/* <Head /> */}
 
       {/* <Login /> */}
@@ -50,9 +54,10 @@ export default function APP (): React.ReactElement {
       {/* </div> */}
       {/* <TextAnnotation /> */}
 
-      <Provider store={store}>
+      {/* <Provider store={store}>
         <TextAnnotation />
-      </Provider>
+      </Provider> */}
+
     </StrictMode>);
 
 }

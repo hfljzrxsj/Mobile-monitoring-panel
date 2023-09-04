@@ -6,9 +6,9 @@ import type {
   // RRNnumber,
   RRNstring
   // anyReactElementGenericity
-} from '@/types';
+} from '@/types/index.mjs';
 import { type TypedUseSelectorHook, useSelector } from 'react-redux';
-import { createStore } from 'redux';
+import { legacy_createStore as createStore } from 'redux';
 
 
 // eslint-disable-next-line no-shadow
