@@ -1,9 +1,10 @@
 
 import * as React from 'react';
 // import { Provider } from 'react-redux';
-import IndexedDBtest from '@/indexedDBPlay';
+// import IndexedDBtest from '@/indexedDBPlay';
 import { StrictMode } from 'react';
-
+// import WebWorker from '@/components/webworker';
+import Wasm from './components/wasm';
 // import Head from '@/components/Head';
 // import Side from '@/components/Side';
 // import styleModule from './APP.module.scss';
@@ -30,7 +31,8 @@ export default function APP (): React.ReactElement {
 
   return (
     <StrictMode>
-      <IndexedDBtest />
+      {/* <IndexedDBtest /> */}
+      <Wasm />
 
       {/* <Head /> */}
 

@@ -225,7 +225,9 @@ export default defineConfig({
       }
       // 'external': ['react/jsx-runtime']
     },
-    'target': 'modules', // 设置最终构建的浏览器兼容目标  //es2015(编译成es5) | modules
+    // 'target': 'modules', // 设置最终构建的浏览器兼容目标  //es2015(编译成es5) | modules
+    // target: ['edge90', 'chrome90', 'firefox90', 'safari15'],
+    target: 'esnext',
     // 'outDir': 'dist', // 构建得包名  默认：dist
     'outDir': resolve('dist'),
     'assetsDir': 'assets', // 静态资源得存放路径文件名  assets

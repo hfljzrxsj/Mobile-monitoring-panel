@@ -976,9 +976,13 @@
   "scripts": {
     "vite": "D:/nodejs/node_global/vite.cmd",
     "vite:build": "D:/nodejs/node_global/vite.cmd build",
+    "vite:preview": "D:/nodejs/node_global/vite.cmd preview",
     "wiley:start": "D:/nodejs/node.exe scripts/start.js",
     "wiley:build": "D:/nodejs/node.exe scripts/build.js",
     "wiley:test": "D:/nodejs/node.exe scripts/test.js",
+    "asbuild:debug": "D:/nodejs/node_global/asc.cmd src/components/assembly/index.ts --target debug",
+    "asbuild:release": "D:/nodejs/node_global/asc.cmd src/components/assembly/index.ts --target release",
+    "asbuild": "npm run asbuild:debug && npm run asbuild:release",
     "wiley:formatjs extract": "formatjs extract",
     "wiley:formatjs compile": "formatjs compile",
     "start": "react-scripts start",
