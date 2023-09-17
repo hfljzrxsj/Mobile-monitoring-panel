@@ -9,7 +9,7 @@ import {
   enumActionName,
   enumSeverity,
   useTypedSelector
-} from '@/store/index.mjs';
+} from '@/store';
 
 import {
   // Alert,
@@ -22,7 +22,7 @@ import type {
   // RRNnumber,
   // RRNstring,
   anyReactElementGenericity
-} from '@/types/index.mjs';
+} from '@/types';
 import { useDispatch } from 'react-redux';
 export default function SnackbarAlert (): anyReactElementGenericity {
 

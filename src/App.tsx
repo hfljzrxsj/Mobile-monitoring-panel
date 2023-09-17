@@ -1,18 +1,19 @@
 
 import * as React from 'react';
-// import { Provider } from 'react-redux';
+import { Provider } from 'react-redux';
 // import IndexedDBtest from '@/indexedDBPlay';
 import { StrictMode } from 'react';
 // import WebWorker from '@/components/webworker';
 import Wasm from './components/wasm';
+import SVG from '@/assets/AcceptDatePassedClock.svg';
+// import { ReactComponent as ReactLogo } from '@/assets/AcceptDatePassedClock.svg';
 // import Head from '@/components/Head';
 // import Side from '@/components/Side';
 // import styleModule from './APP.module.scss';
 // import Body from '@/components/Body';
 // import Counter from './Counter';
-
-// import TextAnnotation from '@/components/TextAnnotation';
-// import store from '@/store';
+import TextAnnotation from '@/components/TextAnnotation';
+import store from '@/store';
 
 
 // import Manager from '@/components/Manager';
@@ -33,6 +34,8 @@ export default function APP (): React.ReactElement {
     <StrictMode>
       {/* <IndexedDBtest /> */}
       <Wasm />
+      {/* <ReactLogo /> */}
+      <SVG />
 
       {/* <Head /> */}
 
@@ -56,9 +59,9 @@ export default function APP (): React.ReactElement {
       {/* </div> */}
       {/* <TextAnnotation /> */}
 
-      {/* <Provider store={store}>
+      <Provider store={store}>
         <TextAnnotation />
-      </Provider> */}
+      </Provider>
 
     </StrictMode>);
 

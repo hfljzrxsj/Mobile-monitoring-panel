@@ -5,7 +5,7 @@ import {
   enumSeverity,
   enumSnackbarAlert,
   useTypedSelector
-} from '@/store/index.mjs';
+} from '@/store';
 import type {
   RRN_,
   // RRNReactElementGenericity,
@@ -13,7 +13,7 @@ import type {
   // RRNnumber,
   RRNstring,
   anyReactElementGenericity
-} from '@/types/index.mjs';
+} from '@/types';
 import axios, { type AxiosResponse } from 'axios';
 import {
   // type ReactElement,
@@ -27,6 +27,7 @@ import SnackbarAlert from './SnackbarAlert';
 import TextAnnotationDetail from './TextAnnotationDetail';
 import styleModule from '../style/TextAnnotation.module.scss';
 import { useDispatch } from 'react-redux';
+import Json from '@/json/test.json';
 // import useBoolean from 'ahooks/lib/useBoolean';
 // import { useBoolean } from 'ahooks';
 // import usesnackbarAlertOpen from '@/actions';
@@ -51,7 +52,7 @@ type RN_AxiosResponse<T> = Readonly<NonNullable<AxiosResponse<T>>>;
 + * @return {ReactElement} The rendered text annotation component.
 + */
 export default function TextAnnotation (): anyReactElementGenericity {
-
+  console.log('Json:', Json);
   const [
     isloading,
     setIsloading

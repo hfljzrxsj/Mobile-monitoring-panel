@@ -5,12 +5,12 @@ import type {
   // RRNnumber,
   RRNstring
   // anyReactElementGenericity
-} from '@/types/index.mjs';
+} from '@/types';
 import {
   enumActionName,
   type enumSeverity,
   enumSnackbarAlert
-} from '@/store/index.mjs';
+} from '@/store';
 
 import { useDispatch } from 'react-redux';
 

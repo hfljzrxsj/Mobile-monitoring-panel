@@ -6,7 +6,7 @@ import type {
   // RRNnumber,
   RRNstring
   // anyReactElementGenericity
-} from '@/types/index.mjs';
+} from '@/types';
 import { type TypedUseSelectorHook, useSelector } from 'react-redux';
 import { legacy_createStore as createStore } from 'redux';
 

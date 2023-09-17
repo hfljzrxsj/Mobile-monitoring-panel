@@ -6,7 +6,8 @@ import { exclude } from './tsconfig.json';
 import { URL, fileURLToPath } from 'node:url';
 import {
   defineConfig
-  // loadEnv
+  // ,loadEnv
+  // ,transformWithEsbuild
 } from 'vite';
 // import externalGlobals from 'rollup-plugin-external-globals';
 import { Plugin as importToCDN } from 'vite-plugin-cdn-import';
@@ -18,13 +19,13 @@ import {
   // join,
   resolve
 } from 'path';
+import svgr from 'vite-plugin-svgr';
 // //vitejs.dev/config/
 const serverOptions = {
   'host': true,
   'open': true,
   'cors': true,
   'https': false,
-  'hmr': true,
   // 'strictPort': true, // 若端口已被占用则会直接退出
   'proxy': {
     '/api': {
@@ -34,12 +35,6 @@ const serverOptions = {
       // 'rewrite': (path) => path.replace(/^\/api/u, '')
     }
   },
-  'watch': {
-    'ignored': exclude,
-    followSymlinks: false,
-    awaitWriteFinish: true,
-    'usePolling': false
-  }
   // 'fs': {
   //   'strict': false //  支持引用除入口目录的文件
   // 'allow': [], // 限制哪些文件可以通过 /@fs/ 路径提供服务
@@ -56,6 +51,25 @@ export default defineConfig({
   'base': '/', // 'base': './'
   'plugins': [
     react(),
+    svgr({
+      svgrOptions: {
+        icon: true,
+        ref: true,
+        titleProp: true,
+        descProp: true,
+        expandProps: true,
+        dimensions: true,
+        // native: true,
+        runtimeConfig: true,
+        // typescript: true,
+        prettier: true,
+        svgo: true,
+        memo: true,
+        index: true,
+      },
+      exportAsDefault: true
+      // 这里可以添加SVGR的选项
+    }),
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     importToCDN({
       'modules': [
@@ -139,7 +153,20 @@ export default defineConfig({
         //   'path': '//cdn.bootcdn.net/ajax/libs/babel-standalone/7.21.4/babel.min.js'
         // },
       ]
-    })
+    }),
+    // {
+    //   name: 'treat-js-files-as-jsx',
+    //   async transform (code, id) {
+    //     if (!id.match(/src\/.*\.js$/)) return null;
+
+    //     // Use the exposed transform from vite, instead of directly
+    //     // transforming with esbuild
+    //     return transformWithEsbuild(code, id, {
+    //       loader: 'tsx',
+    //       jsx: 'automatic',
+    //     });
+    //   },
+    // },
     // _default({
     //   esm: true,
     //   'modules': [
@@ -177,15 +204,14 @@ export default defineConfig({
     },
     'extensions': [
       // '.mjs',
-      '.mts',
+      // '.mts',
       // '.js',
       '.ts',
       // '.jsx',
       '.tsx',
-      '.json'
       // '.vue',
       // '.cjs',
-      // '.cts'
+      // '.cts',
     ]
   },
   'esbuild': {
@@ -199,7 +225,22 @@ export default defineConfig({
     'drop': [
       'console',
       'debugger'
-    ]
+    ],
+    // loader: "tsx", // 或者 "jsx"
+    // include: [
+    //   // 为.jsx和.tsx文件添加这个，以保持正常行为
+    //   "src/**/*.jsx",
+    //   "src/**/*.tsx",
+    //   "node_modules/**/*.jsx",
+    //   "node_modules/**/*.tsx",
+    //   // --- 或者 ---   
+    //   // 添加这些行以允许所有.js文件包含JSX
+    //   "src/**/*.js",
+    //   "node_modules/**/*.js",
+    //   // 添加这些行以允许所有.ts文件包含JSX
+    //   "src/**/*.ts",
+    //   "node_modules/**/*.ts",
+    // ],
   },
   'build': {
     'rollupOptions': {

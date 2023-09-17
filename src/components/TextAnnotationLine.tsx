@@ -7,7 +7,7 @@ import type {
   RRNnumber,
   RRNstring
   // anyReactElementGenericity
-} from '@/types/index.mjs';
+} from '@/types';
 import {
   type ReactNode
 } from 'react';

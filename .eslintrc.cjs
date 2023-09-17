@@ -1,42 +1,89 @@
 /* eslint-disable no-inline-comments */
 /* eslint-disable line-comment-position */
 /* eslint-disable sort-keys */
+// @ts-check
+const _extends = [
+  // '@typescript-eslint',
+  // '@typescript-eslint/internal',
+  // 'deprecation',
+  // 'eslint-comments',
+  // 'eslint-plugin',
+  'eslint:recommended',
+  // 'import',
+  // 'jest',
+  'plugin:@typescript-eslint/recommended',
+  'plugin:@typescript-eslint/recommended-requiring-type-checking',
+  'plugin:jest/recommended',
+  'plugin:react-hooks/recommended',
+  'plugin:react/recommended',
+  'plugin:jsx-a11y/recommended'
+  // 'simple-import-sort',
+  // 'unicorn',
+  // 'airbnb',
+  // 'plugin:prettier/recommended',
+  // 'plugin:unicorn/recommended'
+  // 'prettier',
+  // 'prettier/react',
+  // 'react/jsx-runtime',
+],
+  plugins = [
+    'jsx-a11y',
+    'react',
+    'react-hooks',
+    '@typescript-eslint',
+    'jest'
+  ];
+
+/** @type {import('./Linter').Linter.Config} */
 module.exports = {
+  'root': true,
   'env': {
     'browser': true,
     'es2021': true,
     'es6': true,
     'jest': true,
-    'node': true
+    'node': true,
+    'es2020': true
   },
   'extends': [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:react/recommended',
-    'plugin:react-hooks/recommended',
-
-    // 'prettier',
-    // // 使用 Prettier 插件
-    // 'airbnb',
-    // 'prettier/react',
-    // 'plugin:prettier/recommended',
-    'plugin:jest/recommended'
-    // 'plugin:unicorn/recommended'
+    ..._extends,
+    'eslint:all',
+    'plugin:react/all'
+  ],
+  'ignorePatterns': [
+    'dist'
+    // '.eslintrc.cjs'
   ],
   'overrides': [
     {
-      'files': [
-        '**/*.ts',
-        '**/*.tsx'
-      ],
-      // 'parser': 'typescript-eslint-parser',
-      'rules': {
-        'no-undef': 'warn'
+      plugins,
+      'extends': _extends,
+      'files': ['**/*.{js,jsx,mjs,cjs,ts,tsx,mts,cts}'],
+      'env': {
+        'jest/globals': true
+      },
+      'settings': {
+        'react': {
+          'version': 'detect'
+        }
       }
+      // 'parser': 'typescript-eslint-parser',
+      // 'rules': {
+      //   'no-undef': 'warn'
+      // }
     }
   ],
   'parser': '@typescript-eslint/parser',
   'parserOptions': {
+    'allowAutomaticSingleRunInference': true,
+    'tsconfigRootDir': __dirname,
+    'warnOnUnsupportedTypeScriptVersion': false,
+    'EXPERIMENTAL_useSourceOfProjectReferenceRedirect': false,
+    'cacheLifetime': {
+      // we pretty well never create/change tsconfig structure - so need to ever evict the cache
+      // in the rare case that we do - just need to manually restart their IDE.
+      'glob': 'Infinity'
+    },
     'ecmaFeatures': {
       'jsx': true
     },
@@ -45,15 +92,12 @@ module.exports = {
     'sourceType': 'module',
     'project': ['./tsconfig.json']
   },
-  'plugins': [
-    'react',
-    'react-hooks',
-    '@typescript-eslint',
-    // 'prettier',
-    'jest'
-    // , 'unicorn'
-  ],
+  plugins,
   'rules': {
+    // 'react-refresh/only-export-components': [
+    //   'warn',
+    //   { allowConstantExport: true },
+    // ],
     'indent': 'off',
     // 强制使用两个空格缩进 // 强制使用一致的缩进
     'linebreak-style': [
@@ -1515,7 +1559,57 @@ module.exports = {
           '.js',
           '.jsx',
           '.ts',
-          '.tsx'
+          '.tsx',
+          '.d.ts',
+          '.json',
+          '.node',
+          '.mjs',
+          '.cjs',
+          '.mts',
+          '.cts',
+          '.wasm',
+          '.vue',
+          '.graphql',
+          '.gql',
+          '.svg',
+          '.png',
+          '.jpg',
+          '.jpeg',
+          '.gif',
+          '.webp',
+          '.mp4',
+          '.webm',
+          '.mp3',
+          '.m4a',
+          '.aac',
+          '.oga',
+          '.ogg',
+          '.wav',
+          '.flac',
+          '.amr',
+          '.avif',
+          '.pdf',
+          '.woff',
+          '.woff2',
+          '.eot',
+          '.ttf',
+          '.otf',
+          '.swf',
+          '.ico',
+          '.cur',
+          '.map',
+          '.xmp',
+          '.zip',
+          '.rar',
+          '.gz',
+          '.7z',
+          '.bz2',
+          '.dmg',
+          '.mpg',
+          '.mpeg',
+          '.avi',
+          '.flv',
+          '.mkv'
         ]
       }
     }
