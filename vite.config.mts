@@ -20,6 +20,9 @@ import {
   resolve
 } from 'path';
 import svgr from 'vite-plugin-svgr';
+// import { } from 'vite-plugin-svg-icons';
+// import svgLoader from 'vite-svg-loader';
+// import reactSvgPlugin from 'vite-plugin-react-svg';
 // //vitejs.dev/config/
 const serverOptions = {
   'host': true,
@@ -70,6 +73,52 @@ export default defineConfig({
       exportAsDefault: true
       // 这里可以添加SVGR的选项
     }),
+    // svgLoader({
+    //   svgoConfig: {
+    //     multipass: true,
+    //     js2svg: {
+    //       pretty: true,
+    //       useShortTags: true,
+    //       eol: 'crlf',
+    //       finalNewline: true
+    //     }
+    //   },
+    //   defaultImport: 'component',// or 'raw'
+    //   svgo: true
+    // }),
+    // reactSvgPlugin({
+    //   // Default behavior when importing `.svg` files, possible options are: 'url' and `component`
+    //   defaultExport: 'component',
+
+    //   // Boolean flag to enable/disable SVGO
+    //   svgo: true,
+
+    //   // SVGO configuration object
+    //   svgoConfig: {},
+
+    //   // Props to be forwarded on SVG tag, ossible options: "start", "end" or false
+    //   expandProps: 'end',
+
+    //   // Setting this to true will forward ref to the root SVG tag
+    //   ref: false,
+
+    //   // Setting this to true will wrap the exported component in React.memo
+    //   memo: false,
+
+    //   // Replace an attribute value by an other.
+    //   // The main usage of this option is to change an icon color to "currentColor" in order to inherit from text color.
+    //   // replaceAttrValues: { old: 'new' },
+    //   replaceAttrValues: null,
+
+    //   // Add props to the root SVG tag
+    //   // svgProps: { name: 'value' },
+    //   svgProps: null,
+
+    //   // Add title tag via title property
+    //   // <SvgIcon title="Accessible icon name" /> => <svg><title>Accessible icon name</title><...></svg>
+    //   // <SvgIcon title="Accessible icon name" titleId="iconName" /> => <svg aria-labelledby="iconName><title id="iconName">Accessible icon name</title><...></svg>
+    //   titleProp: false,
+    // }),
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call
     importToCDN({
       'modules': [
@@ -104,7 +153,11 @@ export default defineConfig({
           'var': 'ReactRedux',
           'path': '//cdn.bootcdn.net/ajax/libs/react-redux/8.0.5/react-redux.min.js'
         },
-
+        {
+          'name': 'redux-thunk',
+          'var': 'ReduxThunk',
+          'path': '//cdn.bootcdn.net/ajax/libs/redux-thunk/2.4.2/redux-thunk.min.js'
+        },
         {
           'name': 'axios',
           'var': 'axios',
@@ -120,7 +173,6 @@ export default defineConfig({
           'var': 'ReactTransitionGroup',
           'path': '//cdn.bootcdn.net/ajax/libs/react-transition-group/4.4.5/react-transition-group.min.js'
         }
-
 
         // {
         //   'name': 'react/react-jsx-runtime',

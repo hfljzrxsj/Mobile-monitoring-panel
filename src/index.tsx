@@ -2,6 +2,7 @@ import './index.css';
 import * as React from 'react';
 import App from './App';
 import { render } from 'react-dom';
+// import 'virtual:svg-cions-register';
 // import { createRoot } from 'react-dom/client';
 // import reportWebVitals from './reportWebVitals';
 // const container = document.getElementById('root') ?? document.createElement('div');

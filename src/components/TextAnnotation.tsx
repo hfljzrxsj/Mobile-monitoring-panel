@@ -52,7 +52,7 @@ type RN_AxiosResponse<T> = Readonly<NonNullable<AxiosResponse<T>>>;
 + * @return {ReactElement} The rendered text annotation component.
 + */
 export default function TextAnnotation (): anyReactElementGenericity {
-  console.log('Json:', Json);
+  // console.log('Json:', Json);
   const [
     isloading,
     setIsloading

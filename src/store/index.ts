@@ -8,7 +8,8 @@ import type {
   // anyReactElementGenericity
 } from '@/types';
 import { type TypedUseSelectorHook, useSelector } from 'react-redux';
-import { legacy_createStore as createStore } from 'redux';
+import { legacy_createStore as createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 
 
 // eslint-disable-next-line no-shadow
@@ -67,7 +68,7 @@ const initialState: State = {
   [enumActionName.PORT]: '1392'
 },
 
-  // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types, @typescript-eslint/default-param-last
+  // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types, @typescript-eslint/default-param-last, default-param-last
   reducer = (state = initialState, action: RRN_<actionInterface>): RRNState => {
 
     const snackbarAlertReturn = (bool: RRNboolean): RRNState => ({
@@ -115,6 +116,6 @@ const initialState: State = {
     }
 
   };
-export default createStore(reducer);
+export default createStore(reducer, applyMiddleware(thunk));
 // eslint-disable-next-line one-var
 export const useTypedSelector: TypedUseSelectorHook<RRNState> = useSelector;

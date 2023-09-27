@@ -2,6 +2,7 @@
 /* eslint-disable line-comment-position */
 /* eslint-disable sort-keys */
 // @ts-check
+// eslint-disable-next-line no-underscore-dangle
 const _extends = [
   // '@typescript-eslint',
   // '@typescript-eslint/internal',
@@ -16,7 +17,10 @@ const _extends = [
   'plugin:jest/recommended',
   'plugin:react-hooks/recommended',
   'plugin:react/recommended',
-  'plugin:jsx-a11y/recommended'
+  'plugin:jsx-a11y/recommended',
+  'eslint-config-prettier',
+  'eslint-config-react-app',
+  'eslint-config-react-app/jest',
   // 'simple-import-sort',
   // 'unicorn',
   // 'airbnb',
@@ -74,6 +78,7 @@ module.exports = {
     }
   ],
   'parser': '@typescript-eslint/parser',
+  // 'parser': 'babel-eslint',
   'parserOptions': {
     'allowAutomaticSingleRunInference': true,
     'tsconfigRootDir': __dirname,
@@ -85,7 +90,8 @@ module.exports = {
       'glob': 'Infinity'
     },
     'ecmaFeatures': {
-      'jsx': true
+      'jsx': true,
+      'experimentalObjectRestSpread': true
     },
     'ecmaVersion': 'latest',
     'parser': 'babel-eslint',
