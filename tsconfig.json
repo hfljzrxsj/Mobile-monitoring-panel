@@ -136,7 +136,6 @@
     { "transform": "typescript-transform-paths" },
     { "transform": "typescript-transform-paths", "afterDeclarations": true }
   ],
-  "references": [ { "path": "./tsconfig.node.json" } ],
   "include": [
     "src",
     ".eslintrc.cjs",

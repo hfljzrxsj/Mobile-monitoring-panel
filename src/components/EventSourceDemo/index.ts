@@ -4,7 +4,8 @@
 export default function EventSourceDemo (): void {
   // useEffect(() => {
   // addEventListener("DOMContentLoaded", function () {
-  const evsrc = new EventSource('http://[fe80::841c:4ec3:8058:656a]:8000/api/EventSourceTest',
+  // const evsrc = new EventSource('http://[fe80::841c:4ec3:8058:656a]:8000/api/EventSourceTest',
+  const evsrc = new EventSource('http://127.0.0.1:8000/api/EventSourceTest',
     { 'withCredentials': false });
   evsrc.onopen = function (): void {
     console.log('start');

@@ -187,7 +187,7 @@ Makefile
 *.idb
 *.pdb
 # Kernel Module Compile Results
-*.mod*
+# *.mod*
 *.cmd
 .tmp_versions/
 modules.order
@@ -1286,7 +1286,7 @@ front-workspace.code-workspace
 *.c
 *.h
 *.vho
-*.html
+# *.html
 */*/bd/*/ip/*/*.tcl
 */*/*/bd/*/ip/*/*.tcl
 hw_handoff
@@ -7360,7 +7360,7 @@ atlassian*
 /.idea
 /.gitattributes
 /Gruntfile.js
-/package.json
+# /package.json
 /.php_cs
 /pub/media/custom_options/*
 !/pub/media/custom_options/.htaccess
@@ -7887,7 +7887,7 @@ DataDigger/DataDigger*.log
 /old/
 /debug/
 # General files
-.gitignore
+# .gitignore
 *.old
 *- Copy.*
 *- Copy (*).*
@@ -8347,7 +8347,7 @@ public/uploads/*
 !public/uploads/.gitkeep
 
 ##---./templates\Stylus.gitignore---
-*.css
+# *.css
 
 ##---./templates\SublimeText.gitignore---
 
@@ -8809,7 +8809,7 @@ _projects
 contents/
 templates/
 config.json
-package.json
+# package.json
 
 ##---./templates\WordPress.gitignore---
 
@@ -9045,7 +9045,7 @@ zsdoc/data
 /docker
 /Jenkinsfile
 /node_modules
-/package.json
+# /package.json
 /public
 # README.md
 /reviewmeeting

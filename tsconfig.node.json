@@ -1,9 +1,1 @@
-{
-  "compilerOptions": {
-    "composite": true,
-    "module": "ESNext",
-    "moduleResolution": "Node",
-    "allowSyntheticDefaultImports": true
-  },
-  "include": [ "vite.config.mts" ]
-}
+I:/html/html/react/doctorImageOCR/tsconfig.json

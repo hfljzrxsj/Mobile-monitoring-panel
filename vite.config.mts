@@ -381,7 +381,7 @@ export default defineConfig({
     ...serverOptions,
     'hmr': true,
     'watch': {
-      'ignored': exclude,
+      // 'ignored': exclude,
       followSymlinks: false,
       awaitWriteFinish: true,
       'usePolling': false
