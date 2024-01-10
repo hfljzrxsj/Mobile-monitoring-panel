@@ -28,7 +28,7 @@ const serverOptions = {
   'host': true,
   'open': true,
   'cors': true,
-  'https': false,
+  // 'https': false,
   // 'strictPort': true, // 若端口已被占用则会直接退出
   'proxy': {
     '/api': {
