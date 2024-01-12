@@ -1,7 +1,6 @@
 /* eslint-disable no-inline-comments */
 /* eslint-disable line-comment-position */
 /* eslint-disable sort-keys */
-import { url } from './global.json';
 import { exclude } from './tsconfig.json';
 import { URL, fileURLToPath } from 'node:url';
 import {
@@ -32,7 +31,6 @@ const serverOptions = {
   // 'strictPort': true, // 若端口已被占用则会直接退出
   'proxy': {
     '/api': {
-      'target': url,
       'changeOrigin': true,
       'secure': true
       // 'rewrite': (path) => path.replace(/^\/api/u, '')
