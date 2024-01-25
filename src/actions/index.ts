@@ -30,8 +30,7 @@ export const loginAction: commonActionType<{ readonly [adminId]: string, readonl
 export const getScode = () => axios.get<commonResponse<string>>('/api/scode/', {
   params: {
     [uuidString]: (() => {
-      // const v = v4().replaceAll('-', '');
-      const v = '9c3d69a46cf74b9283eb986d9f7ebf58';
+      const v = v4().replaceAll('-', '');
       sessionStorage.setItem(uuidString, v);
       return v;
     })()
