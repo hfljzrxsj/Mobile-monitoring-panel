@@ -14,55 +14,21 @@ import { StrictMode } from 'react';
 // import Counter from './Counter';
 // import TextAnnotation from '@/components/TextAnnotation';
 // import store from '@/store';
-import Test from './components/testComponents';
-
+import MyRoute from './Route';
+import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import store from './store';
+import SnackbarAlert from './components/SnackbarAlert';
 // import Manager from '@/components/Manager';
 // import Login from './components/Login';
 
-export default function APP (): React.ReactElement {
-
-  // const [
-  //   isIframeShow,
-  //   setIsIframeShow
-  // ] = useState(false),
-  //   [
-  //     iframeSrc,
-  //     setIframeSrc
-  //   ] = useState('');
-
-  return (
-    <StrictMode>
-      {/* <IndexedDBtest /> */}
-      {/* <Wasm /> */}
-      {/* <ReactLogo /> */}
-      {/* <SVG /> */}
-
-      {/* <Head /> */}
-
-      {/* <Login /> */}
-      {/* <div
-        className={styleModule['APP']}
-      >
-        <Side
-          setIframeSrc={setIframeSrc}
-          setIsIframeShow={setIsIframeShow}
-        />
-
-        {isIframeShow
-          ? <iframe
-            sandbox="allow-popups"
-            src={iframeSrc}
-          />
-          : <Body />} */}
-
-      {/* <Manager /> */}
-      {/* </div> */}
-      {/* <TextAnnotation /> */}
-
-      {/* <Provider store={store}>
-        <TextAnnotation />
-      </Provider> */}
-      <Test />
-    </StrictMode>);
-
+export default function APP () {
+  //@ts-expect-error
+  return (<StrictMode><Provider store={store}>
+    <BrowserRouter>
+      <MyRoute />
+    </BrowserRouter>
+    <SnackbarAlert />
+  </Provider>
+  </StrictMode>);
 }

@@ -8404,7 +8404,7 @@ terragrunt-debug.tfvars.json
 # Reference https://en.wikipedia.org/wiki/Metasyntactic_variable
 # Most common
 *foo
-*bar
+# *bar
 *fubar
 *foobar
 *baz
@@ -8497,7 +8497,7 @@ terragrunt-debug.tfvars.json
 
 ##---./templates\THEOS-Tweak.gitignore---
 .debmake
-_
+# _
 .theos
 
 ##---./templates\ThinkPHP.gitignore---

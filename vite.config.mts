@@ -31,6 +31,7 @@ const serverOptions = {
   // 'strictPort': true, // 若端口已被占用则会直接退出
   'proxy': {
     '/api': {
+      target: 'http://121.196.247.3',
       'changeOrigin': true,
       'secure': true
       // 'rewrite': (path) => path.replace(/^\/api/u, '')
@@ -382,7 +383,7 @@ export default defineConfig({
       // 'ignored': exclude,
       followSymlinks: false,
       awaitWriteFinish: true,
-      'usePolling': false
+      usePolling: false
     }
   },
   'css': {
