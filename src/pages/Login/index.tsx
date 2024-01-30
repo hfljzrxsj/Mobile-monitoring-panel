@@ -38,12 +38,14 @@ export default function Login () {
   return (
     <StrictMode>
       <TextField label="账号" variant="outlined"
+        defaultValue="1038762"
         onChange={e => setValue({
           adminId: e.target.value
         })}
         {...notVavidSoError(adminId, adminIdVavid, '请输入账号', '账号格式不正确')}
       />
       <TextField
+        defaultValue='666666'
         label="密码"
         type="password"
         variant="outlined"

@@ -1,10 +1,12 @@
+import { enumActionName, type snackbarAlertAction } from '@/store/SnackBarRuducer';
 import { AppBar } from '@mui/material';
 import { Box } from '@mui/material';
 import { Toolbar } from '@mui/material';
 import { Typography } from '@mui/material';
 import { Button } from '@mui/material';
 import { IconButton } from '@mui/material';
-import type { HTMLAttributes } from 'react';
+import { useEffect, type Dispatch, type HTMLAttributes } from 'react';
+import { useDispatch } from 'react-redux';
 interface ButtonAppBarProps extends HTMLAttributes<HTMLDivElement> {
   readonly menuOpenTrue: () => void;
 }

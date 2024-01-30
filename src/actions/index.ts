@@ -10,8 +10,9 @@ interface commonResponse<T = null> {
 type commonActionType<T = {}, D = void> = (props: T) => (dispatch: Dispatch<snackbarAlertAction>) => Promise<D | void>;
 const adminId = 'adminId';
 const uuidString = 'uuid';
-export const loginAction: commonActionType<{ readonly [adminId]: string, readonly password: string, readonly scode: string; }, boolean> = ({ adminId, password, scode }) => dispatch => axios.post<commonResponse>('/api/login', {
-  adminId, password, scode, uuid: sessionStorage.getItem(uuidString)
+export const loginAction: commonActionType<{ readonly [adminId]: string, readonly password: string, readonly scode: string; }, boolean> = ({ adminId, password, scode }) => dispatch => axios({
+  url: '/api/user/login',
+  params: { adminId, password, scode, uuid: sessionStorage.getItem(uuidString) }, method: "POST"
 }).then(e => {
   const { code, info } = e.data ?? {};
   if (e.status === 200 && code === 1000) {

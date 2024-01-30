@@ -256,7 +256,7 @@ export default defineConfig({
     'extensions': [
       // '.mjs',
       // '.mts',
-      // '.js',
+      '.js',
       '.ts',
       // '.jsx',
       '.tsx',
