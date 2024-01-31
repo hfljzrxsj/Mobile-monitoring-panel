@@ -7,6 +7,7 @@ import { Button } from '@mui/material';
 import { IconButton } from '@mui/material';
 import { useEffect, type Dispatch, type HTMLAttributes } from 'react';
 import { useDispatch } from 'react-redux';
+import MenuIcon from '@mui/icons-material/Menu';
 interface ButtonAppBarProps extends HTMLAttributes<HTMLDivElement> {
   readonly menuOpenTrue: () => void;
 }
@@ -15,7 +16,8 @@ export default function ButtonAppBar (props: ButtonAppBarProps) {
   return (
     // <Box sx={{ flexGrow: 1 }}>
     <AppBar position="static">
-      <Toolbar>
+      <MenuIcon onClick={menuOpenTrue} />
+      {/* <Toolbar>
         <IconButton
           size="large"
           edge="start"
@@ -24,9 +26,8 @@ export default function ButtonAppBar (props: ButtonAppBarProps) {
           sx={{ mr: 2 }}
           onClick={menuOpenTrue}
         >
-          {/* <MenuIcon /> */}
         </IconButton>
-      </Toolbar>
+      </Toolbar> */}
     </AppBar>
     // </Box>
   );

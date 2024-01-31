@@ -171,6 +171,21 @@ export default defineConfig({
           'name': 'react-transition-group',
           'var': 'ReactTransitionGroup',
           'path': '//cdn.bootcdn.net/ajax/libs/react-transition-group/4.4.5/react-transition-group.min.js'
+        },
+        // {
+        //   'name': 'react-router',
+        //   'var': 'ReactRouter',
+        //   'path': '//cdn.bootcdn.net/ajax/libs/react-router/6.15.0/react-router.production.min.js'
+        // },
+        // {
+        //   'name': 'react-router-dom',
+        //   'var': 'ReactRouterDOM',
+        //   'path': 'https://cdn.bootcdn.net/ajax/libs/react-router-dom/6.15.0/react-router-dom.development.js'
+        // },
+        {
+          'name': 'uuid',
+          'var': 'uuid',
+          'path': '//cdn.bootcdn.net/ajax/libs/uuid/8.3.2/uuid.min.js'
         }
 
         // {
