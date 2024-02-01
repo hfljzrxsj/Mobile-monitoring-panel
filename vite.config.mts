@@ -186,8 +186,12 @@ export default defineConfig({
           'name': 'uuid',
           'var': 'uuid',
           'path': '//cdn.bootcdn.net/ajax/libs/uuid/8.3.2/uuid.min.js'
-        }
-
+        },
+        {
+          'name': 'classnames',
+          'var': 'classNames',
+          'path': '//cdn.bootcdn.net/ajax/libs/classnames/2.3.2/index.min.js'
+        },
         // {
         //   'name': 'react/react-jsx-runtime',
         //   'var': 'ReactJsxRuntime',
