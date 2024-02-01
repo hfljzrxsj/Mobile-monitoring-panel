@@ -2225,7 +2225,6 @@
     "invariant": "^2.2.4",
     "inversify": "^4.11.1",
     "invert-kv": "^1.0.0",
-    "iohook": "^0.7.2",
     "ip": "^1.1.8",
     "ip-regex": "^4.3.0",
     "ipaddr.js": "^2.1.0",
@@ -4060,6 +4059,9 @@
   "devDependencies": {
     "coffee-script": "^1.10.0",
     "mocha": "^8.4.0"
+  },
+  "deprecatedDependencies": {
+    "iohook": "^0.7.2"
   },
   "scripts": {
     "vite": "node ./node_modules/vite/dist/node/cli.js",
