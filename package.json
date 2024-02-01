@@ -3896,7 +3896,6 @@
     "vscode-nls": "^4.1.2",
     "vscode-oniguruma": "^1.7.0",
     "vscode-page": "^0.0.1",
-    "vscode-regexp-languagedetection": "^1.0.0",
     "vscode-regexpp": "^3.1.0",
     "vscode-textmate": "^9.0.0",
     "vscode-uri": "^3.0.6",
