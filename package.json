@@ -4008,7 +4008,6 @@
     "write-file-atomic": "^3.0.3",
     "ws": "^8.13.0",
     "ws-parser": "^0.6.2",
-    "ws-typescript-vue-plugin": "^0.0.1",
     "www-authenticate": "^0.6.3",
     "x-default-browser": "^0.4.0",
     "x-is-array": "^0.1.0",
