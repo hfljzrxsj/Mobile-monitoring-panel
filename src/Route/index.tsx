@@ -54,7 +54,7 @@ export enum pathString {
 //     }
 //   },
 // });
-interface menuItem {
+export interface menuItem {
   readonly path: string;
   readonly text: RRNstring;
   readonly children?: ReadonlyArray<menuItem>;

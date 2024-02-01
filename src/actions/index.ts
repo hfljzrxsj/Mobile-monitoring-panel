@@ -10,22 +10,21 @@ interface commonResponse<T = null> {
 type commonActionType<T = {}, D = void> = (props: T) => (dispatch: Dispatch<snackbarAlertAction>) => Promise<D | void>;
 const adminId = 'adminId';
 const uuidString = 'uuid';
+export const JWT = 'JWT';
 export const loginAction: commonActionType<{ readonly [adminId]: string, readonly password: string, readonly scode: string; }, boolean> = ({ adminId, password, scode }) => dispatch => axios({
   url: '/api/user/login',
   params: { adminId, password, scode, uuid: sessionStorage.getItem(uuidString) }, method: "POST"
 }).then(e => {
-  const { code, info } = e.data ?? {};
+  const { code, info, data } = e.data ?? {};
   if (e.status === 200 && code === 1000) {
     dispatch({ type: enumActionName.OPENTRUE, payload: { [enumSnackbarAlert.alertText]: '登录成功', [enumSnackbarAlert.severity]: enumSeverity.success } });
-    setTimeout(() => {
-
-    });
+    localStorage.setItem(JWT, data);
     return true;
   }
-  Promise.reject(info);
-  throw new Error(info);
+  return Promise.reject(info);
+  // throw new Error(info);
 }).catch(e => {
-  dispatch({ type: enumActionName.OPENTRUE, payload: { [enumSnackbarAlert.alertText]: '登录失败', [enumSnackbarAlert.severity]: enumSeverity.error } });
+  dispatch({ type: enumActionName.OPENTRUE, payload: { [enumSnackbarAlert.alertText]: String(e), [enumSnackbarAlert.severity]: enumSeverity.error } });
   console.error(e);
 });
 export const getScode = () => axios.get<commonResponse<string>>('/api/scode/', {

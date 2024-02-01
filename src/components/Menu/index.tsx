@@ -1,86 +1,103 @@
-import { StrictMode, type HTMLAttributes } from "react";
-import { Box } from '@mui/material';
-import { Drawer } from '@mui/material';
-import { List } from '@mui/material';
-import { Divider } from '@mui/material';
-import { ListItem } from '@mui/material';
-import { ListItemButton } from '@mui/material';
-import { ListItemIcon } from '@mui/material';
-import { ListItemText } from '@mui/material';
-import { concatUrl, menuItems } from "@/Route";
+import { StrictMode, useState } from "react";
+import { Collapse, type DrawerProps, type ListItemButtonProps, Drawer, List, Divider, ListItemButton, ListItemText, } from '@mui/material';
+import { concatUrl, menuItems, type menuItem } from "@/Route";
 import { NavLink } from "react-router-dom";
+import KeyboardArrowDownIcon from '@mui/icons-material/ExpandMore';
 import style from './_index.module.scss';
-
-interface MenuProps extends HTMLAttributes<HTMLDivElement> {
+import classnames from 'classnames';
+const StyledListItemButton = ({ className, ...props }: ListItemButtonProps) => <ListItemButton
+  className={classnames(className, style['ListItemButton'])}
+  {...props}
+/>;
+interface StyledNavLinkProps extends ListItemButtonProps {
+  readonly text: string;
+  readonly path: string;
+}
+const StyledNavLink = (props: StyledNavLinkProps) => {
+  const { text = '', path = '', ...others } = props;
+  const [isSelected, setIsSelected] = useState(false);
+  return (
+    <StyledListItemButton
+      selected={isSelected}
+      disableGutters
+      {...others}>
+      <NavLink
+        to={path}
+        className={({ isActive }) => {
+          setIsSelected(isActive);
+          return style['NavLink'];
+        }}
+      >
+        {/* <ListItemIcon> */}
+        {/* </ListItemIcon> */}
+        <ListItemText primary={text} />
+      </NavLink>
+    </StyledListItemButton>
+  );
+};
+const StyledCollase = ({ item }: { readonly item: menuItem; }) => {
+  const { children, text, path } = item;
+  const [open, setOpen] = useState(false);
+  return (
+    <StrictMode>
+      <StyledListItemButton onClick={setOpen.bind(null, !open)}
+        className={classnames(style['CollapseClick'], { [style['CollapseClickActive'] ?? '']: open })}>
+        <ListItemText primary={text} />
+        {/* <ListItemIcon> */}
+        <KeyboardArrowDownIcon className={classnames({ [style['ArrowDownIcon'] ?? '']: open })} />
+        {/* </ListItemIcon> */}
+      </StyledListItemButton>
+      <Collapse in={open}>
+        <ul>
+          {children?.map(child => (
+            <li>
+              <StyledNavLink
+                text={child.text}
+                path={concatUrl(path, child.path)}
+              />
+            </li>
+          )
+          )}</ul>
+      </Collapse>
+    </StrictMode>
+  );
+};
+interface MenuProps extends DrawerProps {
   readonly menuOpen: boolean;
   readonly menuOpenFalse: (menuOpen: boolean) => void;
 }
-const StyledNavLink = (props: {
-  readonly text: string;
-  readonly path: string;
-}) => {
-  const { text = '', path = '' } = props;
-  return (
-    <NavLink to={path} className={
-      ({ isActive }) => (isActive ? style["menuActive"] : '')
-    }>
-      <ListItemButton>
-        <ListItemIcon>
-        </ListItemIcon>
-        <ListItemText primary={text} />
-      </ListItemButton>
-    </NavLink>);
-};
 export default function Menu (props: MenuProps) {
-  const { menuOpen, menuOpenFalse, } = props;
+  const { menuOpen, menuOpenFalse, ...others } = props;
   return (
     <StrictMode>
       <Drawer
         anchor='left'
         open={menuOpen}
         onClose={menuOpenFalse}
+        {...others}
       >
-        <Box
-          // sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
-          role="presentation"
-        // onClick={toggleDrawer(anchor, false)}
-        // onKeyDown={toggleDrawer(anchor, false)}
-        >{
-            menuItems.map((item, index) => {
-              const { children, text } = item;
-              return (
+        {
+          menuItems.map((item) => {
+            const { children, text, path } = item;
+            return (
+              <StrictMode>
                 <List key={text}>
                   {children ? (
-                    <StrictMode>
-                      <ListItem disablePadding>
-                        {/* <ListItemButton> */}
-                        <ListItemIcon>
-                        </ListItemIcon>
-                        <ListItemText primary={text} />
-                        {/* </ListItemButton> */}
-                      </ListItem>
-                      {children?.map(child => (
-                        <ListItem key={child.text} disablePadding>
-                          <StyledNavLink
-                            text={child.text}
-                            path={concatUrl(item.path, child.path)}
-                          />
-                        </ListItem>
-                      )
-                      )}
-                    </StrictMode>
-                  ) : (<ListItem disablePadding>
+                    <StyledCollase
+                      item={item} />
+                  ) : (
                     <StyledNavLink
                       text={text}
-                      path={concatUrl(item.path)}
+                      path={concatUrl(path)}
+                      className={style['overview'] ?? ''}
                     />
-                  </ListItem>)}
-                  {index !== menuItems.length - 1 && <Divider />}
+                  )}
                 </List>
-              );
-            })
-          }
-        </Box>
+                <Divider />
+              </StrictMode>
+            );
+          })
+        }
       </Drawer>
     </StrictMode>
   );

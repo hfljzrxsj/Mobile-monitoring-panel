@@ -1,22 +1,15 @@
-import { enumActionName, type snackbarAlertAction } from '@/store/SnackBarRuducer';
-import { AppBar } from '@mui/material';
-import { Box } from '@mui/material';
-import { Toolbar } from '@mui/material';
-import { Typography } from '@mui/material';
-import { Button } from '@mui/material';
-import { IconButton } from '@mui/material';
-import { useEffect, type Dispatch, type HTMLAttributes } from 'react';
-import { useDispatch } from 'react-redux';
+import { AppBar, type AppBarProps } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-interface ButtonAppBarProps extends HTMLAttributes<HTMLDivElement> {
+import style from './_index.module.scss';
+interface ButtonAppBarProps extends AppBarProps {
   readonly menuOpenTrue: () => void;
 }
 export default function ButtonAppBar (props: ButtonAppBarProps) {
-  const { menuOpenTrue } = props;
+  const { menuOpenTrue, ...others } = props;
   return (
     // <Box sx={{ flexGrow: 1 }}>
-    <AppBar position="static">
-      <MenuIcon onClick={menuOpenTrue} />
+    <AppBar position="static" {...others}>
+      <MenuIcon onClick={menuOpenTrue} className={style['menuIcon'] ?? ''} />
       {/* <Toolbar>
         <IconButton
           size="large"

@@ -2,6 +2,7 @@ import { enumActionName, enumSnackbarAlert, useSnackBarTypedSelector, type snack
 import { Snackbar } from '@mui/material';
 import { StrictMode, type Dispatch } from 'react';
 import { useDispatch } from 'react-redux';
+import style from './_index.module.scss';
 export default function CustomizedSnackbars () {
   const { open, alertText, severity } = useSnackBarTypedSelector(state => ({
     open: state.SnackBar.open,
@@ -17,6 +18,7 @@ export default function CustomizedSnackbars () {
         dispatch({ type: enumActionName.OPENFALSE });
       }}
         message={alertText}
+        className={style['Snackbar'] ?? ""}
       />
     </StrictMode>
   );

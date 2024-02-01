@@ -50,7 +50,7 @@ const serverOptions = {
 // eslint-disable-next-line @typescript-eslint/no-unsafe-call
 export default defineConfig({
   'root': resolve('./src'), //  入口index.html，注意入口js应该与index.html 同一目录下（只能写到目录，不能写到具体文件）
-  'base': '/', // 'base': './'
+  'base': './', // 'base': '/'
   'plugins': [
     react(),
     svgr({
@@ -135,13 +135,13 @@ export default defineConfig({
           // 'path': 'https://cdn.bootcdn.net/ajax/libs/react-dom/18.2.0/umd/react-dom.development.js'
           // 'path': 'https://cdn.bootcdn.net/ajax/libs/react-dom/18.2.0/umd/react-dom.development.min.js'
         },
-        {
-          'name': '@mui/material',
-          'var': 'MaterialUI',
-          'path': '//cdn.bootcdn.net/ajax/libs/material-ui/4.12.4/umd/material-ui.production.min.js'
-          // 'path': 'https://cdn.bootcdn.net/ajax/libs/material-ui/4.12.4/umd/material-ui.development.js'
-          // 'path': '//unpkg.com/@material-ui/core/umd/material-ui.production.min.js'
-        },
+        // {
+        //   'name': '@mui/material',
+        //   'var': 'MaterialUI',
+        //   'path': '//cdn.bootcdn.net/ajax/libs/material-ui/4.12.4/umd/material-ui.production.min.js'
+        //   // 'path': 'https://cdn.bootcdn.net/ajax/libs/material-ui/4.12.4/umd/material-ui.development.js'
+        //   // 'path': '//unpkg.com/@material-ui/core/umd/material-ui.production.min.js'
+        // },
         {
           'name': 'redux',
           'var': 'Redux',
@@ -180,7 +180,7 @@ export default defineConfig({
         // {
         //   'name': 'react-router-dom',
         //   'var': 'ReactRouterDOM',
-        //   'path': 'https://cdn.bootcdn.net/ajax/libs/react-router-dom/6.15.0/react-router-dom.development.js'
+        //   'path': '//cdn.bootcdn.net/ajax/libs/react-router-dom/6.15.0/react-router-dom.production.min.js'
         // },
         {
           'name': 'uuid',

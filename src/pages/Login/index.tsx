@@ -1,5 +1,5 @@
 import { StrictMode, useEffect, useState } from "react";
-import { TextField, Button, Box, type TextFieldVariants } from '@mui/material';
+import { TextField, Button, type TextFieldVariants } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import { getScode, loginAction } from "@/actions";
 import { useSetState, useUpdateEffect } from 'ahooks';
@@ -11,8 +11,8 @@ export default function Login () {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [value, setValue] = useSetState({
-    adminId: '',
-    password: '',
+    adminId: '1038762',
+    password: '666666',
     scode: '',
   });
   const [click, setClick] = useState(false);
@@ -45,14 +45,12 @@ export default function Login () {
           <h3>移动监控面板</h3>
           <TextField
             label="账号"
-            defaultValue="1038762"
             onChange={e => setValue({
               adminId: e.target.value
             })}
             {...notVavidSoError(adminId, adminIdVavid, '请输入账号', '账号格式不正确')}
           />
           <TextField
-            defaultValue='666666'
             label="密码"
             type="password"
             onChange={e => setValue({
