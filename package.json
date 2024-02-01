@@ -3542,7 +3542,6 @@
     "spdx-license-ids": "^3.0.12",
     "spdy": "^4.0.2",
     "spdy-transport": "^3.0.0",
-    "speaker": "^0.5.4",
     "specificity": "^0.3.2",
     "spellchecker": "^3.7.0",
     "split": "^0.3.3",
@@ -4061,7 +4060,8 @@
     "mocha": "^8.4.0"
   },
   "deprecatedDependencies": {
-    "iohook": "^0.7.2"
+    "iohook": "^0.7.2",
+    "speaker": "^0.5.4"
   },
   "scripts": {
     "vite": "node ./node_modules/vite/dist/node/cli.js",
