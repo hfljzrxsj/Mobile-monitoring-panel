@@ -3899,7 +3899,7 @@
     "vscode-regexpp": "^3.1.0",
     "vscode-textmate": "^9.0.0",
     "vscode-uri": "^3.0.6",
-    "vsda": "^1.4.1",
+    "vsda": "*",
     "vsls": "^0.3.1291",
     "vue": "^3.3.4",
     "vue-eslint-parser": "^8.3.0",
