@@ -2788,7 +2788,6 @@
     "napi-build-utils": "^1.0.2",
     "native-duplexpair": "^1.0.0",
     "native-is-elevated": "^0.7.0",
-    "native-keymap": "^2.0.0",
     "native-or-bluebird": "^1.2.0",
     "native-request": "^1.1.0",
     "native-watchdog": "^1.4.2",
@@ -4061,7 +4060,8 @@
   },
   "deprecatedDependencies": {
     "iohook": "^0.7.2",
-    "speaker": "^0.5.4"
+    "speaker": "^0.5.4",
+    "native-keymap": "^2.0.0"
   },
   "scripts": {
     "vite": "node ./node_modules/vite/dist/node/cli.js",
