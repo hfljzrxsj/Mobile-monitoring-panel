@@ -5,13 +5,14 @@ import React, {
   useLayoutEffect,
   type ReactElement
 } from 'react';
-import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
+import { createBrowserRouter, Navigate, Outlet, Route, Routes, type IndexRouteObject, type NonIndexRouteObject, type RouteObject } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RRNstring } from '@/types';
 import MainFrame from '@/pages';
 import Login from '@/pages/Login';
 import Overview from '@/pages/Overview';
-const { freeze } = Object;
+import DistributionOfTerminalSales from '@/pages/SalesVolumeMonitoring/DistributionOfTerminalSales';
+import TerminalActivitySalesStructure from '@/pages/SalesVolumeMonitoring/TerminalActivitySalesStructure';
 
 export enum pathString {
   login = 'login',
@@ -54,33 +55,30 @@ export enum pathString {
 //     }
 //   },
 // });
-export interface menuItem {
-  readonly path: string;
-  readonly text: RRNstring;
-  readonly children?: ReadonlyArray<menuItem>;
-  readonly element?: ReactElement;
+export interface menuItem extends NonIndexRouteObject {
+  readonly id: RRNstring;
 }
-export const menuItems: ReadonlyArray<menuItem> = freeze([
-  { path: '', text: '总览', element: <Overview /> },
+export const menuItems: Array<RouteObject> = ([
+  { path: '', id: '总览', element: <Overview /> },
   {
-    path: pathString.SalesVolumeMonitoring, text: '终端销量分布', children: [
-      { path: pathString.DistributionOfTerminalSales, text: '终端销量分布' },
-      { path: pathString.TerminalActivitySalesStructure, text: '终端活动销售结构' },
-      { path: pathString.SalesStructureOfTerminalPriceRanges, text: '终端各价位段销售结构' },
-      { path: pathString.TOP10ModelInformation, text: 'TOP10机型信息' },
-      { path: pathString.QualityOfTerminalSalesInThePanAlliance, text: '泛全联盟终端销售质量' },
-      { path: pathString.SalesSituationOfTerminalSubChannels, text: '终端分渠道销售情况' },
+    path: pathString.SalesVolumeMonitoring, id: '终端销量分布', children: [
+      { path: pathString.DistributionOfTerminalSales, id: '终端销量分布', element: <DistributionOfTerminalSales /> },
+      { path: pathString.TerminalActivitySalesStructure, id: '终端活动销售结构', element: <TerminalActivitySalesStructure /> },
+      { path: pathString.SalesStructureOfTerminalPriceRanges, id: '终端各价位段销售结构' },
+      { path: pathString.TOP10ModelInformation, id: 'TOP10机型信息' },
+      { path: pathString.QualityOfTerminalSalesInThePanAlliance, id: '泛全联盟终端销售质量' },
+      { path: pathString.SalesSituationOfTerminalSubChannels, id: '终端分渠道销售情况' },
     ]
   },
   {
-    path: pathString.PurchaseQuantityMonitoring, text: '进货量监控', children: [
-      { path: pathString.OrderQuantityOfMobileTerminals, text: '手机终端订货数量' }
+    path: pathString.PurchaseQuantityMonitoring, id: '进货量监控', children: [
+      { path: pathString.OrderQuantityOfMobileTerminals, id: '手机终端订货数量' }
     ]
   },
   {
-    path: pathString.InventoryMonitoring, text: '库存量监控', children: [
-      { path: pathString.InventoryQuantity, text: '库存数量' },
-      { path: pathString.InventoryStructure, text: '库存结构' },
+    path: pathString.InventoryMonitoring, id: '库存量监控', children: [
+      { path: pathString.InventoryQuantity, id: '库存数量' },
+      { path: pathString.InventoryStructure, id: '库存结构' },
     ]
   },
 ]);
@@ -101,10 +99,10 @@ export default function MyRoute () {
         element={<MainFrame />}
       >{
           menuItems.map(item => (
-            <Route key={item.text} path={item.path} element={item.element} >
+            <Route key={item.id} path={item.path ?? ''} element={item.element} >
               {
                 item.children?.map(child =>
-                  <Route key={child.text} path={child.path} element={child.element} />
+                  <Route key={child.id} path={child.path ?? ''} element={child.element} />
                 )
               }
             </Route>

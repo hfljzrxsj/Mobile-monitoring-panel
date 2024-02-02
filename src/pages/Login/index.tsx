@@ -19,7 +19,7 @@ export default function Login () {
   const { adminId, password, scode } = value;
   const adminIdVavid = /\w{6,20}/.test(adminId);
   const passwordVavid = /\w{6,20}/.test(password);
-  const scodeVavid = /\w{4}/.test(scode);
+  const scodeVavid = /\w{5}/.test(scode);
   const notVavidSoError = (value = '', vavid = true, valueText = '', vavidText = '') => ({
     ...commonProps, ...(() => {
       if (!click) return {};
@@ -34,7 +34,7 @@ export default function Login () {
     setClick(false);
   }, [adminIdVavid, passwordVavid, scodeVavid]);
   const [imgBase64, setImgBase64] = useState('');
-  const refreshScope = () => getScode().then(e => setImgBase64(e));
+  const refreshScope = () => getScode().then(e => setImgBase64(e ?? ''));
   useEffect(() => {
     refreshScope();
   }, []);

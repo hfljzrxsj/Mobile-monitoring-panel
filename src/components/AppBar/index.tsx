@@ -8,7 +8,9 @@ export default function ButtonAppBar (props: ButtonAppBarProps) {
   const { menuOpenTrue, ...others } = props;
   return (
     // <Box sx={{ flexGrow: 1 }}>
-    <AppBar position="static" {...others}>
+    <AppBar
+      position="sticky"
+      {...others}>
       <MenuIcon onClick={menuOpenTrue} className={style['menuIcon'] ?? ''} />
       {/* <Toolbar>
         <IconButton

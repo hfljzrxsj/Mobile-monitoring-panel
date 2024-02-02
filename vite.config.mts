@@ -192,6 +192,16 @@ export default defineConfig({
           'var': 'classNames',
           'path': '//cdn.bootcdn.net/ajax/libs/classnames/2.3.2/index.min.js'
         },
+        {
+          'name': 'echarts',
+          'var': 'echarts',
+          'path': '//cdn.bootcdn.net/ajax/libs/echarts/5.4.3/echarts.min.js'
+        },
+        {
+          'name': 'mockjs',
+          'var': 'Mock',
+          'path': '//cdn.bootcdn.net/ajax/libs/Mock.js/1.0.0/mock-min.js'
+        },
         // {
         //   'name': 'react/react-jsx-runtime',
         //   'var': 'ReactJsxRuntime',

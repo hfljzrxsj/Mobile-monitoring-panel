@@ -1388,7 +1388,7 @@ pubspec.lock
 # If you don't generate documentation locally you can remove this line.
 doc/api/
 # dotenv environment variables file
-.env*
+# .env*
 # Avoid committing generated Javascript files:
 *.dart.js
 *.info.json      # Produced by the --dump-info flag.
@@ -7490,7 +7490,7 @@ project/**/metals.sbt
 *.p1
 *.sdb
 *.obj.dmp
-*.production
+# *.production
 html/
 nbproject/private/
 nbproject/Package-*.bash
