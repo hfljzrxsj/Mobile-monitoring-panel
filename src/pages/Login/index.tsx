@@ -1,15 +1,19 @@
 import { StrictMode, useEffect, useState } from "react";
-import { TextField, Button, type TextFieldVariants } from '@mui/material';
+import { TextField, type TextFieldVariants } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import { getScode, loginAction } from "@/actions";
-import { useSetState, useUpdateEffect } from 'ahooks';
+import { useRequest, useSetState, useUpdateEffect } from 'ahooks';
 import { useDispatch } from "react-redux";
 import style from './_index.module.scss';
+import { LoadingButton } from "@mui/lab";
+import type { snackbarAlertAction } from "@/store/SnackBarRuducer";
+import type { Dispatch } from "redux";
+import { commonUseRequestParams } from "@/App";
 
 const commonProps: { readonly className: string, readonly variant: TextFieldVariants; } = { className: style['input'] ?? '', variant: 'outlined' };
 export default function Login () {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<Dispatch<snackbarAlertAction>>();
   const [value, setValue] = useSetState({
     adminId: '1038762',
     password: '666666',
@@ -17,9 +21,9 @@ export default function Login () {
   });
   const [click, setClick] = useState(false);
   const { adminId, password, scode } = value;
-  const adminIdVavid = /\w{6,20}/.test(adminId);
-  const passwordVavid = /\w{6,20}/.test(password);
-  const scodeVavid = /\w{5}/.test(scode);
+  const adminIdVavid = /^\d{7}$/.test(adminId);
+  const passwordVavid = /^\w{6,20}$/.test(password);
+  const scodeVavid = /^\w{5}$/.test(scode);
   const notVavidSoError = (value = '', vavid = true, valueText = '', vavidText = '') => ({
     ...commonProps, ...(() => {
       if (!click) return {};
@@ -38,6 +42,10 @@ export default function Login () {
   useEffect(() => {
     refreshScope();
   }, []);
+  const { run, loading, } = useRequest(() => (loginAction(value)(dispatch)).then(e => e ? navigate('/') : refreshScope()).catch(console.error), {
+    ...commonUseRequestParams,
+    manual: true,
+  });
   return (
     <StrictMode>
       <div className={style['loginBody']}>
@@ -66,14 +74,18 @@ export default function Login () {
             })}
             {...notVavidSoError(scode, scodeVavid, '请输入验证码', '验证码格式不正确')}
           />
-          <Button variant="contained" size="large" color="primary" onClick={() => {
-            setClick(true);
-            if (!adminIdVavid || !passwordVavid || !scodeVavid)
-              return;
-            (loginAction(value)(dispatch)).then(e => e ? navigate('/') : refreshScope()).catch(console.error);
-          }}>
+          <LoadingButton
+            variant="contained"
+            size="large"
+            loading={loading}
+            onClick={() => {
+              setClick(true);
+              if (!adminIdVavid || !passwordVavid || !scodeVavid)
+                return;
+              run();
+            }}>
             登录
-          </Button>
+          </LoadingButton>
         </div>
       </div>
     </StrictMode>

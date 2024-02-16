@@ -1,0 +1,103 @@
+@import "../AppBar/index.module";
+
+.root {
+  margin: 9q;
+
+  .Skeleton {
+    padding: 9q;
+
+    > span {
+      min-height: var(--height);
+    }
+  }
+
+  td,
+  th {
+    border-radius: unset;
+  }
+
+  th {
+    font-weight: 900;
+    font-size: 120%;
+  }
+
+  thead > tr > th {
+    background-color: #eceff1;
+  }
+}
+
+.AppBar {
+  @extend .AppBar;
+  padding-right: 9q;
+  // .menuIcon {
+  //   @extend .menuIcon;
+  // }
+}
+
+.ToggleButtonGroup {
+  justify-content: space-evenly;
+  display: flex;
+
+  > button:global(.MuiButtonBase-root.MuiToggleButton-root.MuiToggleButton-sizeMedium.MuiToggleButton-primary.MuiToggleButtonGroup-grouped.MuiToggleButtonGroup-groupedHorizontal) {
+    border-left-color: rgba(0, 0, 0, 0.12);
+    border-radius: 9q;
+  }
+}
+
+.date {
+  // display: none;
+  // opacity: 0;
+  // transform: scale(0, 0);
+  // margin: 0;
+  // border: 0;
+  // padding: 0;
+  // height: 0;
+  // width: 0;
+  // overflow: hidden;
+  // color: rgba(0, 0, 0, 0);
+  // background-color: rgba(0, 0, 0, 0);
+  // border-color: rgba(0, 0, 0, 0);
+  // clip-path: circle(0);
+  flex-direction: column;
+  align-items: center;
+  align-self: center;
+  align-content: center;
+  justify-content: center;
+  justify-self: center;
+  justify-items: center;
+  gap: 9q;
+  margin: 3% auto;
+  transition: 1s;
+  display: flex;
+
+  > label > input {
+    padding: 9q;
+    font-size: 120%;
+  }
+
+  // &.show {
+  //   animation: identifier 1s forwards;
+  //   display: flex;
+  //   // opacity: 1;
+  //   // transform: scale(1);
+  //   // border: unset;
+  //   // padding: unset;
+  //   // height: 100%;
+  //   // width: 100%;
+  //   // overflow: unset;
+  //   // color: unset;
+  //   // background-color: unset;
+  //   // border-color: unset;
+  //   // clip-path: unset;
+
+  //   @keyframes identifier {
+  //     from {
+  //       opacity: 0;
+  //     }
+
+  //     to {
+  //       opacity: 1;
+  //     }
+  //   }
+  // }
+}

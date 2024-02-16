@@ -1,11 +1,13 @@
-import { StrictMode, useState, type Dispatch, type SetStateAction } from "react";
+import { StrictMode, useState, type Dispatch } from "react";
 import { Collapse, type DrawerProps, type ListItemButtonProps, Drawer, List, Divider, ListItemButton, ListItemText, StyledEngineProvider, } from '@mui/material';
-import { concatUrl, menuItems, type menuItem } from "@/Route";
+import { concatUrl, menuItems } from "@/Route";
 import { NavLink, type RouteObject } from "react-router-dom";
 import KeyboardArrowDownIcon from '@mui/icons-material/ExpandMore';
 import style from './_index.module.scss';
 import classnames from 'classnames';
 import { unstable_batchedUpdates } from "react-dom";
+import { useDispatch } from "react-redux";
+import { enumActionName, type AppBarTitleAction } from "@/store/AppBarTitleRuducer";
 const StyledListItemButton = ({ className, ...props }: ListItemButtonProps) => <ListItemButton
   className={classnames(className, style['ListItemButton'])}
   {...props}
@@ -19,6 +21,7 @@ const StyledNavLink = (props: StyledNavLinkProps) => {
   const { text = '', path = '', setOpen, ...others } = props;
   const [isSelected, setIsSelected] = useState(false);
   const [first, setFirst] = useState(true);
+  const dispatch = useDispatch<Dispatch<AppBarTitleAction>>();
   return (
     <StyledListItemButton
       selected={isSelected}
@@ -28,11 +31,15 @@ const StyledNavLink = (props: StyledNavLinkProps) => {
         to={path}
         className={({ isActive }) => unstable_batchedUpdates(() => {
           setIsSelected(isActive);
-          if (isActive && first)
+          if (isActive && first) {
             setOpen?.();
+          }
           setFirst(false);
           return style['NavLink'];
         })}
+        onClick={() => {
+          dispatch({ type: enumActionName.SET_TITLE, payload: { title: text } });
+        }}
       >
         {/* <ListItemIcon> */}
         {/* </ListItemIcon> */}
@@ -55,8 +62,8 @@ const StyledCollase = ({ item }: { readonly item: RouteObject; }) => {
       </StyledListItemButton>
       <Collapse in={open}>
         <ul>
-          {children?.map(child => (
-            <li>
+          {children?.map((child, index) => (
+            <li key={index}>
               <StyledNavLink
                 text={child.id ?? ''}
                 path={concatUrl(path, child.path ?? '')}
@@ -85,11 +92,11 @@ export default function Menu (props: MenuProps) {
           {...others}
         >
           {
-            menuItems.map((item) => {
+            menuItems.map((item, index) => {
               const { children, id = '', path = '' } = item;
               return (
                 <StrictMode>
-                  <List key={id}>
+                  <List key={index}>
                     {children ? (
                       <StyledCollase
                         item={item} />

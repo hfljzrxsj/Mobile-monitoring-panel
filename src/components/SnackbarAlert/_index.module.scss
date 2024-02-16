@@ -3,11 +3,6 @@
   transform: translateX(-50%);
 
   > div {
-    min-width: max-content;
-
-    > div {
-      margin: 0 auto;
-      letter-spacing: 1q;
-    }
+    margin: 0 auto;
   }
 }

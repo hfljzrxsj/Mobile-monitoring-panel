@@ -202,6 +202,11 @@ export default defineConfig({
           'var': 'Mock',
           'path': '//cdn.bootcdn.net/ajax/libs/Mock.js/1.0.0/mock-min.js'
         },
+        {
+          'name': 'react-is',
+          'var': 'ReactIs',
+          'path': '//cdn.bootcdn.net/ajax/libs/react-is/18.2.0/umd/react-is.production.min.js'
+        },
         // {
         //   'name': 'react/react-jsx-runtime',
         //   'var': 'ReactJsxRuntime',
@@ -231,6 +236,16 @@ export default defineConfig({
         //   'name': '@babel',
         //   'var': 'babel',
         //   'path': '//cdn.bootcdn.net/ajax/libs/babel-standalone/7.21.4/babel.min.js'
+        // },
+        // {
+        //   'name': 'tslib',
+        //   'var': 'tslib',
+        //   'path': '//cdn.bootcdn.net/ajax/libs/tslib/2.6.2/tslib.min.js'
+        // },
+        // {
+        //   'name': 'lodash',
+        //   'var': 'lodash',
+        //   'path': '//cdn.bootcdn.net/ajax/libs/lodash.js/4.17.21/lodash.core.min.js'
         // },
       ]
     }),
@@ -413,7 +428,7 @@ export default defineConfig({
       followSymlinks: false,
       awaitWriteFinish: true,
       usePolling: false
-    }
+    },
   },
   'css': {
     'modules': {

@@ -1,12 +1,8 @@
-import React, {
-  useEffect,
-  useState,
-  createContext,
-  useLayoutEffect,
-  type ReactElement
-} from 'react';
-import { createBrowserRouter, Navigate, Outlet, Route, Routes, type IndexRouteObject, type NonIndexRouteObject, type RouteObject } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import {
+  createHashRouter,
+  Route, Routes, type NonIndexRouteObject, type RouteObject,
+  // createHashRouter
+} from 'react-router-dom';
 import type { RRNstring } from '@/types';
 import MainFrame from '@/pages';
 import Login from '@/pages/Login';
@@ -84,10 +80,10 @@ export const menuItems: Array<RouteObject> = ([
 ]);
 export const concatUrl = (...args: ReadonlyArray<RRNstring>) => (`/${args.join('/')}`);
 export default function MyRoute () {
-  const isLogin = true;
-  if (!isLogin) {
-    return <Navigate to={concatUrl(pathString.login)} />;
-  }
+  // const isLogin = true;
+  // if (!isLogin) {
+  //   return <Navigate to={concatUrl(pathString.login)} />;
+  // }
   return (
     <Routes>
       <Route
@@ -98,17 +94,31 @@ export default function MyRoute () {
         path='/'
         element={<MainFrame />}
       >{
-          menuItems.map(item => (
-            <Route key={item.id} path={item.path ?? ''} element={item.element} >
+          menuItems.map((item, index) => (
+            <Route key={index} path={item.path ?? ''} element={item.element} >
               {
-                item.children?.map(child =>
-                  <Route key={child.id} path={child.path ?? ''} element={child.element} />
+                item.children?.map((child, index) =>
+                  <Route key={index} path={child.path ?? ''} element={child.element}
+                  // loader={e => {
+                  //   console.log(e);
+                  //   return e;
+                  // }}
+                  // action={e => {
+                  //   console.log(e);
+                  //   return e;
+                  // }}
+                  // shouldRevalidate={e => {
+                  //   console.log(e);
+                  //   return Boolean(e);
+                  // }}
+                  />
                 )
               }
             </Route>
           ))
         }
       </Route>
+      {/* {useRoutes([...menuItems])} */}
     </Routes>
   );
 }

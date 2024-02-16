@@ -32,7 +32,7 @@ interface State {
   readonly [enumSnackbarAlert.severity]: RRN_<enumSeverity>;
 }
 
-export type RRNState = RRN_<State>;
+// export type RRNState = RRN_<State>;
 export type snackbarAlertAction = actionInterface<State, enumActionName>;
 const initialState = {
   [enumSnackbarAlert.alertText]: '',

@@ -1,4 +1,5 @@
-import { JWT, testLogin } from "@/actions";
+import { testLogin } from "@/actions";
+import { JWT } from "@/actions/axios_instance";
 import ButtonAppBar from "@/components/AppBar";
 import Menu from "@/components/Menu";
 import { pathString } from "@/Route";
@@ -14,7 +15,7 @@ export default function MainFrame () {
     //     navigate(pathString.login);
     //   }
     // });
-    if (!localStorage.getItem(JWT)) navigate(pathString.login);
+    // if (!localStorage.getItem(JWT)) navigate(pathString.login);
   });
   const [menuOpen, setMenuOpen] = useState(false);
   return (

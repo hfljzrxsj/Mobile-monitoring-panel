@@ -1,4 +1,60 @@
-.menuIcon {
-  margin: 1rem;
-  cursor: pointer;
+.AppBar {
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: center;
+
+  > span {
+    font-weight: 900;
+    letter-spacing: 2q;
+    font-size: 120%;
+  }
+
+  .menuIcon {
+    cursor: pointer;
+    // margin-left: .5rem;
+    padding: 9q;
+
+    > svg {
+      fill: #fff;
+      font-size: 120%;
+    }
+  }
+
+  .Avatar {
+    display: flex;
+    align-items: center;
+    margin-right: 9q;
+    gap: 1q;
+    color: unset;
+    align-items: center;
+
+    &.open {
+      background-color: rgba(0, 0, 0, 0.3);
+    }
+
+    > span {
+      letter-spacing: 1q;
+      font-size: 120%;
+    }
+  }
+
+  button:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+    transition: .5s;
+  }
+}
+
+.Popover > div:nth-child(3) {
+  padding: 9q;
+  display: flex;
+  flex-direction: column;
+  gap: 9q;
+
+  > p > span {
+    font-weight: 900;
+  }
+}
+
+.DialogActions > button {
+  flex: 1;
 }
