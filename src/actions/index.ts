@@ -53,9 +53,9 @@ export const getSalesVolumeMonitoring_SalesStructureOfTerminalPriceRanges = (e =
 }).then(e => e.data.data).catch(console.error);
 export const testLogin = () => axios.get<commonResponse>('/api/sell').then(e => e.data.code === successCode).catch(console.error);
 export const getTerminalActivitySalesStructure = (props: {
-  readonly type: string;
-  readonly address?: string;
-}) => axios.get<commonResponse<data>>('/api/SalesVolumeMonitoring/TerminalActivitySalesStructure', {
+  readonly type?: string;
+  readonly regionId?: string;
+} = { ...getInitParams() }) => axios.get<commonResponse<data>>('/api/SalesVolumeMonitoring/TerminalActivitySalesStructure', {
   params: props
 }).then(e => e.data.data).catch(console.error);
 export const getAddressList = ({ id }: {

@@ -9,7 +9,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { StyledButton } from "../AppBar";
 import SendIcon from '@mui/icons-material/Send';
 import classNames from "classnames";
-import { getAddressList, getInitParams, getSalesVolumeMonitoring_DistributionOfTerminalSales } from "@/actions";
+import { getInitParams, getSalesVolumeMonitoring_DistributionOfTerminalSales } from "@/actions";
 import { getLevel, getLocalStorageFromJSON, level as levelString, orgId } from "@/actions/axios_instance";
 import ReplyIcon from '@mui/icons-material/Reply';
 import { regionName } from "../MyTable";
@@ -94,7 +94,7 @@ const CurrentFilterShow = (props: CurrentFilterShow) => {
   return <Paper className={classes['filterResult'] ?? ''} elevation={24}>
     {allNeed && <StrictMode><div>当前<wbr />筛选</div><span>{'{'}</span></StrictMode>}
     <div>
-      <p>地理位置：
+      <div>地理位置：
         <Breadcrumbs className={classes['Breadcrumbs'] ?? ''}>
           {Boolean(hasDataIndex) ? <Link
             onClick={() => { setBreadcrumbsAddress(-1); }}
@@ -111,7 +111,7 @@ const CurrentFilterShow = (props: CurrentFilterShow) => {
           }
           {hasDataIndex >= 0 && <span>{`所有${unitName[hasDataIndex]?.text}`}</span>}
         </ Breadcrumbs>
-      </p>
+      </div>
       {allNeed && <Divider />}
       {!noNeedTime && <p>时间范围：{(() => {
         if (isCustomTime)
@@ -219,6 +219,11 @@ export const FilterDialogWithBreadcrumbs = forwardRef<FilterDialogIncludeButtonI
   //   });
   // };
   return <StrictMode><div className={classes['CurrentFilterShow']}>
+    {(!noNeedAddress) && <Button
+      variant="contained"
+      size="large"
+      onClick={setFilterOpen.bind(null, true)}
+    >筛选器</Button>}
     {Boolean(requestFilterResultShow.hasDataIndex) && <Fab variant="extended" color="primary"
       onClick={() => unstable_batchedUpdates(() => {
         const setNullNumber = hasDataIndex > -1 ? hasDataIndex - 1 : unitName.length - 1;
@@ -231,11 +236,6 @@ export const FilterDialogWithBreadcrumbs = forwardRef<FilterDialogIncludeButtonI
     >
       <ReplyIcon />返回上级
     </Fab>}
-    {(!noNeedTime && !noNeedAddress) && <Button
-      variant="contained"
-      size="large"
-      onClick={setFilterOpen.bind(null, true)}
-    >筛选器</Button>}
     <CurrentFilterShow
       {...requestFilterResultShow}
     />

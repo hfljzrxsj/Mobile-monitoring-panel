@@ -1,12 +1,12 @@
 import { getTerminalActivitySalesStructure } from "@/actions";
 import { commonUseRequestParams } from "@/App";
-import { FilterDialogIncludeButton } from "@/components/FilterDialog";
+import { FilterDialogWithBreadcrumbs, type FilterDialogIncludeButtonInstance } from "@/components/FilterDialogWithBreadcrumbs";
 import echartsConstructor, { type data } from "@/echarts";
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 import { Tab, Divider, CircularProgress } from "@mui/material";
 import { useRequest } from "ahooks";
 import classNames from "classnames";
-import { memo, StrictMode, useEffect, useRef, useState } from "react";
+import { StrictMode, useEffect, useRef, useState } from "react";
 import style from './_index.module.scss';
 const { freeze } = Object;
 const chartsArr = freeze([
@@ -60,21 +60,18 @@ export interface TerminalActivitySalesStructureActionProps {
 }
 export default function TerminalActivitySalesStructure () {
   const [value, setValue] = useState('0');
-  const [address, setAddress] = useState('');
   const type = chartsArr[Number(value)]?.type ?? '';
-  const { data, loading } = useRequest(getTerminalActivitySalesStructure.bind(null, { address, type }), {
-    ...commonUseRequestParams, refreshDeps: [type, address]
+  const { data, loading, run } = useRequest((e) => getTerminalActivitySalesStructure({ ...e, type }), {
+    ...commonUseRequestParams, refreshDeps: [type]
   });
   const noDataOrLoading = loading || !data;
+  const childRef = useRef<FilterDialogIncludeButtonInstance>(null);
   return (
     <StrictMode>
-      <FilterDialogIncludeButton<{ readonly address: string; }>
+      <FilterDialogWithBreadcrumbs
+        ref={childRef}
         noNeedTime
-        run={e => {
-          if (e) {
-            setAddress(e.address);
-          }
-        }} />
+        run={(e) => run({ ...e, type })} />
       <TabContext value={value}>
         <TabList
           centered

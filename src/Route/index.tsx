@@ -1,5 +1,4 @@
 import {
-  createHashRouter,
   Route, Routes, type NonIndexRouteObject, type RouteObject,
   // createHashRouter
 } from 'react-router-dom';
