@@ -1,4 +1,4 @@
-import type { addressArrType } from "@/components/FilterDialog";
+import type { addressArrType } from "@/components/FilterDialogWithBreadcrumbs";
 import type { data } from "@/echarts";
 import type { DistributionOfTerminalSalesArray } from "@/pages/SalesVolumeMonitoring/DistributionOfTerminalSales";
 import type { SalesStructureOfTerminalPriceRangesArray } from "@/pages/SalesVolumeMonitoring/SalesStructureOfTerminalPriceRanges";
