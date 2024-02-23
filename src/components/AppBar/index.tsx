@@ -4,7 +4,7 @@ import style from './_index.module.scss';
 import { enumAppBarTitle, useAppBarTitleTypedSelector } from '@/store/AppBarTitleRuducer';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { adminIdString, getLevel, JWT } from '@/actions/axios_instance';
+import { adminIdString, getLevel, Authorization } from '@/actions/axios_instance';
 import { StrictMode, useState } from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 import { useNavigate } from 'react-router';

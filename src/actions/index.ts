@@ -1,4 +1,4 @@
-import type { addressArrType } from "@/components/MyTable";
+import type { addressArrType } from "@/components/FilterDialog";
 import type { data } from "@/echarts";
 import type { DistributionOfTerminalSalesArray } from "@/pages/SalesVolumeMonitoring/DistributionOfTerminalSales";
 import type { SalesStructureOfTerminalPriceRangesArray } from "@/pages/SalesVolumeMonitoring/SalesStructureOfTerminalPriceRanges";
@@ -6,26 +6,27 @@ import { enumActionName, enumSeverity, enumSnackbarAlert, type snackbarAlertActi
 import axios from "axios";
 import type { Dispatch } from "redux";
 import { v4 } from 'uuid';
-import { successCode, JWT, adminIdString, common, Authorization } from "./axios_instance";
+import { successCode, Authorization, adminIdString, common, orgId, level, getLevel, getLocalStorageFromJSON } from "./axios_instance";
 interface commonResponse<T = null> {
   readonly code: number;
   readonly data: T;
   readonly info: string;
 }
-export interface typeType {
-  readonly type: string;
-}
 // type commonActionType<T = {}, D = void> = (props: T) => (dispatch: Dispatch<snackbarAlertAction>) => Promise<D | void>;
 const uuidString = 'uuid';
+const setItemAndHeaders = (k: string, v: string) => {
+  common[k] = v;
+  localStorage.setItem(k, v);
+};
 export const loginAction = ({ adminId, password, scode }: { readonly [adminIdString]: string, readonly password: string, readonly scode: string; }) => (dispatch: Dispatch<snackbarAlertAction>) => axios.post<commonResponse<string>>('/api/user/login', null, { params: { adminId, password, scode, uuid: sessionStorage.getItem(uuidString) } })
   .then(e => {
     const { code, info, data } = e.data ?? {};
     if (e.status === 200 && code === successCode) {
       dispatch({ type: enumActionName.OPENTRUE, payload: { [enumSnackbarAlert.alertText]: '登录成功', [enumSnackbarAlert.severity]: enumSeverity.success } });
-      common[Authorization] = data;
-      common[adminIdString] = adminId;
-      localStorage.setItem(JWT, data);
-      localStorage.setItem(adminIdString, adminId);
+      setItemAndHeaders(Authorization, data);
+      setItemAndHeaders(adminIdString, adminId);
+      setItemAndHeaders(level, getLevel(data));
+      setItemAndHeaders(orgId, getLocalStorageFromJSON(orgId, data));
       return true;
     }
     return Promise.reject(info);
@@ -43,13 +44,19 @@ export const getScode = () => axios.get<commonResponse<string>>('/api/scode/', {
     })()
   }
 }).then(e => e?.data?.data).catch(console.error);
-export const getSalesVolumeMonitoring_DistributionOfTerminalSales = () => axios.get<commonResponse<DistributionOfTerminalSalesArray>>('/api/SalesVolumeMonitoring/DistributionOfTerminalSales').then(e => e.data.data).catch(console.error);
-export const getSalesVolumeMonitoring_SalesStructureOfTerminalPriceRanges = () => axios.get<commonResponse<SalesStructureOfTerminalPriceRangesArray>>('/api/SalesVolumeMonitoring/SalesStructureOfTerminalPriceRanges').then(e => e.data.data).catch(console.error);
+export const getInitParams = () => ({ [level]: Number(getLevel()) || 0, regionId: getLocalStorageFromJSON(orgId) || 'HB' });
+export const getSalesVolumeMonitoring_DistributionOfTerminalSales = (e = getInitParams()) => axios.get<commonResponse<DistributionOfTerminalSalesArray>>('/api/sale/subregion', {
+  params: e
+}).then(e => e.data.data).catch(console.error);
+export const getSalesVolumeMonitoring_SalesStructureOfTerminalPriceRanges = (e = {}) => axios.get<commonResponse<SalesStructureOfTerminalPriceRangesArray>>('/api/SalesVolumeMonitoring/SalesStructureOfTerminalPriceRanges', {
+  params: e
+}).then(e => e.data.data).catch(console.error);
 export const testLogin = () => axios.get<commonResponse>('/api/sell').then(e => e.data.code === successCode).catch(console.error);
-export const getTerminalActivitySalesStructure = ({ type }: typeType) => axios.get<commonResponse<data>>('/api/SalesVolumeMonitoring/TerminalActivitySalesStructure', {
-  params: {
-    type
-  }
+export const getTerminalActivitySalesStructure = (props: {
+  readonly type: string;
+  readonly address?: string;
+}) => axios.get<commonResponse<data>>('/api/SalesVolumeMonitoring/TerminalActivitySalesStructure', {
+  params: props
 }).then(e => e.data.data).catch(console.error);
 export const getAddressList = ({ id }: {
   // readonly type: string;

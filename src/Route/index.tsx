@@ -9,6 +9,7 @@ import Login from '@/pages/Login';
 import Overview from '@/pages/Overview';
 import DistributionOfTerminalSales from '@/pages/SalesVolumeMonitoring/DistributionOfTerminalSales';
 import TerminalActivitySalesStructure from '@/pages/SalesVolumeMonitoring/TerminalActivitySalesStructure';
+import SalesStructureOfTerminalPriceRanges from '@/pages/SalesVolumeMonitoring/SalesStructureOfTerminalPriceRanges';
 
 export enum pathString {
   login = 'login',
@@ -60,7 +61,7 @@ export const menuItems: Array<RouteObject> = ([
     path: pathString.SalesVolumeMonitoring, id: '终端销量分布', children: [
       { path: pathString.DistributionOfTerminalSales, id: '终端销量分布', element: <DistributionOfTerminalSales /> },
       { path: pathString.TerminalActivitySalesStructure, id: '终端活动销售结构', element: <TerminalActivitySalesStructure /> },
-      { path: pathString.SalesStructureOfTerminalPriceRanges, id: '终端各价位段销售结构' },
+      { path: pathString.SalesStructureOfTerminalPriceRanges, id: '终端各价位段销售结构', element: <SalesStructureOfTerminalPriceRanges /> },
       { path: pathString.TOP10ModelInformation, id: 'TOP10机型信息' },
       { path: pathString.QualityOfTerminalSalesInThePanAlliance, id: '泛全联盟终端销售质量' },
       { path: pathString.SalesSituationOfTerminalSubChannels, id: '终端分渠道销售情况' },

@@ -28,7 +28,7 @@ export default function SalesStructureOfTerminalPriceRanges () {
           text: '占比'
         },
       ]}
-      action={() => getSalesVolumeMonitoring_SalesStructureOfTerminalPriceRanges().then(e => {
+      action={(e) => getSalesVolumeMonitoring_SalesStructureOfTerminalPriceRanges(e).then(e => {
         if (!e)
           return [];
         return [...e, {

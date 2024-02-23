@@ -313,7 +313,7 @@ export default defineConfig({
     // 'jsxInject': 'use \'strict\';',
     'pure': [
       'console.log',
-      'debugger'
+      'debugger',
     ],
     'jsxFactory': 'React.createElement',
     'jsxFragment': 'React.Fragment',

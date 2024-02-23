@@ -1,39 +1,38 @@
 import { StrictMode } from "react";
 import { getSalesVolumeMonitoring_DistributionOfTerminalSales } from "@/actions";
-import MyTable from "@/components/MyTable";
-interface labelType {
-  readonly unit: string,
-  readonly day: number,
-  readonly month: number,
-  readonly monthONmonth: number,
-  readonly year: number;
-}
+import MyTable, { regionName } from "@/components/MyTable";
+import type { labelType } from "@/components/FilterDialogWithBreadcrumbs";
 export type DistributionOfTerminalSalesArray = ReadonlyArray<labelType>;
 const columns: ReadonlyArray<{
   readonly label: keyof labelType;
   readonly text: string;
   readonly format?: (value: number) => string;
 }> = [
-    { label: 'unit', text: '单位' },
-    { label: 'day', text: '日销量' },
+    { label: regionName, text: '单位' },
+    { label: 'daySalesNum', text: '日销量' },
     {
-      label: 'month',
+      label: 'monthSalesNum',
       text: '月销量'
     },
     {
-      label: 'monthONmonth',
-      format: (value: number) => `${value.toLocaleString()}%`,
+      label: 'monthRelativeRate',
+      format: (value: number) => `${(value * 100).toLocaleString()}%`,
       text: '月销量环比'
     },
     {
-      label: 'year',
+      label: 'yearSalesNum',
       text: '年销量'
     },
   ];
 
 export default function DistributionOfTerminalSales () {
-
   return (<StrictMode>
-    <MyTable<labelType> columns={columns} action={getSalesVolumeMonitoring_DistributionOfTerminalSales} />
+    <MyTable<labelType, {
+      readonly level: number;
+      readonly regionId: string;
+    }> columns={columns} action={getSalesVolumeMonitoring_DistributionOfTerminalSales}
+      noNeedAddress
+      noNeedTime
+    />
   </StrictMode>);
 }

@@ -1,8 +1,8 @@
 import { init, type EChartsOption, getInstanceByDom } from 'echarts';
-export interface data {
+export type data = ReadonlyArray<{
   readonly value: number;
   readonly name: string;
-}
+}>;
 interface EchartsConstructor {
   readonly dom: HTMLElement;
   readonly option?: EChartsOption;

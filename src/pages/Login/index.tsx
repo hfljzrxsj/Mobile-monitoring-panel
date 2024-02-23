@@ -21,7 +21,7 @@ export default function Login () {
   });
   const [click, setClick] = useState(false);
   const { adminId, password, scode } = value;
-  const adminIdVavid = /^\d{7}$/.test(adminId);
+  const adminIdVavid = /^[A-Z]\d{6}$/.test(adminId);
   const passwordVavid = /^\w{6,20}$/.test(password);
   const scodeVavid = /^\w{5}$/.test(scode);
   const notVavidSoError = (value = '', vavid = true, valueText = '', vavidText = '') => ({
@@ -57,6 +57,11 @@ export default function Login () {
               adminId: e.target.value
             })}
             {...notVavidSoError(adminId, adminIdVavid, '请输入账号', '账号格式不正确')}
+            autoFocus
+            autocomplete
+            maxlength={7}
+            pattern={/^\d{7}$/}
+          // type="number"
           />
           <TextField
             label="密码"
@@ -65,6 +70,9 @@ export default function Login () {
               password: e.target.value
             })}
             {...notVavidSoError(password, passwordVavid, '请输入密码', '密码格式不正确')}
+            maxlength={20}
+            autocomplete
+            pattern={/^\w{6,20}$/}
           />
           <img src={`data:image/jpeg;base64,${imgBase64}`} alt='No Network' onClick={() => refreshScope()} />
           <TextField
@@ -73,6 +81,9 @@ export default function Login () {
               scode: e.target.value
             })}
             {...notVavidSoError(scode, scodeVavid, '请输入验证码', '验证码格式不正确')}
+            maxlength={5}
+            autocomplete
+            pattern={/^\w{5}$/}
           />
           <LoadingButton
             variant="contained"

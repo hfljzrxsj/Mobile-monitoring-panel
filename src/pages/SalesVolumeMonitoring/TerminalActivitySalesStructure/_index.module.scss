@@ -1,19 +1,19 @@
-.TabPanel {
-  padding-top: 0;
+.echarts {
+  min-height: calc(100vh - var(--offsetTop));
+  width: 100%;
+}
 
-  .echarts {
-    min-height: calc(100vh - var(--offsetTop));
-    width: 100%;
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    &.loading {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      > span {
-        min-height: 54vmin;
-        min-width: 54vmin;
-      }
-    }
+  > span {
+    min-height: 54vmin;
+    min-width: 54vmin;
   }
+}
+
+.noLoading {
+  padding-top: 0;
 }

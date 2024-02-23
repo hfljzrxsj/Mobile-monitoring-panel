@@ -20,4 +20,4 @@ const $19 = new URL('');
 const $20 = new URLSearchParams();
 const $21 = new Uint8Array();
 export { $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21 };
-console.log(typeof $1, typeof $2, typeof $3, typeof $4, typeof $5, typeof $6, typeof $7, typeof $8, typeof $9, typeof $10, typeof $11, typeof $12, typeof $13, typeof $14, typeof $15, typeof $16, typeof $17, typeof $18, typeof $19, typeof $20, typeof $21);
+console.info(typeof $1, typeof $2, typeof $3, typeof $4, typeof $5, typeof $6, typeof $7, typeof $8, typeof $9, typeof $10, typeof $11, typeof $12, typeof $13, typeof $14, typeof $15, typeof $16, typeof $17, typeof $18, typeof $19, typeof $20, typeof $21);
