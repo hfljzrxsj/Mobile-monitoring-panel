@@ -1,1 +1,0 @@
-const t=ReactIs;var e=t,a={$$typeof:!0,render:!0,defaultProps:!0,displayName:!0,propTypes:!0},p={$$typeof:!0,compare:!0,defaultProps:!0,displayName:!0,propTypes:!0,type:!0},r={};r[e.ForwardRef]=a;r[e.Memo]=p;

@@ -1,0 +1,4 @@
+/node_modules
+*.lnk
+*.doc
+dist
