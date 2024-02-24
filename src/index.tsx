@@ -2,6 +2,7 @@ import './index.scss';
 import * as React from 'react';
 import App from './App';
 import { render } from 'react-dom';
+import { register } from './serviceWorkerRegistration';
 import './mock';
 // import 'virtual:svg-cions-register';
 // import { createRoot } from 'react-dom/client';
@@ -17,6 +18,7 @@ render(
   </React.StrictMode>
   , document.body
 );
+register();
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals

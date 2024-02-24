@@ -347,9 +347,6 @@ export default defineConfig({
         'entryFileNames': 'js/[name]-[hash].js',
         'assetFileNames': '[ext]/[name]-[hash].[ext]',
         manualChunks (id) {
-
-          // if (id.includes('emotion'))
-          // console.log('id :', id);
           // eslint-disable-next-line no-magic-numbers, @typescript-eslint/no-magic-numbers
           return id.toString().split('node_modules/')[1]?.split('/')[0]?.toString() ?? null;
           //   if (id.includes('node_modules')) {

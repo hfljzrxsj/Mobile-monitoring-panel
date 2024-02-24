@@ -29,7 +29,7 @@ export default function DistributionOfTerminalSales () {
   return (<StrictMode>
     <MyTable<labelType, {
       readonly level: number;
-      readonly regionId: string;
+      readonly orgId: string;
     }> columns={columns} action={getSalesVolumeMonitoring_DistributionOfTerminalSales}
       noNeedAddress
       noNeedTime

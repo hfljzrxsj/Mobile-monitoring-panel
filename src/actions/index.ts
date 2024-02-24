@@ -1,7 +1,6 @@
-import type { addressArrType } from "@/components/FilterDialogWithBreadcrumbs";
-import type { data } from "@/echarts";
 import type { DistributionOfTerminalSalesArray } from "@/pages/SalesVolumeMonitoring/DistributionOfTerminalSales";
-import type { SalesStructureOfTerminalPriceRangesArray } from "@/pages/SalesVolumeMonitoring/SalesStructureOfTerminalPriceRanges";
+import { priceNameArr } from "@/pages/SalesVolumeMonitoring/SalesStructureOfTerminalPriceRanges";
+import type { TOP10ModelInformation_labelType } from "@/pages/SalesVolumeMonitoring/TOP10ModelInformation";
 import { enumActionName, enumSeverity, enumSnackbarAlert, type snackbarAlertAction } from "@/store/SnackBarRuducer";
 import axios from "axios";
 import type { Dispatch } from "redux";
@@ -44,25 +43,63 @@ export const getScode = () => axios.get<commonResponse<string>>('/api/scode/', {
     })()
   }
 }).then(e => e?.data?.data).catch(console.error);
-export const getInitParams = () => ({ [level]: Number(getLevel()) || 0, regionId: getLocalStorageFromJSON(orgId) || 'HB' });
+export const getInitParams = () => ({ [level]: Number(getLevel()) || 0, orgId: getLocalStorageFromJSON(orgId) || 'HB' });
 export const getSalesVolumeMonitoring_DistributionOfTerminalSales = (e = getInitParams()) => axios.get<commonResponse<DistributionOfTerminalSalesArray>>('/api/sale/subregion', {
   params: e
 }).then(e => e.data.data).catch(console.error);
-export const getSalesVolumeMonitoring_SalesStructureOfTerminalPriceRanges = (e = {}) => axios.get<commonResponse<SalesStructureOfTerminalPriceRangesArray>>('/api/SalesVolumeMonitoring/SalesStructureOfTerminalPriceRanges', {
+export const getSalesVolumeMonitoring_SalesStructureOfTerminalPriceRanges = (e = {}) => axios.get<commonResponse<{
+  readonly salesRecordMap: Record<string, {
+    readonly salesNum: number;
+    readonly ratio: number;
+  }>;
+}>>('/api/SalesVolumeMonitoring/SalesStructureOfTerminalPriceRanges', {
   params: e
-}).then(e => e.data.data).catch(console.error);
+}).then(e => e.data.data.salesRecordMap).then(e => priceNameArr.map(i => ({
+  price: i,
+  salesVolume: e[i]?.salesNum ?? 0,
+  proportion: e[i]?.ratio ?? 0,
+}))).catch(console.error);
 export const testLogin = () => axios.get<commonResponse>('/api/sell').then(e => e.data.code === successCode).catch(console.error);
-export const getTerminalActivitySalesStructure = (props: {
-  readonly type?: string;
-  readonly regionId?: string;
-} = { ...getInitParams() }) => axios.get<commonResponse<data>>('/api/SalesVolumeMonitoring/TerminalActivitySalesStructure', {
-  params: props
-}).then(e => e.data.data).catch(console.error);
-export const getAddressList = ({ id }: {
-  // readonly type: string;
-  readonly id?: string;
-}) => axios.get<commonResponse<addressArrType>>('/api/getAddressList', {
-  params: {
-    id
+type timeType = 'year' | 'month' | 'day';
+export const getTerminalActivitySalesStructure = ({ type, ...others }: {
+  readonly type?: timeType;
+  readonly orgId?: string;
+  readonly level?: number;
+} = { ...getInitParams() }) => axios.get<commonResponse<{
+  readonly scRatio: number;
+  readonly feRatio: number;
+  readonly jbRatio: number;
+}>>(`/api/sale/contract/${type}`, {
+  params: { ...others }
+}).then(e => Object.entries(e.data.data).map(i => ({ value: i[1], name: i[0] }))).catch(console.error);
+// export const getAddressList = ({ id }: {
+//   // readonly type: string;
+//   readonly id?: string;
+// }) => axios.get<commonResponse<addressArrType>>('/api/getAddressList', {
+//   params: {
+//     id
+//   }
+// }).then(e => e.data.data).catch(console.error);
+export const getTOP10ModelInformation = ({ type, ...others }: {
+  readonly type?: timeType;
+  readonly orgId?: string;
+  readonly level?: number;
+} = { ...getInitParams() }) => axios.get<commonResponse<{
+  readonly phoneInfoRank: Record<string, TOP10ModelInformation_labelType>;
+}>>(`/api/sale/topPhone/${type}`, {
+  params: { ...others }
+}).then(e => e.data.data.phoneInfoRank).then(e => Object.keys(e).map((i, ind) => {
+  const item = e[ind + 1];
+  if (item) {
+    return { ...item, index: String(i) };
   }
-}).then(e => e.data.data).catch(console.error);
+  else {
+    return {
+      "phoneType": "",
+      "salesNum": 0,
+      "rate": 0,
+      "priceLevel": "",
+      index: '0'
+    };
+  }
+})).then(e => e.filter(i => Boolean(i.salesNum))).catch(console.error);

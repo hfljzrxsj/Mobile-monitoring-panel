@@ -24,7 +24,7 @@ export interface labelType {
 const { fromEntries } = Object;
 const custom = 'custom';
 const dateFormat = (now = new Date()) => `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-const timeFormat = (...args: ReadonlyArray<string>) => args.map(i => i.replaceAll('-', '')).join('-');
+const timeFormat = (...args: ReadonlyArray<string>) => args.map(i => i.replaceAll('-', '/')).join('-');
 const dateFromOldToNow = (n: number) => {
   const now = new Date();
   now.setDate(now.getDate() - n);
@@ -72,7 +72,7 @@ export interface noNeedSomething {
   readonly noNeedAddress?: boolean;
 }
 export interface TT {
-  readonly regionId?: string;
+  readonly orgId?: string;
   readonly date?: string;
 }
 interface CurrentFilterShow extends noNeedSomething {
@@ -148,7 +148,7 @@ export const FilterDialogWithBreadcrumbs = forwardRef<FilterDialogIncludeButtonI
     Partial<Record<unitNameEnum, addressArrType>>
   >(fromEntries(unitName.map(i => [i.label, []])));
   useMount(() => unstable_batchedUpdates(() => {
-    getSalesVolumeMonitoring_DistributionOfTerminalSales({ level, regionId: getLocalStorageFromJSON(orgId) }).then(e => {
+    getSalesVolumeMonitoring_DistributionOfTerminalSales({ level, orgId: getLocalStorageFromJSON(orgId) }).then(e => {
       const label0 = unitName[0]?.label;
       if (e && label0) {
         setAddressList({
@@ -176,8 +176,8 @@ export const FilterDialogWithBreadcrumbs = forwardRef<FilterDialogIncludeButtonI
       //@ts-expect-error
       run({
         ...(!noNeedTime && { date: isCustomTime ? customTimeFormat : f?.value }),
-        regionId:
-          [getInitParams().regionId, ...unitName.filter(i => address[i.label]).map(i => address[i.label]?.regionId)].join('.')
+        orgId:
+          [getInitParams().orgId, ...unitName.filter(i => address[i.label]).map(i => address[i.label]?.regionId)].join('.')
         , level: hasDataIndex < 0 ? unitNameAll.length - 1 : hasDataIndex
         // ...((() => {
         //   // const label = unitName[hasDataIndex - 1]?.label;
@@ -323,7 +323,7 @@ export const FilterDialogWithBreadcrumbs = forwardRef<FilterDialogIncludeButtonI
                 });
                 if (index !== unitName.length - 1 && regionId) {
                   // getAddressListData(index, id);
-                  getSalesVolumeMonitoring_DistributionOfTerminalSales({ level: level + index + 1, regionId }).then(e => {
+                  getSalesVolumeMonitoring_DistributionOfTerminalSales({ level: level + index + 1, orgId: regionId }).then(e => {
                     const curLabel = unitName[index + 1]?.label;
                     if (e && curLabel)
                       setAddressList({

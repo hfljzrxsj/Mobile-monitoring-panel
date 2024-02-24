@@ -19,7 +19,7 @@ interface Type<T = {}, D extends TT = TT> extends noNeedSomething {
     readonly level?: number;
   }> | void>;
 }
-export default function MyTable<T, D extends object = {}> (props: Type<T, D>) {
+export default function MyTable<T, D extends TT = TT> (props: Type<T, D>) {
   const { columns, action, noNeedTime, noNeedAddress } = props;
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
