@@ -20,6 +20,7 @@ import {
   resolve
 } from 'path';
 import svgr from 'vite-plugin-svgr';
+import legacy from '@vitejs/plugin-legacy';
 // import commonjs from '@rollup/plugin-commonjs';
 // import { } from 'vite-plugin-svg-icons';
 // import svgLoader from 'vite-svg-loader';
@@ -93,31 +94,23 @@ export default defineConfig({
     // reactSvgPlugin({
     //   // Default behavior when importing `.svg` files, possible options are: 'url' and `component`
     //   defaultExport: 'component',
-
     //   // Boolean flag to enable/disable SVGO
     //   svgo: true,
-
     //   // SVGO configuration object
     //   svgoConfig: {},
-
     //   // Props to be forwarded on SVG tag, ossible options: "start", "end" or false
     //   expandProps: 'end',
-
     //   // Setting this to true will forward ref to the root SVG tag
     //   ref: false,
-
     //   // Setting this to true will wrap the exported component in React.memo
     //   memo: false,
-
     //   // Replace an attribute value by an other.
     //   // The main usage of this option is to change an icon color to "currentColor" in order to inherit from text color.
     //   // replaceAttrValues: { old: 'new' },
     //   replaceAttrValues: null,
-
     //   // Add props to the root SVG tag
     //   // svgProps: { name: 'value' },
     //   svgProps: null,
-
     //   // Add title tag via title property
     //   // <SvgIcon title="Accessible icon name" /> => <svg><title>Accessible icon name</title><...></svg>
     //   // <SvgIcon title="Accessible icon name" titleId="iconName" /> => <svg aria-labelledby="iconName><title id="iconName">Accessible icon name</title><...></svg>
@@ -254,11 +247,21 @@ export default defineConfig({
         // },
       ]
     }),
+    //@ts-expect-error
+    legacy({
+      // targets: ['chrome < 60', 'edge < 15'],
+      // polyfills: ['es.promise.finally', 'es/map', 'es/set'],
+      // modernPolyfills: ['es.promise.finally'],
+      // renderLegacyChunks: true,
+      // polyfills: ['es.global-this'],
+      // renderLegacyChunks: false,
+      targets: ['Android >= 11', 'Chrome >= 83'],
+      modernPolyfills: true
+    }),
     // {
     //   name: 'treat-js-files-as-jsx',
     //   async transform (code, id) {
     //     if (!id.match(/src\/.*\.js$/)) return null;
-
     //     // Use the exposed transform from vite, instead of directly
     //     // transforming with esbuild
     //     return transformWithEsbuild(code, id, {
@@ -414,7 +417,6 @@ export default defineConfig({
     'write': true, // 启用将构建后的文件写入磁盘
     'emptyOutDir': true, // 构建时清空该目录
     'watch': null // 设置为 {} 则会启用 rollup 的监听器
-
     // 'external': [
     //   '@emotion',
     //   '@babel'
