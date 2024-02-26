@@ -1,4 +1,3 @@
-
 import { StrictMode } from 'react';
 import MyRoute from './Route';
 import { HashRouter } from 'react-router-dom';
@@ -6,6 +5,7 @@ import { Provider } from 'react-redux';
 import store from './store';
 import SnackbarAlert from './components/SnackbarAlert';
 import { CssBaseline, ScopedCssBaseline, StyledEngineProvider } from '@mui/material';
+// import './history';
 export const commonUseRequestParams = {
   loadingDelay: 300,
   throttleWait: 300,

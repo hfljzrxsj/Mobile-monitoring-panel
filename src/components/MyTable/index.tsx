@@ -7,9 +7,10 @@ import classnames from 'classnames';
 import { useRequest } from "ahooks";
 import { unstable_batchedUpdates } from "react-dom";
 import { commonUseRequestParams } from "@/App";
-import { FilterDialogWithBreadcrumbs, unitNameAll, type TT, type FilterDialogIncludeButtonInstance, type noNeedSomething } from "../FilterDialogWithBreadcrumbs";
+import { FilterDialogWithBreadcrumbs, unitNameAll, type FilterDialogIncludeButtonInstance, type noNeedSomething } from "../FilterDialogWithBreadcrumbs";
+import type { requestType } from "@/actions";
 export const regionName = 'regionName';
-interface Type<T = {}, D extends TT = TT> extends noNeedSomething {
+interface Type<T = {}, D extends requestType = requestType> extends noNeedSomething {
   readonly columns: ReadonlyArray<{
     readonly label: keyof T;
     readonly format?: (value: number) => string;
@@ -19,13 +20,14 @@ interface Type<T = {}, D extends TT = TT> extends noNeedSomething {
     readonly level?: number;
   }> | void>;
 }
-export default function MyTable<T, D extends TT = TT> (props: Type<T, D>) {
+export default function MyTable<T, D extends requestType = requestType> (props: Type<T, D>) {
   const { columns, action, noNeedTime, noNeedAddress } = props;
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const { data: rows = [], loading, run } = useRequest(action, commonUseRequestParams);
   const ref = useRef<HTMLTableSectionElement>(null);
   const childRef = useRef<FilterDialogIncludeButtonInstance>(null);
+  const noDataOrLoading = loading || !rows;
   return (<StrictMode>
     <StyledEngineProvider injectFirst>
       <Paper
@@ -56,11 +58,11 @@ export default function MyTable<T, D extends TT = TT> (props: Type<T, D>) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) =>
+              {(rows ?? ' '.repeat(9).split(' '))?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) =>
                 <TableRow hover key={index}>
-                  {loading ?
+                  {noDataOrLoading ?
                     <td
-                      colspan={columns.length}
+                      colSpan={columns.length}
                       className={classes['Skeleton'] ?? ''}
                       //@ts-expect-error
                       style={{ '--height': `${ref.current?.clientHeight}px` }}
@@ -94,7 +96,7 @@ export default function MyTable<T, D extends TT = TT> (props: Type<T, D>) {
         <TablePagination
           // rowsPerPageOptions={[10, 25, 100]}
           component="div"
-          count={rows.length}
+          count={rows?.length ?? 10}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={(_event, newPage) => {
@@ -105,7 +107,7 @@ export default function MyTable<T, D extends TT = TT> (props: Type<T, D>) {
             setPage(0);
           })}
           // getItemAriaLabel={(type) => type}
-          labelDisplayedRows={(paginationInfo) => `${paginationInfo.from}-${paginationInfo.to}/共${paginationInfo.count}项`}
+          labelDisplayedRows={(paginationInfo) => `${paginationInfo.from}-${isNaN(paginationInfo.to) ? 1 : paginationInfo.to}/共${paginationInfo.count ?? 0}项`}
           labelRowsPerPage='每页行数：'
         />
       </Paper>

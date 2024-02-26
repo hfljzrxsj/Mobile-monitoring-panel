@@ -142,5 +142,5 @@
     "Linter.ts",
     "**/*.json"
   ],
-  "exclude": [ ]
+  "exclude": [ "tsconfig.json" ]
 }

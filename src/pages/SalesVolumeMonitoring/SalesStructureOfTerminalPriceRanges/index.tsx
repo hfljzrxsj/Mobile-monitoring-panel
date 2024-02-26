@@ -1,5 +1,5 @@
 import { StrictMode } from "react";
-import { getSalesVolumeMonitoring_SalesStructureOfTerminalPriceRanges } from "@/actions";
+import { getInitParamsIncludeType, getSalesVolumeMonitoring_SalesStructureOfTerminalPriceRanges } from "@/actions";
 import MyTable from "@/components/MyTable";
 
 interface labelType {
@@ -29,7 +29,7 @@ export default function SalesStructureOfTerminalPriceRanges () {
           text: '占比'
         },
       ]}
-      action={(e) => getSalesVolumeMonitoring_SalesStructureOfTerminalPriceRanges(e).then(e => {
+      action={(e) => getSalesVolumeMonitoring_SalesStructureOfTerminalPriceRanges(e ?? getInitParamsIncludeType()).then(e => {
         if (!e)
           return [];
         return [...e, {

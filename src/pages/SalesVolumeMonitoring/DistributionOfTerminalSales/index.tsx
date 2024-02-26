@@ -27,10 +27,7 @@ const columns: ReadonlyArray<{
 
 export default function DistributionOfTerminalSales () {
   return (<StrictMode>
-    <MyTable<labelType, {
-      readonly level: number;
-      readonly orgId: string;
-    }> columns={columns} action={getSalesVolumeMonitoring_DistributionOfTerminalSales}
+    <MyTable<labelType> columns={columns} action={getSalesVolumeMonitoring_DistributionOfTerminalSales}
       noNeedAddress
       noNeedTime
     />

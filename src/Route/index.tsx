@@ -16,6 +16,7 @@ import OrderQuantityOfMobileTerminals from '@/pages/PurchaseQuantityMonitoring/O
 import InventoryQuantity from '@/pages/InventoryMonitoring/InventoryQuantity';
 import InventoryStructure from '@/pages/InventoryMonitoring/InventoryStructure';
 import { lazy, Suspense } from 'react';
+// import { renderRoutes } from 'react-router-config';
 
 export enum pathString {
   login = 'login',
@@ -134,6 +135,7 @@ export default function MyRoute () {
             </Route>
           ))
         }
+        {/* {renderRoutes(menuItems)} */}
       </Route>
     </Routes>
   );

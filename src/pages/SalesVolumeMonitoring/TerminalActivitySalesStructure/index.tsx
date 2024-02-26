@@ -70,7 +70,6 @@ export default function TerminalActivitySalesStructure () {
     <StrictMode>
       <FilterDialogWithBreadcrumbs
         ref={childRef}
-        noNeedTime
         run={(e) => run({ ...e, type })} />
       <TabContext value={value}>
         <TabList

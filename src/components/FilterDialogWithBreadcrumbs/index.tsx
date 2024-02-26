@@ -9,7 +9,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { StyledButton } from "../AppBar";
 import SendIcon from '@mui/icons-material/Send';
 import classNames from "classnames";
-import { getInitParams, getSalesVolumeMonitoring_DistributionOfTerminalSales } from "@/actions";
+import { getInitParams, getSalesVolumeMonitoring_DistributionOfTerminalSales, type requestType } from "@/actions";
 import { getLevel, getLocalStorageFromJSON, level as levelString, orgId } from "@/actions/axios_instance";
 import ReplyIcon from '@mui/icons-material/Reply';
 import { regionName } from "../MyTable";
@@ -22,25 +22,32 @@ export interface labelType {
   readonly yearSalesNum: number;
 }
 const { fromEntries } = Object;
-const custom = 'custom';
-const dateFormat = (now = new Date()) => `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-const timeFormat = (...args: ReadonlyArray<string>) => args.map(i => i.replaceAll('-', '/')).join('-');
-const dateFromOldToNow = (n: number) => {
-  const now = new Date();
-  now.setDate(now.getDate() - n);
-  return timeFormat(dateFormat(now), dateFormat());
-};
-const ToggleButtonArr = [{
-  label: 'threeMonth',
-  text: '近三个月',
-  value: dateFromOldToNow(90)
+const splitString = '-';
+export const dateFormat = (now = new Date()) => now.getFullYear() + splitString + String(now.getMonth() + 1).padStart(2, '0') + splitString + String(now.getDate()).padStart(2, '0');
+// const timeFormat = (...args: ReadonlyArray<string>) => args.map(i => i.replaceAll('-', '/')).join('-');
+export const timeFormat = (s: string) => s.replaceAll(splitString, '/');
+// const dateFromOldToNow = (n: number) => {
+//   const now = new Date();
+//   now.setDate(now.getDate() - n);
+//   return timeFormat(dateFormat(now), dateFormat());
+// };
+const month = 'month';
+const thisYear = new Date().getFullYear();
+const thisMonth1 = (time: string) => `${time}-01`.slice(0, 10);
+const ToggleButtonArr: ReadonlyArray<{
+  readonly label: requestType["type"];
+  readonly text: string;
+}> = [{
+  label: 'year',
+  text: `${thisYear}年`,
+  // value: dateFromOldToNow(90)
 }, {
-  label: 'thirtyDay',
-  text: '近30天',
-  value: dateFromOldToNow(30)
+  label: month,
+  text: '按月筛选',
+  // value: dateFromOldToNow(30)
 }, {
-  label: custom,
-  text: '自定义',
+  label: 'day',
+  text: '按日筛选',
 }];
 enum unitNameEnum {
   city = 'city_id',
@@ -71,26 +78,23 @@ export interface noNeedSomething {
   readonly noNeedTime?: boolean;
   readonly noNeedAddress?: boolean;
 }
-export interface TT {
-  readonly orgId?: string;
-  readonly date?: string;
-}
 interface CurrentFilterShow extends noNeedSomething {
   readonly address: addressUseSetStateType;
   readonly hasDataIndex: number;
-  readonly isCustomTime: boolean;
-  readonly customTimeFormat: string;
+  // readonly isCustomTime: boolean;
+  readonly time: string;
   readonly f: {
-    readonly text: string;
-    readonly label: string;
+    readonly text?: string | undefined;
+    readonly label?: string | undefined;
   } | undefined;
   readonly unitName: ReadonlyArray<unitNameType>;
   readonly setBreadcrumbsAddress: (e: number) => void;
 }
 const HB = '河北省';
 const CurrentFilterShow = (props: CurrentFilterShow) => {
-  const { address, hasDataIndex, isCustomTime, customTimeFormat, f = undefined, noNeedTime = false, noNeedAddress = false, unitName = [], setBreadcrumbsAddress } = props;
+  const { address, hasDataIndex, time, f = undefined, noNeedTime = false, noNeedAddress = false, unitName = [], setBreadcrumbsAddress } = props;
   const allNeed = !noNeedTime && !noNeedAddress;
+  const timeSplit = time.split(splitString);
   return <Paper className={classes['filterResult'] ?? ''} elevation={24}>
     {allNeed && <StrictMode><div>当前<wbr />筛选</div><span>{'{'}</span></StrictMode>}
     <div>
@@ -114,15 +118,24 @@ const CurrentFilterShow = (props: CurrentFilterShow) => {
       </div>
       {allNeed && <Divider />}
       {!noNeedTime && <p>时间范围：{(() => {
-        if (isCustomTime)
-          return customTimeFormat;
-        else
-          return f?.text;
+        // if (isCustomTime)
+        //   return customTimeFormat;
+        // else
+        // return f?.text;
+        const yearAndMonth = `${timeSplit[0]}年${timeSplit[1]}月`;
+        switch (f?.label) {
+          case ToggleButtonArr[0]?.label:
+            return f.text;
+          case ToggleButtonArr[1]?.label:
+            return yearAndMonth;
+          default:
+            return `${yearAndMonth}${timeSplit[2] ?? '01'}日`;
+        }
       })()}</p>}
     </div>
   </Paper>;
 };
-type FilterDialogIncludeButtonProps<T extends TT = TT> = {
+type FilterDialogIncludeButtonProps<T extends requestType = requestType> = {
   readonly run: (e?: T) => void;
   // readonly addressUseState?: [addressUseSetStateType, SetState<addressUseSetStateType>];
 } & noNeedSomething;
@@ -131,11 +144,8 @@ export const FilterDialogWithBreadcrumbs = forwardRef<FilterDialogIncludeButtonI
   const level = Number(localStorage.getItem(levelString) ?? getLevel());
   const unitName: ReadonlyArray<unitNameType> = level ? unitNameAll.slice(level) : unitNameAll;
   const { run, noNeedTime = false, noNeedAddress = false } = props;
-  const [alignment, setAlignment] = useState(ToggleButtonArr[0]?.label);
-  const [time, setTime] = useSetState({
-    start: dateFormat(),
-    end: dateFormat(),
-  });
+  const [alignment, setAlignment] = useState<requestType["type"]>(ToggleButtonArr[0]?.label);
+  const [time, setTime] = useState(dateFormat());
   const [address, setAddress] = useSetState<
     addressUseSetStateType
   // { [P in unitNameEnum]: addressType }
@@ -159,23 +169,21 @@ export const FilterDialogWithBreadcrumbs = forwardRef<FilterDialogIncludeButtonI
   }));
   const hasDataIndex = unitName.findIndex(i => !address[i.label]);
   const f = ToggleButtonArr.find(i => i.label === alignment);
-  const isCustomTime = f?.label === custom;
-  const customTimeFormat = timeFormat(time.start, time.end);
+  // const isCustomTime = f?.label === custom;
   const [click, setClick] = useState(false);
   const setBreadcrumbsAddress: CurrentFilterShow["setBreadcrumbsAddress"] = useCallback((index) => unstable_batchedUpdates(() => {
     setAddress(fromEntries(unitName.filter((_i, ind) => ind > index).map(i => [i.label, null])));
     setClick(true);
   }), []);
   const filterResultShow: CurrentFilterShow = {
-    address, hasDataIndex, isCustomTime, customTimeFormat, f, noNeedAddress, noNeedTime, unitName, setBreadcrumbsAddress
+    address, hasDataIndex, time, f, noNeedAddress, noNeedTime, unitName, setBreadcrumbsAddress
   };
   const [filterOpen, setFilterOpen] = useState(false);
   const [requestFilterResultShow, setRequestFilterResultShow] = useState<CurrentFilterShow>(filterResultShow);
   useEffect(() => unstable_batchedUpdates(() => {
     if (click) {
-      //@ts-expect-error
       run({
-        ...(!noNeedTime && { date: isCustomTime ? customTimeFormat : f?.value }),
+        ...(!noNeedTime && { date: alignment === ToggleButtonArr[0]?.label ? timeFormat(`${thisYear + splitString}01${splitString}01`) : timeFormat(thisMonth1(time)), ...(alignment && { type: alignment }) }),
         orgId:
           [getInitParams().orgId, ...unitName.filter(i => address[i.label]).map(i => address[i.label]?.regionId)].join('.')
         , level: hasDataIndex < 0 ? unitNameAll.length - 1 : hasDataIndex
@@ -386,43 +394,44 @@ export const FilterDialogWithBreadcrumbs = forwardRef<FilterDialogIncludeButtonI
             className={classes['ToggleButtonGroup'] ?? ''}
           >{
               ToggleButtonArr.map((item, index) => <ToggleButton
-                value={item.label}
+                value={item.label ?? ''}
                 key={index}
               >{item.text}</ToggleButton>)
             }
           </ToggleButtonGroup>
-          <Collapse
-            in={alignment === ToggleButtonArr[2]?.label}
-          >
-            <div
-              className={classNames(classes["date"]
-                , {
-                  // [classes['show'] ?? '']: alignment === ToggleButtonArr[2]?.label
-                })}>
-              <label>开始日期：<input
-                type='date'
-                value={time.start}
+          <Collapse in={alignment !== ToggleButtonArr[0]?.label}>
+            <label
+              className={classNames(classes["date"])} >请选择周期：<input
+                type={(() => {
+                  switch (alignment) {
+                    case ToggleButtonArr[2]?.label:
+                      return 'date';
+                    case ToggleButtonArr[1]?.label:
+                      return month;
+                    default:
+                      return 'hidden';
+                  }
+                })()}
+                value={(() => {
+                  switch (alignment) {
+                    case ToggleButtonArr[1]?.label:
+                      return time.slice(0, 7);
+                    default:
+                      return thisMonth1(time);
+                  }
+                })()}
                 onChange={e => {
-                  const { value } = e.target;
-                  setTime({
-                    start: value
-                  });
+                  setTime(e.target.value);
                 }}
-                max={time.end}
+                max={(() => {
+                  switch (alignment) {
+                    case ToggleButtonArr[1]?.label:
+                      return dateFormat().slice(0, 7);
+                    default:
+                      return dateFormat();
+                  }
+                })()}
               /></label>
-              <label>结束日期：<input
-                type='date'
-                value={time.end}
-                onChange={e => {
-                  const { value } = e.target;
-                  setTime({
-                    start: new Date(value).getTime() < new Date(time.start).getTime() ? value : time.start,
-                    end: value
-                  });
-                }}
-                max={dateFormat()}
-              /></label>
-            </div>
           </Collapse>
         </AccordionDetails>
       </Accordion>}

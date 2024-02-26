@@ -1,7 +1,8 @@
 /* eslint-disable no-inline-comments */
 /* eslint-disable line-comment-position */
 /* eslint-disable sort-keys */
-import { exclude } from './tsconfig.json';
+// import { InjectManifest } from 'workbox-webpack-plugin';
+// import { exclude } from './tsconfig.json';
 import { URL, fileURLToPath } from 'node:url';
 import {
   defineConfig
@@ -19,6 +20,7 @@ import {
   resolve
 } from 'path';
 import svgr from 'vite-plugin-svgr';
+// import commonjs from '@rollup/plugin-commonjs';
 // import { } from 'vite-plugin-svg-icons';
 // import svgLoader from 'vite-svg-loader';
 // import reactSvgPlugin from 'vite-plugin-react-svg';
@@ -47,11 +49,14 @@ const serverOptions = {
   // ] // 用于限制 Vite 开发服务器提供敏感文件的黑名单
   // }
 };
+const sw = 'service-worker';
+const swSrc = resolve(__dirname, `src/${sw}.ts`);
 // eslint-disable-next-line @typescript-eslint/no-unsafe-call
 export default defineConfig({
   'root': resolve('./src'), //  入口index.html，注意入口js应该与index.html 同一目录下（只能写到目录，不能写到具体文件）
   'base': './', // 'base': '/'
   'plugins': [
+    // commonjs(),
     react(),
     svgr({
       svgrOptions: {
@@ -340,22 +345,31 @@ export default defineConfig({
   'build': {
     'rollupOptions': {
       'input': {
-        'main': resolve(__dirname, 'src/index.html')
+        'main': resolve(__dirname, 'src/index.html'),
+        [sw]: swSrc
       },
       'output': {
         'chunkFileNames': 'js/[name]-[hash].js',
-        'entryFileNames': 'js/[name]-[hash].js',
+        'entryFileNames': (chunkInfo) => {
+          if (chunkInfo.facadeModuleId === swSrc.replaceAll('\\', '/'))
+            return `${sw}.js`;
+          return 'js/[name]-[hash].js';
+        },
         'assetFileNames': '[ext]/[name]-[hash].[ext]',
-        manualChunks (id) {
+        manualChunks (id, _meta) {
+          // if (id === resolve(__dirname, 'src/service-worker.ts').replaceAll('\\', '/'))
+          //   return ''
           // eslint-disable-next-line no-magic-numbers, @typescript-eslint/no-magic-numbers
           return id.toString().split('node_modules/')[1]?.split('/')[0]?.toString() ?? null;
           //   if (id.includes('node_modules')) {
           //     return 'id_node_modules';
           //   }
           // }
-
         }
-      }
+      },
+      plugins: [
+        // commonjs()
+      ]
       // 'external': ['react/jsx-runtime']
     },
     // 'target': 'modules', // 设置最终构建的浏览器兼容目标  //es2015(编译成es5) | modules
@@ -446,7 +460,21 @@ export default defineConfig({
   },
   'clearScreen': false, // 设为 false 可以避免 Vite 清屏而错过在终端中打印某些关键信息
   'preview': serverOptions,
-  'publicDir': resolve('./public')
+  'publicDir': resolve('./public'),
+  worker: {
+    format: 'es',
+    'rollupOptions': {
+      // 'input': {
+      //   'main': resolve(__dirname, 'src/index.html')
+      // },
+      'output': {
+        assetFileNames: 'assets/worker_asset.[name].[ext]',
+        chunkFileNames: 'assets/worker_chunk.[name].js',
+        entryFileNames: 'assets/worker_entry.[name].js'
+      },
+      // 'external': ['react/jsx-runtime']
+    },
+  }
   // 'logLevel': 'error' // 调整控制台输出的级别 'info' | 'warn' | 'error' | 'silent'
   // 'envDir': '/', // 用于加载 .env 文件的目录
   // 'envPrefix': [], // 以 envPrefix 开头的环境变量会通过 import.meta.env 暴露在你的客户端源码中

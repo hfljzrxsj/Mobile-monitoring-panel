@@ -1,4 +1,6 @@
+import { dateFormat, timeFormat } from "@/components/FilterDialogWithBreadcrumbs";
 import type { DistributionOfTerminalSalesArray } from "@/pages/SalesVolumeMonitoring/DistributionOfTerminalSales";
+import type { SalesSituationOfTerminalSubChannels_labelType } from "@/pages/SalesVolumeMonitoring/SalesSituationOfTerminalSubChannels";
 import { priceNameArr } from "@/pages/SalesVolumeMonitoring/SalesStructureOfTerminalPriceRanges";
 import type { TOP10ModelInformation_labelType } from "@/pages/SalesVolumeMonitoring/TOP10ModelInformation";
 import { enumActionName, enumSeverity, enumSnackbarAlert, type snackbarAlertAction } from "@/store/SnackBarRuducer";
@@ -11,6 +13,17 @@ interface commonResponse<T = null> {
   readonly data: T;
   readonly info: string;
 }
+interface getInitParams {
+  readonly [level]: number;
+  readonly orgId: string;
+  readonly date?: string;
+}
+export const getInitParams = (): getInitParams => ({ [level]: Number(getLevel()) || 0, orgId: getLocalStorageFromJSON(orgId) || 'HB', date: timeFormat(dateFormat()) });
+type timeType = 'year' | 'month' | 'day';
+export interface requestType extends getInitParams {
+  readonly type?: timeType;
+};
+export const getInitParamsIncludeType = (): requestType => ({ ...getInitParams(), type: 'day' });
 // type commonActionType<T = {}, D = void> = (props: T) => (dispatch: Dispatch<snackbarAlertAction>) => Promise<D | void>;
 const uuidString = 'uuid';
 const setItemAndHeaders = (k: string, v: string) => {
@@ -43,35 +56,24 @@ export const getScode = () => axios.get<commonResponse<string>>('/api/scode/', {
     })()
   }
 }).then(e => e?.data?.data).catch(console.error);
-export const getInitParams = () => ({ [level]: Number(getLevel()) || 0, orgId: getLocalStorageFromJSON(orgId) || 'HB' });
-export const getSalesVolumeMonitoring_DistributionOfTerminalSales = (e = getInitParams()) => axios.get<commonResponse<DistributionOfTerminalSalesArray>>('/api/sale/subregion', {
-  params: e
-}).then(e => e.data.data).catch(console.error);
-export const getSalesVolumeMonitoring_SalesStructureOfTerminalPriceRanges = (e = {}) => axios.get<commonResponse<{
+const addInitParams = (e: object) => ({ params: { ...getInitParams(), ...e } });
+export const getSalesVolumeMonitoring_DistributionOfTerminalSales = (e = getInitParams()) => axios.get<commonResponse<DistributionOfTerminalSalesArray>>('/api/sale/subregion', addInitParams(e)).then(e => e.data.data).catch(console.error);
+export const getSalesVolumeMonitoring_SalesStructureOfTerminalPriceRanges = ({ type, ...others }: requestType = getInitParamsIncludeType()) => axios.get<commonResponse<{
   readonly salesRecordMap: Record<string, {
     readonly salesNum: number;
     readonly ratio: number;
   }>;
-}>>('/api/SalesVolumeMonitoring/SalesStructureOfTerminalPriceRanges', {
-  params: e
-}).then(e => e.data.data.salesRecordMap).then(e => priceNameArr.map(i => ({
+}>>('/api/sale/structure', addInitParams({ ...others })).then(e => e.data.data.salesRecordMap).then(e => priceNameArr.map(i => ({
   price: i,
   salesVolume: e[i]?.salesNum ?? 0,
   proportion: e[i]?.ratio ?? 0,
 }))).catch(console.error);
 export const testLogin = () => axios.get<commonResponse>('/api/sell').then(e => e.data.code === successCode).catch(console.error);
-type timeType = 'year' | 'month' | 'day';
-export const getTerminalActivitySalesStructure = ({ type, ...others }: {
-  readonly type?: timeType;
-  readonly orgId?: string;
-  readonly level?: number;
-} = { ...getInitParams() }) => axios.get<commonResponse<{
+export const getTerminalActivitySalesStructure = ({ type, ...others }: requestType = getInitParamsIncludeType()) => axios.get<commonResponse<{
   readonly scRatio: number;
   readonly feRatio: number;
   readonly jbRatio: number;
-}>>(`/api/sale/contract/${type}`, {
-  params: { ...others }
-}).then(e => Object.entries(e.data.data).map(i => ({ value: i[1], name: i[0] }))).catch(console.error);
+}>>(`/api/sale/contract/${type}`, addInitParams({ ...others })).then(e => Object.entries(e.data.data).map(i => ({ value: i[1], name: i[0] }))).catch(console.error);
 // export const getAddressList = ({ id }: {
 //   // readonly type: string;
 //   readonly id?: string;
@@ -80,15 +82,9 @@ export const getTerminalActivitySalesStructure = ({ type, ...others }: {
 //     id
 //   }
 // }).then(e => e.data.data).catch(console.error);
-export const getTOP10ModelInformation = ({ type, ...others }: {
-  readonly type?: timeType;
-  readonly orgId?: string;
-  readonly level?: number;
-} = { ...getInitParams() }) => axios.get<commonResponse<{
+export const getTOP10ModelInformation = ({ type, ...others }: requestType = getInitParamsIncludeType()) => axios.get<commonResponse<{
   readonly phoneInfoRank: Record<string, TOP10ModelInformation_labelType>;
-}>>(`/api/sale/topPhone/${type}`, {
-  params: { ...others }
-}).then(e => e.data.data.phoneInfoRank).then(e => Object.keys(e).map((i, ind) => {
+}>>(`/api/sale/topPhone/${type}`, addInitParams({ ...others })).then(e => e.data.data.phoneInfoRank).then(e => Object.keys(e).map((i, ind) => {
   const item = e[ind + 1];
   if (item) {
     return { ...item, index: String(i) };
@@ -103,3 +99,4 @@ export const getTOP10ModelInformation = ({ type, ...others }: {
     };
   }
 })).then(e => e.filter(i => Boolean(i.salesNum))).catch(console.error);
+export const getSalesVolumeMonitoring_SalesSituationOfTerminalSubChannels = (e = getInitParams()) => axios.get<commonResponse<ReadonlyArray<SalesSituationOfTerminalSubChannels_labelType>>>('/api/sale/channel/situation', addInitParams(e)).then(e => e.data.data).catch(console.error);
