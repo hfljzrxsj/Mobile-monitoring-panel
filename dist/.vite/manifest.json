@@ -10,8 +10,8 @@
       "_stylis-UTZzoVRx.js"
     ]
   },
-  "_@mui-_mSVHQqc.js": {
-    "file": "js/@mui-_mSVHQqc.js",
+  "_@mui-9I-nRog-.js": {
+    "file": "js/@mui-9I-nRog-.js",
     "imports": [
       "_@emotion-tNa4IMmz.js",
       "_react-ejZHSj7z.js",
@@ -23,11 +23,11 @@
   "_@popperjs-v-la0Vhf.js": {
     "file": "js/@popperjs-v-la0Vhf.js"
   },
-  "_@remix-run-Tfa50bkj.js": {
-    "file": "js/@remix-run-Tfa50bkj.js"
+  "_@remix-run-gLACTkVu.js": {
+    "file": "js/@remix-run-gLACTkVu.js"
   },
-  "_ahooks-4-ioGHV5.js": {
-    "file": "js/ahooks-4-ioGHV5.js",
+  "_ahooks-3lX5GaIi.js": {
+    "file": "js/ahooks-3lX5GaIi.js",
     "imports": [
       "_tslib-g6pQwBLH.js",
       "_lodash-liWoq_f8.js"
@@ -63,17 +63,17 @@
       "_object-assign-4_VUvG2Z.js"
     ]
   },
-  "_react-router-GnPFSUwy.js": {
-    "file": "js/react-router-GnPFSUwy.js",
+  "_react-router-PxHC2DxU.js": {
+    "file": "js/react-router-PxHC2DxU.js",
     "imports": [
-      "_@remix-run-Tfa50bkj.js"
+      "_@remix-run-gLACTkVu.js"
     ]
   },
-  "_react-router-dom-kzRaAek2.js": {
-    "file": "js/react-router-dom-kzRaAek2.js",
+  "_react-router-dom-F7Hajf4b.js": {
+    "file": "js/react-router-dom-F7Hajf4b.js",
     "imports": [
-      "_react-router-GnPFSUwy.js",
-      "_@remix-run-Tfa50bkj.js"
+      "_react-router-PxHC2DxU.js",
+      "_@remix-run-gLACTkVu.js"
     ]
   },
   "_resize-observer-polyfill-w40geAFS.js": {
@@ -90,27 +90,58 @@
   },
   "index.html": {
     "css": [
-      "css/main-qZlu7BkJ.css"
+      "css/main-e4YfPwW6.css"
     ],
-    "file": "js/main-qfc5irU6.js",
+    "dynamicImports": [
+      "pages/SalesVolumeMonitoring/DistributionOfTerminalSales/index.tsx"
+    ],
+    "file": "js/main-zBdRZqW_.js",
     "imports": [
       "_react-ejZHSj7z.js",
-      "_ahooks-4-ioGHV5.js",
-      "_react-router-GnPFSUwy.js",
-      "_@mui-_mSVHQqc.js",
-      "_react-router-dom-kzRaAek2.js",
+      "_@remix-run-gLACTkVu.js",
+      "_@mui-9I-nRog-.js",
+      "_react-router-PxHC2DxU.js",
+      "_ahooks-3lX5GaIi.js",
+      "_react-router-dom-F7Hajf4b.js",
       "_object-assign-4_VUvG2Z.js",
-      "_tslib-g6pQwBLH.js",
-      "_lodash-liWoq_f8.js",
-      "_@babel-moqvDIRK.js",
-      "_@remix-run-Tfa50bkj.js",
       "_@emotion-tNa4IMmz.js",
       "_hoist-non-react-statics-o0ngdJFr.js",
+      "_@babel-moqvDIRK.js",
       "_stylis-UTZzoVRx.js",
       "_clsx-2Jv0kmJG.js",
-      "_@popperjs-v-la0Vhf.js"
+      "_@popperjs-v-la0Vhf.js",
+      "_tslib-g6pQwBLH.js",
+      "_lodash-liWoq_f8.js"
     ],
     "isEntry": true,
     "src": "index.html"
+  },
+  "pages/SalesVolumeMonitoring/DistributionOfTerminalSales/index.tsx": {
+    "file": "js/index-N-VbB78A.js",
+    "imports": [
+      "_react-ejZHSj7z.js",
+      "index.html",
+      "_object-assign-4_VUvG2Z.js",
+      "_@remix-run-gLACTkVu.js",
+      "_@mui-9I-nRog-.js",
+      "_@emotion-tNa4IMmz.js",
+      "_hoist-non-react-statics-o0ngdJFr.js",
+      "_@babel-moqvDIRK.js",
+      "_stylis-UTZzoVRx.js",
+      "_clsx-2Jv0kmJG.js",
+      "_@popperjs-v-la0Vhf.js",
+      "_react-router-PxHC2DxU.js",
+      "_ahooks-3lX5GaIi.js",
+      "_tslib-g6pQwBLH.js",
+      "_lodash-liWoq_f8.js",
+      "_react-router-dom-F7Hajf4b.js"
+    ],
+    "isDynamicEntry": true,
+    "src": "pages/SalesVolumeMonitoring/DistributionOfTerminalSales/index.tsx"
+  },
+  "service-worker.ts": {
+    "file": "service-worker.js",
+    "isEntry": true,
+    "src": "service-worker.ts"
   }
 }
