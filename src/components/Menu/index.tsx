@@ -1,5 +1,5 @@
 import { StrictMode, useState, type Dispatch } from "react";
-import { Collapse, type DrawerProps, type ListItemButtonProps, Drawer, List, Divider, ListItemButton, ListItemText, StyledEngineProvider, } from '@mui/material';
+import { Collapse, type ListItemButtonProps, List, Divider, ListItemButton, ListItemText, StyledEngineProvider, } from '@mui/material';
 import { concatUrl, menuItems } from "@/Route";
 import { NavLink, type RouteObject } from "react-router-dom";
 import KeyboardArrowDownIcon from '@mui/icons-material/ExpandMore';
@@ -76,44 +76,32 @@ const StyledCollase = ({ item }: { readonly item: RouteObject; }) => {
     </StrictMode>
   );
 };
-interface MenuProps extends DrawerProps {
-  readonly menuOpen: boolean;
-  readonly menuOpenFalse: (menuOpen: boolean) => void;
-}
-export default function Menu (props: MenuProps) {
-  const { menuOpen, menuOpenFalse, ...others } = props;
+export default function Menu () {
   return (
     <StrictMode>
       <StyledEngineProvider injectFirst>
-        <Drawer
-          anchor='left'
-          open={menuOpen}
-          onClose={menuOpenFalse}
-          {...others}
-        >
-          {
-            menuItems.map((item, index) => {
-              const { children, id = '', path = '' } = item;
-              return (
-                <StrictMode>
-                  <List key={index}>
-                    {children ? (
-                      <StyledCollase
-                        item={item} />
-                    ) : (
-                      <StyledNavLink
-                        text={id}
-                        path={concatUrl(path)}
-                        className={style['overview'] ?? ''}
-                      />
-                    )}
-                  </List>
-                  <Divider />
-                </StrictMode>
-              );
-            })
-          }
-        </Drawer>
+        {
+          menuItems.map((item, index) => {
+            const { children, id = '', path = '' } = item;
+            return (
+              <StrictMode>
+                <List key={index}>
+                  {children ? (
+                    <StyledCollase
+                      item={item} />
+                  ) : (
+                    <StyledNavLink
+                      text={id}
+                      path={concatUrl(path)}
+                      className={style['overview'] ?? ''}
+                    />
+                  )}
+                </List>
+                <Divider />
+              </StrictMode>
+            );
+          })
+        }
       </StyledEngineProvider>
     </StrictMode>
   );

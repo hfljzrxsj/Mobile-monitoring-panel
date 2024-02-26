@@ -8,7 +8,7 @@ interface labelType {
   readonly proportion: number;
 }
 // export const priceNameArr = ['0-1000元', '1000-2000元', '2000-3000元', '3000-4000元', '4000-5000元', '5000元以上'];
-export const priceNameArr = [...' '.repeat(4).split(' ').map((_i, ind) => `${ind * 1000}-${ind * 1000 + 1000}元`), '5000元以上'];
+const priceNameArr = [...' '.repeat(5).split('').map((_i, ind) => `${ind * 1000}-${ind * 1000 + 1000}元`), '5000元以上'];
 export default function SalesStructureOfTerminalPriceRanges () {
   return (<StrictMode>
     <MyTable<labelType>
@@ -29,7 +29,11 @@ export default function SalesStructureOfTerminalPriceRanges () {
           text: '占比'
         },
       ]}
-      action={(e) => getSalesVolumeMonitoring_SalesStructureOfTerminalPriceRanges(e ?? getInitParamsIncludeType()).then(e => {
+      action={(e) => getSalesVolumeMonitoring_SalesStructureOfTerminalPriceRanges(e ?? getInitParamsIncludeType()).then(e => e && priceNameArr.map(i => ({
+        price: i,
+        salesVolume: e[i]?.salesNum ?? 0,
+        proportion: e[i]?.ratio ?? 0,
+      }))).then(e => {
         if (!e)
           return [];
         return [...e, {
@@ -38,6 +42,7 @@ export default function SalesStructureOfTerminalPriceRanges () {
           proportion: 100
         }];
       })}
+      totalSum
     />
   </StrictMode>);
 }

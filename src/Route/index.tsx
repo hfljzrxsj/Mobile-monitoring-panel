@@ -10,7 +10,7 @@ import Overview from '@/pages/Overview';
 import TerminalActivitySalesStructure from '@/pages/SalesVolumeMonitoring/TerminalActivitySalesStructure';
 import SalesStructureOfTerminalPriceRanges from '@/pages/SalesVolumeMonitoring/SalesStructureOfTerminalPriceRanges';
 import TOP10ModelInformation from '@/pages/SalesVolumeMonitoring/TOP10ModelInformation';
-import QualityOfTerminalSalesInThePanAlliance from '@/pages/SalesVolumeMonitoring/QualityOfTerminalSalesInThePanAlliance';
+// import QualityOfTerminalSalesInThePanAlliance from '@/pages/SalesVolumeMonitoring/QualityOfTerminalSalesInThePanAlliance';
 import SalesSituationOfTerminalSubChannels from '@/pages/SalesVolumeMonitoring/SalesSituationOfTerminalSubChannels';
 import OrderQuantityOfMobileTerminals from '@/pages/PurchaseQuantityMonitoring/OrderQuantityOfMobileTerminals';
 import InventoryQuantity from '@/pages/InventoryMonitoring/InventoryQuantity';
@@ -64,7 +64,7 @@ export enum pathString {
 // }
 const DistributionOfTerminalSales = lazy(() => import('@/pages/SalesVolumeMonitoring/DistributionOfTerminalSales'));
 export const menuItems: Array<RouteObject> = ([
-  { path: '', id: '总览', element: <Overview /> },
+  { path: '', id: '目录', element: <Overview /> },
   {
     path: pathString.SalesVolumeMonitoring, id: '终端销量分布', children: [
       {
@@ -76,7 +76,7 @@ export const menuItems: Array<RouteObject> = ([
       { path: pathString.TerminalActivitySalesStructure, id: '终端活动销售结构', element: <TerminalActivitySalesStructure /> },
       { path: pathString.SalesStructureOfTerminalPriceRanges, id: '终端各价位段销售结构', element: <SalesStructureOfTerminalPriceRanges /> },
       { path: pathString.TOP10ModelInformation, id: 'TOP10机型信息', element: <TOP10ModelInformation /> },
-      { path: pathString.QualityOfTerminalSalesInThePanAlliance, id: '泛全联盟终端销售质量', element: <QualityOfTerminalSalesInThePanAlliance /> },
+      // { path: pathString.QualityOfTerminalSalesInThePanAlliance, id: '泛全联盟终端销售质量', element: <QualityOfTerminalSalesInThePanAlliance /> },
       { path: pathString.SalesSituationOfTerminalSubChannels, id: '终端分渠道销售情况', element: <SalesSituationOfTerminalSubChannels /> },
     ]
   },
@@ -87,8 +87,8 @@ export const menuItems: Array<RouteObject> = ([
   },
   {
     path: pathString.InventoryMonitoring, id: '库存量监控', children: [
-      { path: pathString.InventoryQuantity, id: '库存数量', element: <InventoryQuantity /> },
-      { path: pathString.InventoryStructure, id: '库存结构', element: <InventoryStructure /> },
+      { path: pathString.InventoryQuantity, id: '库存TOP10机型', element: <InventoryQuantity /> },
+      { path: pathString.InventoryStructure, id: '分机型价位段结构', element: <InventoryStructure /> },
     ]
   },
 ]);

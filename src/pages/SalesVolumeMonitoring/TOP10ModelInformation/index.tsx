@@ -47,6 +47,7 @@ export default function TOP10ModelInformation () {
           priceLevel: ''
         }];
       })}
+      totalSum
     />
   </StrictMode>);
 }

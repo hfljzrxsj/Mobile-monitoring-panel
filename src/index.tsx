@@ -3,7 +3,7 @@ import * as React from 'react';
 import App from './App';
 import { render } from 'react-dom';
 import { register } from './serviceWorkerRegistration';
-import './mock';
+// import './mock';
 // import 'virtual:svg-cions-register';
 // import { createRoot } from 'react-dom/client';
 // import reportWebVitals from './reportWebVitals';

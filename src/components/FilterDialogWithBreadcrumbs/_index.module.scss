@@ -48,7 +48,8 @@
   transition: 1s;
   display: flex;
 
-  > input {
+  > input,
+  > select {
     padding: 9q;
     font-size: 120%;
   }

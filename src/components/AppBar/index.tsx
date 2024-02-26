@@ -1,18 +1,19 @@
-import { AppBar, Button, Dialog, DialogActions, DialogTitle, IconButton, Popover, type AppBarProps } from '@mui/material';
+import { AppBar, Button, Dialog, DialogActions, DialogTitle, Drawer, IconButton, Popover, type AppBarProps } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import style from './_index.module.scss';
 import { enumAppBarTitle, useAppBarTitleTypedSelector } from '@/store/AppBarTitleRuducer';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import { adminIdString, getLevel, Authorization } from '@/actions/axios_instance';
+import { adminIdString, getLevel, getLocalStorageFromJSON, orgId } from '@/actions/axios_instance';
 import { StrictMode, useState } from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 import { useNavigate } from 'react-router';
 import { concatUrl, pathString } from '@/Route';
 import classNames from 'classnames';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { regionName } from '../MyTable';
+import Menu from '../Menu';
 interface ButtonAppBarProps extends AppBarProps {
-  readonly menuOpenTrue: () => void;
 }
 export const StyledButton = ({ ...props }) => <Button
   variant="contained"
@@ -20,7 +21,6 @@ export const StyledButton = ({ ...props }) => <Button
   {...props} />;
 const clearCache = () => window.caches?.keys()?.then(e => e.forEach(cacheName => window.caches?.delete(cacheName))).catch(console.error);
 export default function ButtonAppBar (props: ButtonAppBarProps) {
-  const { menuOpenTrue, ...others } = props;
   const title = useAppBarTitleTypedSelector(state => state.AppBarTitle[enumAppBarTitle.title]);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [open, setOpen] = useState(false);
@@ -29,13 +29,14 @@ export default function ButtonAppBar (props: ButtonAppBarProps) {
   };
   const PopoverOpen = Boolean(anchorEl);
   const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
   return (
     <StrictMode>
       <AppBar
         position="sticky"
         className={style['AppBar'] ?? ''}
-        {...others}>
-        <IconButton onClick={menuOpenTrue} className={style['menuIcon'] ?? ''} size='large'>
+        {...props}>
+        <IconButton onClick={setMenuOpen.bind(null, true)} className={style['menuIcon'] ?? ''} size='large'>
           <MenuIcon />
         </IconButton>
         <span>{title}</span>
@@ -66,6 +67,7 @@ export default function ButtonAppBar (props: ButtonAppBarProps) {
         className={style['Popover'] ?? ''}
       >
         <p>用户等级：<span>{getLevel()}</span></p>
+        <p>用户权限：<span>{localStorage.getItem(regionName) ?? getLocalStorageFromJSON(orgId)}</span></p>
         <StyledButton
           onClick={() =>
             unstable_batchedUpdates(() => {
@@ -93,6 +95,12 @@ export default function ButtonAppBar (props: ButtonAppBarProps) {
           <StyledButton onClick={handleClose}>取消</StyledButton>
         </DialogActions>
       </Dialog>
+      <Drawer
+        anchor='left'
+        open={menuOpen}
+        onClose={setMenuOpen.bind(null, false)}>
+        <Menu />
+      </Drawer>
     </StrictMode>
   );
 }

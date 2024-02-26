@@ -1,20 +1,13 @@
-import { testLogin } from "@/actions";
-import { useMount } from "ahooks";
+import Menu from "@/components/Menu";
+import { Paper } from "@mui/material";
 import { StrictMode } from "react";
-import { Outlet } from "react-router-dom";
-
+import style from './_index.module.scss';
+const commonProps = { elevation: 24, className: style['Paper'] ?? '' };
 export default function Overview () {
-  useMount(() => {
-    testLogin().then(e => {
-      console.log(e);
-      // if (!e) {
-      //   navigate(pathString.login);
-      // }
-    });
-  });
   return (
     <StrictMode>
-      <Outlet />
+      <Paper {...commonProps}>移动监控面板</Paper>
+      <Paper {...commonProps}><Menu /></Paper>
     </StrictMode>
   );
 }

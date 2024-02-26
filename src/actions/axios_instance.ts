@@ -95,9 +95,9 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
   async (res) => {
-    // if (res.data.code !== successCode) {
-    //   errorAction();
-    // }
+    if (res.data.code === 1003) {
+      errorAction();
+    }
     // if (!cacheStorage)
     //   return res;
     // const { url = '', headers = {}, params, data } = res.config;

@@ -1,7 +1,7 @@
 import { dateFormat, timeFormat } from "@/components/FilterDialogWithBreadcrumbs";
+import { regionName } from "@/components/MyTable";
 import type { DistributionOfTerminalSalesArray } from "@/pages/SalesVolumeMonitoring/DistributionOfTerminalSales";
 import type { SalesSituationOfTerminalSubChannels_labelType } from "@/pages/SalesVolumeMonitoring/SalesSituationOfTerminalSubChannels";
-import { priceNameArr } from "@/pages/SalesVolumeMonitoring/SalesStructureOfTerminalPriceRanges";
 import type { TOP10ModelInformation_labelType } from "@/pages/SalesVolumeMonitoring/TOP10ModelInformation";
 import { enumActionName, enumSeverity, enumSnackbarAlert, type snackbarAlertAction } from "@/store/SnackBarRuducer";
 import axios from "axios";
@@ -23,22 +23,30 @@ type timeType = 'year' | 'month' | 'day';
 export interface requestType extends getInitParams {
   readonly type?: timeType;
 };
-export const getInitParamsIncludeType = (): requestType => ({ ...getInitParams(), type: 'day' });
+export const getInitParamsIncludeType = (): requestType => ({ ...getInitParams(), type: 'year' });
 // type commonActionType<T = {}, D = void> = (props: T) => (dispatch: Dispatch<snackbarAlertAction>) => Promise<D | void>;
 const uuidString = 'uuid';
 const setItemAndHeaders = (k: string, v: string) => {
   common[k] = v;
   localStorage.setItem(k, v);
 };
-export const loginAction = ({ adminId, password, scode }: { readonly [adminIdString]: string, readonly password: string, readonly scode: string; }) => (dispatch: Dispatch<snackbarAlertAction>) => axios.post<commonResponse<string>>('/api/user/login', null, { params: { adminId, password, scode, uuid: sessionStorage.getItem(uuidString) } })
+export const loginAction = ({ adminId, password, scode }: { readonly [adminIdString]: string, readonly password: string, readonly scode: string; }) => (dispatch: Dispatch<snackbarAlertAction>) => axios.post<commonResponse<{
+  readonly [adminIdString]: string;
+  readonly jwt: string;
+  readonly level: number;
+  readonly orgId: string;
+  readonly orgnization: string;
+}>>('/api/user/login', null, { params: { adminId, password, scode, uuid: sessionStorage.getItem(uuidString) } })
   .then(e => {
     const { code, info, data } = e.data ?? {};
     if (e.status === 200 && code === successCode) {
       dispatch({ type: enumActionName.OPENTRUE, payload: { [enumSnackbarAlert.alertText]: '登录成功', [enumSnackbarAlert.severity]: enumSeverity.success } });
-      setItemAndHeaders(Authorization, data);
+      setItemAndHeaders(Authorization, 'Bearer ' + data.jwt);
+      // setItemAndHeaders('jwt', 'Bearer ' + data.jwt);
       setItemAndHeaders(adminIdString, adminId);
-      setItemAndHeaders(level, getLevel(data));
-      setItemAndHeaders(orgId, getLocalStorageFromJSON(orgId, data));
+      setItemAndHeaders(level, getLevel(String(data.level)));
+      setItemAndHeaders(orgId, getLocalStorageFromJSON(orgId, data.orgId));
+      localStorage.setItem(regionName, data.orgnization);
       return true;
     }
     return Promise.reject(info);
@@ -63,17 +71,15 @@ export const getSalesVolumeMonitoring_SalesStructureOfTerminalPriceRanges = ({ t
     readonly salesNum: number;
     readonly ratio: number;
   }>;
-}>>('/api/sale/structure', addInitParams({ ...others })).then(e => e.data.data.salesRecordMap).then(e => priceNameArr.map(i => ({
-  price: i,
-  salesVolume: e[i]?.salesNum ?? 0,
-  proportion: e[i]?.ratio ?? 0,
-}))).catch(console.error);
-export const testLogin = () => axios.get<commonResponse>('/api/sell').then(e => e.data.code === successCode).catch(console.error);
+}>>(`/api/sale/structure/${type}`, addInitParams({ ...others })).then(e => e.data.data.salesRecordMap).catch(console.error);
+// export const testLogin = () => axios.get<commonResponse>('/api/sell').then(e => e.data.code === successCode).catch(console.error);
+const radioArr = ['scRatio', 'feRatio', 'jbRatio'];
+const radioObj = { [radioArr[0] ?? '']: '顺差让利', [radioArr[1] ?? '']: '分期合约', [radioArr[2] ?? '']: '金币合约' };
 export const getTerminalActivitySalesStructure = ({ type, ...others }: requestType = getInitParamsIncludeType()) => axios.get<commonResponse<{
   readonly scRatio: number;
   readonly feRatio: number;
   readonly jbRatio: number;
-}>>(`/api/sale/contract/${type}`, addInitParams({ ...others })).then(e => Object.entries(e.data.data).map(i => ({ value: i[1], name: i[0] }))).catch(console.error);
+}>>(`/api/sale/contract/${type}`, addInitParams({ ...others })).then(e => Object.entries(e.data.data).filter(i => radioArr.includes(i[0])).map(i => ({ value: i[1] ?? 0, name: radioObj[i[0]] ?? '' }))).catch(console.error);
 // export const getAddressList = ({ id }: {
 //   // readonly type: string;
 //   readonly id?: string;

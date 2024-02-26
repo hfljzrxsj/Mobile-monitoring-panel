@@ -15,8 +15,8 @@ export default function Login () {
   const navigate = useNavigate();
   const dispatch = useDispatch<Dispatch<snackbarAlertAction>>();
   const [value, setValue] = useSetState({
-    adminId: '1038762',
-    password: '666666',
+    adminId: '',
+    password: '',
     scode: '',
   });
   const [click, setClick] = useState(false);

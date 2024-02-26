@@ -1,10 +1,8 @@
-import { testLogin } from "@/actions";
-import { Authorization } from "@/actions/axios_instance";
+import { adminIdString, Authorization, getLevel, getLocalStorageFromJSON, orgId } from "@/actions/axios_instance";
 import ButtonAppBar from "@/components/AppBar";
-import Menu from "@/components/Menu";
 import { pathString } from "@/Route";
 import { useMount } from "ahooks";
-import { StrictMode, useState } from "react";
+import { StrictMode } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 
 export default function MainFrame () {
@@ -15,13 +13,11 @@ export default function MainFrame () {
     //     navigate(pathString.login);
     //   }
     // });
-    // if (!localStorage.getItem(JWT)) navigate(pathString.login);
+    if (!localStorage.getItem(Authorization) || !getLevel() || !getLocalStorageFromJSON(orgId) || !getLocalStorageFromJSON(adminIdString)) navigate(pathString.login);
   });
-  const [menuOpen, setMenuOpen] = useState(false);
   return (
     <StrictMode>
-      <ButtonAppBar menuOpenTrue={setMenuOpen.bind(null, true)} />
-      <Menu menuOpen={menuOpen} menuOpenFalse={setMenuOpen.bind(null, false)} />
+      <ButtonAppBar />
       <Outlet />
     </StrictMode>
   );

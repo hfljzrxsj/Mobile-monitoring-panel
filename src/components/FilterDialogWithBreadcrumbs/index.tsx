@@ -23,23 +23,47 @@ export interface labelType {
 }
 const { fromEntries } = Object;
 const splitString = '-';
-export const dateFormat = (now = new Date()) => now.getFullYear() + splitString + String(now.getMonth() + 1).padStart(2, '0') + splitString + String(now.getDate()).padStart(2, '0');
+const todayDay = (now = new Date()) => String(now.getDate()).padStart(2, '0');
+const todayMonth = (now = new Date()) => String(now.getMonth() + 1).padStart(2, '0');
+export const dateFormat = (now = new Date()) => now.getFullYear() + splitString + todayMonth(now) + splitString + todayDay(now);
 // const timeFormat = (...args: ReadonlyArray<string>) => args.map(i => i.replaceAll('-', '/')).join('-');
 export const timeFormat = (s: string) => s.replaceAll(splitString, '/');
-// const dateFromOldToNow = (n: number) => {
-//   const now = new Date();
-//   now.setDate(now.getDate() - n);
-//   return timeFormat(dateFormat(now), dateFormat());
-// };
+const onDayLong = 1e3 * 60 * 60 * 24;
+const dateFromOldToNow = (n: number) => dateFormat(new Date(new Date().getTime() - onDayLong * n));
 const month = 'month';
 const thisYear = new Date().getFullYear();
-const thisMonth1 = (time: string) => `${time}-01`.slice(0, 10);
+const padDate = (time: string) => (time + splitString + todayMonth() + splitString + todayDay()).slice(0, 10);
+const getDaysDifference = (dateString: string) => {
+  const today = new Date();
+  const date = new Date(dateString);
+  // 确保两个日期都在同一时区，这里使用UTC时区进行比较  
+  today.setUTCMinutes(today.getUTCMinutes() - today.getTimezoneOffset());
+  date.setUTCMinutes(date.getUTCMinutes() - date.getTimezoneOffset());
+  // 计算两个日期之间的毫秒差  
+  // 将毫秒差转换为天数  
+  return Math.floor(Math.abs(date.getTime() - today.getTime()) / onDayLong);
+};
 const ToggleButtonArr: ReadonlyArray<{
   readonly label: requestType["type"];
   readonly text: string;
 }> = [{
   label: 'year',
   text: `${thisYear}年`,
+  // value: dateFromOldToNow(90)
+}, {
+  label: month,
+  text: '按月筛选',
+  // value: dateFromOldToNow(30)
+}, {
+  label: 'day',
+  text: '按日筛选',
+}];
+const ToggleButtonArrAll: ReadonlyArray<{
+  readonly label: requestType["type"];
+  readonly text: string;
+}> = [{
+  label: 'year',
+  text: '按年筛选',
   // value: dateFromOldToNow(90)
 }, {
   label: month,
@@ -77,6 +101,7 @@ type addressUseSetStateType = Partial<Record<unitNameEnum, labelType>>;
 export interface noNeedSomething {
   readonly noNeedTime?: boolean;
   readonly noNeedAddress?: boolean;
+  readonly timeNeedDay?: boolean;
 }
 interface CurrentFilterShow extends noNeedSomething {
   readonly address: addressUseSetStateType;
@@ -90,11 +115,12 @@ interface CurrentFilterShow extends noNeedSomething {
   readonly unitName: ReadonlyArray<unitNameType>;
   readonly setBreadcrumbsAddress: (e: number) => void;
 }
-const HB = '河北省';
+export const HB = '河北省';
 const CurrentFilterShow = (props: CurrentFilterShow) => {
   const { address, hasDataIndex, time, f = undefined, noNeedTime = false, noNeedAddress = false, unitName = [], setBreadcrumbsAddress } = props;
   const allNeed = !noNeedTime && !noNeedAddress;
   const timeSplit = time.split(splitString);
+  const initAddress = localStorage.getItem(regionName);
   return <Paper className={classes['filterResult'] ?? ''} elevation={24}>
     {allNeed && <StrictMode><div>当前<wbr />筛选</div><span>{'{'}</span></StrictMode>}
     <div>
@@ -102,7 +128,7 @@ const CurrentFilterShow = (props: CurrentFilterShow) => {
         <Breadcrumbs className={classes['Breadcrumbs'] ?? ''}>
           {Boolean(hasDataIndex) ? <Link
             onClick={() => { setBreadcrumbsAddress(-1); }}
-          >{HB}</Link> : <span>{HB}</span>}
+          >{initAddress}</Link> : <span>{initAddress}</span>}
           {
             unitName.filter(i => address[i.label]).map(((i, index, arr) => (index === arr.length - 1 ?
               <span>{address[i.label]?.[regionName]}</span>
@@ -122,14 +148,15 @@ const CurrentFilterShow = (props: CurrentFilterShow) => {
         //   return customTimeFormat;
         // else
         // return f?.text;
-        const yearAndMonth = `${timeSplit[0]}年${timeSplit[1]}月`;
+        const year = `${timeSplit[0]}年`;
+        const yearAndMonth = `${year + timeSplit[1]}月`;
         switch (f?.label) {
           case ToggleButtonArr[0]?.label:
-            return f.text;
+            return year;
           case ToggleButtonArr[1]?.label:
             return yearAndMonth;
           default:
-            return `${yearAndMonth}${timeSplit[2] ?? '01'}日`;
+            return `${yearAndMonth}${timeSplit[2] ?? todayDay()}日`;
         }
       })()}</p>}
     </div>
@@ -143,7 +170,8 @@ export interface FilterDialogIncludeButtonInstance { toDown: (props: Pick<labelT
 export const FilterDialogWithBreadcrumbs = forwardRef<FilterDialogIncludeButtonInstance, FilterDialogIncludeButtonProps>((props, ref) => {
   const level = Number(localStorage.getItem(levelString) ?? getLevel());
   const unitName: ReadonlyArray<unitNameType> = level ? unitNameAll.slice(level) : unitNameAll;
-  const { run, noNeedTime = false, noNeedAddress = false } = props;
+  const { run, noNeedTime = false, noNeedAddress = false, timeNeedDay = false } = props;
+  const ToggleButtonArr = timeNeedDay ? ToggleButtonArrAll : ToggleButtonArrAll.slice(0, ToggleButtonArrAll.length - 1);
   const [alignment, setAlignment] = useState<requestType["type"]>(ToggleButtonArr[0]?.label);
   const [time, setTime] = useState(dateFormat());
   const [address, setAddress] = useSetState<
@@ -158,7 +186,7 @@ export const FilterDialogWithBreadcrumbs = forwardRef<FilterDialogIncludeButtonI
     Partial<Record<unitNameEnum, addressArrType>>
   >(fromEntries(unitName.map(i => [i.label, []])));
   useMount(() => unstable_batchedUpdates(() => {
-    getSalesVolumeMonitoring_DistributionOfTerminalSales({ level, orgId: getLocalStorageFromJSON(orgId) }).then(e => {
+    getSalesVolumeMonitoring_DistributionOfTerminalSales({ level, [orgId]: getLocalStorageFromJSON(orgId) }).then(e => {
       const label0 = unitName[0]?.label;
       if (e && label0) {
         setAddressList({
@@ -168,6 +196,7 @@ export const FilterDialogWithBreadcrumbs = forwardRef<FilterDialogIncludeButtonI
     });
   }));
   const hasDataIndex = unitName.findIndex(i => !address[i.label]);
+  const nowHasDataIndex = hasDataIndex < 0 ? unitName.length : hasDataIndex;
   const f = ToggleButtonArr.find(i => i.label === alignment);
   // const isCustomTime = f?.label === custom;
   const [click, setClick] = useState(false);
@@ -180,13 +209,16 @@ export const FilterDialogWithBreadcrumbs = forwardRef<FilterDialogIncludeButtonI
   };
   const [filterOpen, setFilterOpen] = useState(false);
   const [requestFilterResultShow, setRequestFilterResultShow] = useState<CurrentFilterShow>(filterResultShow);
+  const initOrgId = getInitParams().orgId;
   useEffect(() => unstable_batchedUpdates(() => {
     if (click) {
+      const nowLabel = unitName[nowHasDataIndex - 1]?.label;
+      const nowOrgId = nowLabel ? address[nowLabel]?.regionId : initOrgId;
       run({
-        ...(!noNeedTime && { date: alignment === ToggleButtonArr[0]?.label ? timeFormat(`${thisYear + splitString}01${splitString}01`) : timeFormat(thisMonth1(time)), ...(alignment && { type: alignment }) }),
-        orgId:
-          [getInitParams().orgId, ...unitName.filter(i => address[i.label]).map(i => address[i.label]?.regionId)].join('.')
-        , level: hasDataIndex < 0 ? unitNameAll.length - 1 : hasDataIndex
+        ...(!noNeedTime && { date: timeFormat(padDate(time)), ...(alignment && { type: alignment }) }),
+        [orgId]: nowOrgId ?? initOrgId
+        // [getInitParams().orgId, ...unitName.filter(i => address[i.label]).map(i => address[i.label]?.regionId)].join('.')
+        , level: nowHasDataIndex + level
         // ...((() => {
         //   // const label = unitName[hasDataIndex - 1]?.label;
         //   if (!noNeedAddress)
@@ -234,8 +266,7 @@ export const FilterDialogWithBreadcrumbs = forwardRef<FilterDialogIncludeButtonI
     >筛选器</Button>}
     {Boolean(requestFilterResultShow.hasDataIndex) && <Fab variant="extended" color="primary"
       onClick={() => unstable_batchedUpdates(() => {
-        const setNullNumber = hasDataIndex > -1 ? hasDataIndex - 1 : unitName.length - 1;
-        const label = unitName[setNullNumber]?.label;
+        const label = unitName[nowHasDataIndex - 1]?.label;
         if (label) {
           setAddress({ [label]: null });
           setClick(true);
@@ -389,6 +420,10 @@ export const FilterDialogWithBreadcrumbs = forwardRef<FilterDialogIncludeButtonI
               _event,
               newAlignment,
             ) => {
+              if (newAlignment === ToggleButtonArr[2]?.label && getDaysDifference(padDate(time)) > 90)
+                setTime(dateFormat());
+              if (newAlignment === ToggleButtonArr[1]?.label && getDaysDifference(padDate(time)) > 30)
+                setTime(dateFormat());
               setAlignment(prevState => newAlignment ?? prevState);
             }}
             className={classes['ToggleButtonGroup'] ?? ''}
@@ -399,9 +434,20 @@ export const FilterDialogWithBreadcrumbs = forwardRef<FilterDialogIncludeButtonI
               >{item.text}</ToggleButton>)
             }
           </ToggleButtonGroup>
-          <Collapse in={alignment !== ToggleButtonArr[0]?.label}>
-            <label
-              className={classNames(classes["date"])} >请选择周期：<input
+          {/* <Collapse in={alignment !== ToggleButtonArr[0]?.label}> */}
+          <label
+            className={classNames(classes["date"])} >请选择周期：{alignment === ToggleButtonArr[0]?.label ?
+              <select
+                onChange={e => {
+                  setTime(e.target.value);
+                }}
+                value={time}
+              >
+                {' '.repeat(2).split('').map((_i, index) => <option
+                  key={index}
+                  value={String(thisYear - index)}
+                >{`${thisYear - index}年`}</option>)}
+              </select> : <input
                 type={(() => {
                   switch (alignment) {
                     case ToggleButtonArr[2]?.label:
@@ -417,12 +463,20 @@ export const FilterDialogWithBreadcrumbs = forwardRef<FilterDialogIncludeButtonI
                     case ToggleButtonArr[1]?.label:
                       return time.slice(0, 7);
                     default:
-                      return thisMonth1(time);
+                      return padDate(time);
                   }
                 })()}
                 onChange={e => {
                   setTime(e.target.value);
                 }}
+                min={(() => {
+                  switch (alignment) {
+                    case ToggleButtonArr[1]?.label:
+                      return dateFromOldToNow(90).slice(0, 7);
+                    default:
+                      return padDate(dateFromOldToNow(30));
+                  }
+                })()}
                 max={(() => {
                   switch (alignment) {
                     case ToggleButtonArr[1]?.label:
@@ -431,8 +485,8 @@ export const FilterDialogWithBreadcrumbs = forwardRef<FilterDialogIncludeButtonI
                       return dateFormat();
                   }
                 })()}
-              /></label>
-          </Collapse>
+              />}</label>
+          {/* </Collapse> */}
         </AccordionDetails>
       </Accordion>}
     </Dialog></StrictMode>;

@@ -3,7 +3,12 @@
   width: 100%;
 }
 
+.noLoading {
+  padding-top: 0;
+}
+
 .loading {
+  @extend .noLoading;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -12,8 +17,8 @@
     min-height: 54vmin;
     min-width: 54vmin;
   }
-}
 
-.noLoading {
-  padding-top: 0;
+  > div {
+    display: none;
+  }
 }
