@@ -1,0 +1,1 @@
+System.register([],(function(e,r){"use strict";return{execute:function(){var e=ReactIs,r={};r[e.ForwardRef]={$$typeof:!0,render:!0,defaultProps:!0,displayName:!0,propTypes:!0},r[e.Memo]={$$typeof:!0,compare:!0,defaultProps:!0,displayName:!0,propTypes:!0,type:!0}}}}));
