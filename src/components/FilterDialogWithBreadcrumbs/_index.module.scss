@@ -97,7 +97,10 @@
 
   > div {
     margin: auto 0;
-    // text-align: center;
+
+    &:first-child {
+      text-align: center;
+    }
 
     + span {
       font-size: 1cm;

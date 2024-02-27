@@ -18,3 +18,20 @@ readFile(name, 'utf8', (err, data) => {
     console.log('File has been updated with all numbers replaced by spaces.');
   });
 });
+const swSrc = 'dist/service-worker.js';
+readFile(swSrc, 'utf8', (err, data) => {
+  if (err) {
+    console.error('Error reading file:', err);
+    return;
+  }
+  // 使用正则表达式将所有数字替换为空格  
+  const result = data.replace('function a(){import.meta.url,import("_").catch(()=>1),async function*(){}().next()}', '').replace('export{a as __vite_legacy_guard};', '');
+  // 将替换后的内容写回到data.txt文件中  
+  writeFile(swSrc, result, 'utf8', (err) => {
+    if (err) {
+      console.error('Error writing file:', err);
+      return;
+    }
+    console.log('File has been updated with all numbers replaced by spaces.');
+  });
+});

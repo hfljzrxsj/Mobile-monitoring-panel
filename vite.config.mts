@@ -51,7 +51,8 @@ const serverOptions = {
   // }
 };
 const sw = 'service-worker';
-const swSrc = resolve(__dirname, `src/${sw}.ts`);
+const swUrl = `src/${sw}.ts`;
+const swSrc = resolve(__dirname, swUrl) ?? fileURLToPath(new URL(swUrl, import.meta.url));
 // eslint-disable-next-line @typescript-eslint/no-unsafe-call
 export default defineConfig({
   'root': resolve('./src'), //  入口index.html，注意入口js应该与index.html 同一目录下（只能写到目录，不能写到具体文件）
@@ -247,7 +248,6 @@ export default defineConfig({
         // },
       ]
     }),
-    //@ts-expect-error
     legacy({
       // targets: ['chrome < 60', 'edge < 15'],
       // polyfills: ['es.promise.finally', 'es/map', 'es/set'],
@@ -256,7 +256,8 @@ export default defineConfig({
       // polyfills: ['es.global-this'],
       // renderLegacyChunks: false,
       targets: ['Android >= 11', 'Chrome >= 83'],
-      modernPolyfills: true
+      modernPolyfills: true,
+      externalSystemJS: true
     }),
     // {
     //   name: 'treat-js-files-as-jsx',
@@ -347,6 +348,7 @@ export default defineConfig({
   },
   'build': {
     'rollupOptions': {
+      // external: swSrc,
       'input': {
         'main': resolve(__dirname, 'src/index.html'),
         [sw]: swSrc

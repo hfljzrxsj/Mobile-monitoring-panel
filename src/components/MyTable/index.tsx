@@ -7,7 +7,7 @@ import classnames from 'classnames';
 import { useRequest } from "ahooks";
 import { unstable_batchedUpdates } from "react-dom";
 import { commonUseRequestParams } from "@/App";
-import { FilterDialogWithBreadcrumbs, HB, unitNameAll, type FilterDialogIncludeButtonInstance, type noNeedSomething } from "../FilterDialogWithBreadcrumbs";
+import { FilterDialogWithBreadcrumbs, unitNameAll, type FilterDialogIncludeButtonInstance, type noNeedSomething } from "../FilterDialogWithBreadcrumbs";
 import { getInitParams, type requestType } from "@/actions";
 export const regionName = 'regionName';
 interface Type<T = {}, D extends requestType = requestType> extends noNeedSomething {
@@ -24,6 +24,7 @@ interface Type<T = {}, D extends requestType = requestType> extends noNeedSometh
   readonly totalSum?: boolean;
 }
 const initArr = ' '.repeat(10).split('');
+const HB = '河北省';
 export default function MyTable<T, D extends requestType = requestType> (props: Type<T, D>) {
   const { columns, action, noNeedTime, noNeedAddress, timeNeedDay, totalSum = false, ...others } = props;
   const [page, setPage] = useState(0);

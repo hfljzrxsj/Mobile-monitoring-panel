@@ -95,7 +95,7 @@ export const unitNameAll: ReadonlyArray<unitNameType> = [
 export type addressArrType = ReadonlyArray<labelType>;
 const unUsedId = '-1';
 const toAutoCompleteArr = (arr: addressArrType, s: string) => [{ [regionName]: `所有${s}`, regionId: unUsedId }, ...arr
-  .map(i => ({ ...i, [regionName]: `${i?.[regionName]}${s}`, regionId: i.regionId ?? '0' }))
+  // .map(i => ({ ...i, [regionName]: `${i?.[regionName]}${s}`, regionId: i.regionId ?? '0' }))
 ];
 type addressUseSetStateType = Partial<Record<unitNameEnum, labelType>>;
 export interface noNeedSomething {
@@ -115,7 +115,10 @@ interface CurrentFilterShow extends noNeedSomething {
   readonly unitName: ReadonlyArray<unitNameType>;
   readonly setBreadcrumbsAddress: (e: number) => void;
 }
-export const HB = '河北省';
+const commonFilter = (address: addressUseSetStateType) => (i: unitNameType) => {
+  const currAddress = address[i.label];
+  return !currAddress || currAddress?.regionId === unUsedId;
+};
 const CurrentFilterShow = (props: CurrentFilterShow) => {
   const { address, hasDataIndex, time, f = undefined, noNeedTime = false, noNeedAddress = false, unitName = [], setBreadcrumbsAddress } = props;
   const allNeed = !noNeedTime && !noNeedAddress;
@@ -130,7 +133,7 @@ const CurrentFilterShow = (props: CurrentFilterShow) => {
             onClick={() => { setBreadcrumbsAddress(-1); }}
           >{initAddress}</Link> : <span>{initAddress}</span>}
           {
-            unitName.filter(i => address[i.label]).map(((i, index, arr) => (index === arr.length - 1 ?
+            unitName.filter(i => !commonFilter(address)(i)).map(((i, index, arr) => (index === arr.length - 1 ?
               <span>{address[i.label]?.[regionName]}</span>
               : <Link
                 key={index}
@@ -195,7 +198,7 @@ export const FilterDialogWithBreadcrumbs = forwardRef<FilterDialogIncludeButtonI
       }
     });
   }));
-  const hasDataIndex = unitName.findIndex(i => !address[i.label]);
+  const hasDataIndex = unitName.findIndex(commonFilter(address));
   const nowHasDataIndex = hasDataIndex < 0 ? unitName.length : hasDataIndex;
   const f = ToggleButtonArr.find(i => i.label === alignment);
   // const isCustomTime = f?.label === custom;
@@ -347,6 +350,9 @@ export const FilterDialogWithBreadcrumbs = forwardRef<FilterDialogIncludeButtonI
               // renderOption={(_props, options,) => options.label}
               isOptionEqualToValue={(option, value) => option.regionId === value.regionId}
               onChange={(_e, v) => unstable_batchedUpdates(() => {
+                if (!v) {
+                  return;
+                }
                 setAddress(fromEntries(unitName.filter((_item, ind) => ind >= index).map(i => [i.label, null])));
                 const regionId = v?.regionId;
                 // if (id === unUsedId || !v) {
@@ -360,7 +366,7 @@ export const FilterDialogWithBreadcrumbs = forwardRef<FilterDialogIncludeButtonI
                 setAddress({
                   [label]: v
                 });
-                if (index !== unitName.length - 1 && regionId) {
+                if (index !== unitName.length - 1 && regionId !== unUsedId) {
                   // getAddressListData(index, id);
                   getSalesVolumeMonitoring_DistributionOfTerminalSales({ level: level + index + 1, orgId: regionId }).then(e => {
                     const curLabel = unitName[index + 1]?.label;
@@ -370,7 +376,6 @@ export const FilterDialogWithBreadcrumbs = forwardRef<FilterDialogIncludeButtonI
                       });
                   });
                 }
-
               })}
               value={address[label] ?? options[0] ?? null}
               // componentsProps
