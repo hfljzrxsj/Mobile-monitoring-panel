@@ -1,4 +1,4 @@
-import { Paper, AppBar, Dialog, IconButton, Typography, Accordion, AccordionDetails, AccordionSummary, ToggleButton, ToggleButtonGroup, Collapse, Autocomplete, TextField, CircularProgress, Divider, Button, Fab, Breadcrumbs, Link } from "@mui/material";
+import { Paper, AppBar, Dialog, IconButton, Typography, Accordion, AccordionDetails, AccordionSummary, ToggleButton, ToggleButtonGroup, Autocomplete, TextField, CircularProgress, Divider, Button, Fab, Breadcrumbs, Link } from "@mui/material";
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from "react";
 import { StrictMode } from "react";
 import classes from './_index.module.scss';
@@ -121,10 +121,10 @@ const CurrentFilterShow = (props: CurrentFilterShow) => {
   const allNeed = !noNeedTime && !noNeedAddress;
   const timeSplit = time.split(splitString);
   const initAddress = localStorage.getItem(regionName);
-  return <Paper className={classes['filterResult'] ?? ''} elevation={24}>
+  return <Paper className={classes['filterResult'] ?? ''} elevation={9}>
     {allNeed && <StrictMode><div>当前<wbr />筛选</div><span>{'{'}</span></StrictMode>}
     <div>
-      <div>地理位置：
+      <div>{allNeed && '地理位置：'}
         <Breadcrumbs className={classes['Breadcrumbs'] ?? ''}>
           {Boolean(hasDataIndex) ? <Link
             onClick={() => { setBreadcrumbsAddress(-1); }}
@@ -143,7 +143,7 @@ const CurrentFilterShow = (props: CurrentFilterShow) => {
         </ Breadcrumbs>
       </div>
       {allNeed && <Divider />}
-      {!noNeedTime && <p>时间范围：{(() => {
+      {!noNeedTime && <p>{allNeed && '时间范围：'}{(() => {
         // if (isCustomTime)
         //   return customTimeFormat;
         // else

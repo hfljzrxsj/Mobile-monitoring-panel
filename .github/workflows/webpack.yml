@@ -1,8 +1,8 @@
 name: NodeJS with Webpack
 
 on:
-  push:
-    branches: [ "develop_h5" ]
+  # push:
+  #   branches: [ "develop_h5" ]
   pull_request:
     branches: [ "develop_h5" ]
 permissions:

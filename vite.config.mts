@@ -195,11 +195,11 @@ export default defineConfig({
           'var': 'echarts',
           'path': '//cdn.bootcdn.net/ajax/libs/echarts/5.4.3/echarts.min.js'
         },
-        {
-          'name': 'mockjs',
-          'var': 'Mock',
-          'path': '//cdn.bootcdn.net/ajax/libs/Mock.js/1.0.0/mock-min.js'
-        },
+        // {
+        //   'name': 'mockjs',
+        //   'var': 'Mock',
+        //   'path': '//cdn.bootcdn.net/ajax/libs/Mock.js/1.0.0/mock-min.js'
+        // },
         {
           'name': 'react-is',
           'var': 'ReactIs',
