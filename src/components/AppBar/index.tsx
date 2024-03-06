@@ -9,7 +9,7 @@ import { StrictMode, useState } from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 import { useNavigate } from 'react-router';
 import { concatUrl, pathString } from '@/Route';
-import classNames from 'classnames';
+import * as classNames from 'classnames';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { regionName } from '../MyTable';
 import Menu from '../Menu';

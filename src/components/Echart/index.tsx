@@ -1,6 +1,6 @@
 import echartsConstructor, { type data } from "@/echarts";
 import { CircularProgress } from "@mui/material";
-import classNames from "classnames";
+import * as classNames from "classnames";
 import { useRef, useEffect } from "react";
 import style from './_index.module.scss';
 

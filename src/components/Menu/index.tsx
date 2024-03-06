@@ -4,7 +4,7 @@ import { concatUrl, menuItems } from "@/Route";
 import { NavLink, type RouteObject } from "react-router-dom";
 import KeyboardArrowDownIcon from '@mui/icons-material/ExpandMore';
 import style from './_index.module.scss';
-import classnames from 'classnames';
+import * as classnames from 'classnames';
 import { unstable_batchedUpdates } from "react-dom";
 import { useDispatch } from "react-redux";
 import { enumActionName, type AppBarTitleAction } from "@/store/AppBarTitleRuducer";

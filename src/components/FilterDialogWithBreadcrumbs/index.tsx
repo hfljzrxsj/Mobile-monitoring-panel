@@ -8,7 +8,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { StyledButton } from "../AppBar";
 import SendIcon from '@mui/icons-material/Send';
-import classNames from "classnames";
+import * as classNames from "classnames";
 import { getInitParams, getSalesVolumeMonitoring_DistributionOfTerminalSales, type requestType } from "@/actions";
 import { getLevel, getLocalStorageFromJSON, level as levelString, orgId } from "@/actions/axios_instance";
 import ReplyIcon from '@mui/icons-material/Reply';

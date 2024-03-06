@@ -50,7 +50,7 @@ export default function Login () {
     <StrictMode>
       <div className={style['loginBody']}>
         <div>
-          <h3>移动监控面板</h3>
+          <h3>H5终端营销活动监控看板</h3>
           <TextField
             label="账号"
             onChange={e => setValue({

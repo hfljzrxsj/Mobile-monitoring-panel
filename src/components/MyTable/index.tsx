@@ -3,7 +3,7 @@ import { StyledEngineProvider } from "@mui/system";
 import { useRef, useState } from "react";
 import { StrictMode } from "react";
 import classes from './_index.module.scss';
-import classnames from 'classnames';
+import * as classnames from 'classnames';
 import { useRequest } from "ahooks";
 import { unstable_batchedUpdates } from "react-dom";
 import { commonUseRequestParams } from "@/App";

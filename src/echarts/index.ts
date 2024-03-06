@@ -8,7 +8,7 @@ interface EchartsConstructor {
   readonly option?: EChartsOption;
   readonly data: data;
 }
-export default function echartsConstructor ({ dom, option, data }: EchartsConstructor) {
+export default ({ dom, option, data }: EchartsConstructor) => {
   try {
     const chartInstance = getInstanceByDom(dom) ?? init(dom);
     chartInstance.setOption({
@@ -67,4 +67,4 @@ export default function echartsConstructor ({ dom, option, data }: EchartsConstr
     // });
   }
   catch (e) { console.error(e); return; }
-}
+};
