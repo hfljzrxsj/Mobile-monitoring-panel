@@ -10,9 +10,9 @@ export const commonUseRequestParams = {
   loadingDelay: 300,
   throttleWait: 300,
 };
-export default function APP () {
+export default () =>
   //@ts-expect-error
-  return (<StrictMode><StyledEngineProvider injectFirst><ScopedCssBaseline><CssBaseline /><Provider store={store}>
+  <StrictMode><StyledEngineProvider injectFirst><ScopedCssBaseline><CssBaseline /><Provider store={store}>
     <StrictMode>
       <HashRouter>
         <MyRoute />
@@ -22,5 +22,4 @@ export default function APP () {
   </Provider>
   </ScopedCssBaseline>
   </StyledEngineProvider>
-  </StrictMode>);
-}
+  </StrictMode>;

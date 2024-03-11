@@ -9,7 +9,7 @@ export interface TOP10ModelInformation_labelType {
   readonly priceLevel: string;
   readonly index: string;
 }
-// export const priceNameArr = ' '.repeat(10);
+// export const priceNameArr = ' '.repeat(10).split('');
 export default function TOP10ModelInformation () {
   return (<StrictMode>
     <MyTable<TOP10ModelInformation_labelType>

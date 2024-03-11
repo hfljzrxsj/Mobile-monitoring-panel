@@ -40,7 +40,7 @@ mock(/\/api\/SalesVolumeMonitoring\/TerminalActivitySalesStructure\?.*type=day.*
     { value: ~~(random() * 10), name: '金币合约' },
   ]
 });
-const ramdomArr = () => ' '.repeat(25).split(' ').map((_item, index) => ({ label: String.fromCharCode(index + 65), id: index }));
+const ramdomArr = () => new Array(25).fill('').map((_item, index) => ({ label: String.fromCharCode(index + 65), id: index }));
 mock(/\/api\/getAddressList.*/, 'get', {
   "code": 1000,
   "data": ramdomArr()

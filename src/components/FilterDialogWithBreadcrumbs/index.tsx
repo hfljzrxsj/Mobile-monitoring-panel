@@ -448,7 +448,7 @@ export const FilterDialogWithBreadcrumbs = forwardRef<FilterDialogIncludeButtonI
                 }}
                 value={time}
               >
-                {' '.repeat(2).split('').map((_i, index) => <option
+                {new Array(2).fill('').map((_i, index) => <option
                   key={index}
                   value={String(thisYear - index)}
                 >{`${thisYear - index}年`}</option>)}

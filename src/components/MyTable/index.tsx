@@ -23,7 +23,7 @@ interface Type<T = {}, D extends requestType = requestType> extends noNeedSometh
   }> | void>;
   readonly totalSum?: boolean;
 }
-const initArr = ' '.repeat(10).split('');
+const initArr = new Array(10).fill('');
 const HB = '河北省';
 export default function MyTable<T, D extends requestType = requestType> (props: Type<T, D>) {
   const { columns, action, noNeedTime, noNeedAddress, timeNeedDay, totalSum = false, ...others } = props;
